@@ -56,10 +56,10 @@ Le modèle $\lambda$ de Pagel peut être utilisé dans les PGLS en utilisant la 
 
 ```{r "corPagel example"}
 # Obtenir la structure de corrélation
-pagel.corr <- corPagel(0.3, phy=seedplantstree, fixed=FALSE, form=~1)
+pagel.corr <- corPagel(0.3, phy=seedplantstree, fixed=FALSE, form=~Code)
 ```
 
-La valeur donnée à corPagel est la valeur de départ pour le paramètre $\lambda$. Notez également que l’option `fixed=` est définie sur `FALSE`. Cela signifie que le paramètre $\lambda$ sera optimisé en utilisant les moindres carrés généralisés. S’il était défini sur `TRUE`, alors le modèle serait ajusté avec le paramètre de départ, ici `0.3`.
+La valeur donnée à corPagel est la valeur de départ pour le paramètre $\lambda$. Notez également que l’option `fixed=` est définie sur `FALSE`. Cela signifie que le paramètre $\lambda$ sera optimisé en utilisant les moindres carrés généralisés. S’il était défini sur `TRUE`, alors le modèle serait ajusté avec le paramètre de départ, ici `0.3`. Le terme `form~Code` indique à la fonction d'utiliser l'ordre de la variable `Code` pour ordonner les noms d'espèces dans l'arbre.
 
 Ajustons maintenant le PGLS avec cette structure de corrélation.
 

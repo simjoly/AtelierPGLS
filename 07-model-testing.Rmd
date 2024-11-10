@@ -8,11 +8,11 @@ La méthode par défaut pour l'ajustement des modèles avec `gls` est l'estimati
 ```{r "cor structure comparison"}
 pagel.0 <- gls(Shade ~ Wd, data = seedplantsdata, 
                correlation=corPagel(0,phy=seedplantstree, 
-                                    fixed=TRUE, form=~1), 
+                                    fixed=TRUE, form=~Code), 
                method="REML")
 pagel.fit <- gls(Shade ~ Wd, data = seedplantsdata, 
                  correlation=corPagel(0.8,phy=seedplantstree, 
-                                      fixed=FALSE, form=~1),
+                                      fixed=FALSE, form=~Code),
                  method="REML")
 anova(pagel.0,pagel.fit)
 ```
@@ -24,10 +24,10 @@ Maintenant, si vous êtes intéressé par le test des paramètres fixes dans le 
 
 ```{r "fixed effect comparison"}
 wd <- gls(Shade ~ Wd, data = seedplantsdata,
-          correlation=corBrownian(phy=seedplantstree, form=~1), 
+          correlation=corBrownian(phy=seedplantstree, form=~Code), 
           method="ML")
 null <- gls(Shade ~ 1, data = seedplantsdata,
-            correlation=corBrownian(phy=seedplantstree, form=~1), 
+            correlation=corBrownian(phy=seedplantstree, form=~Code), 
             method="ML")
 anova(wd,null)
 ```
@@ -36,7 +36,7 @@ Vous pouvez voir que le modèle avec la variable de densité du bois est meilleu
 
 ```{r "Final fitting"}
 wd.final <- gls(Shade ~ Wd, data = seedplantsdata,
-                correlation=corBrownian(phy=seedplantstree, form=~1), 
+                correlation=corBrownian(phy=seedplantstree, form=~Code), 
                 method="REML")
 summary(wd.final)
 ```

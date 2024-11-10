@@ -256,10 +256,10 @@ div.csl-indent {
 <p>Jusqu’à présent, nous n’avons analysé que des caractères quantitatifs continus. Mais il est également possible de réaliser une ANOVA avec PGLS.</p>
 <p>L’avantage de PGLS, tel qu’il est implémenté avec la fonction <code>gls</code>, est qu’il peut être facilement adapté pour tester de nombreux types de modèles différents. Pour donner un exemple ici, il est facile de mettre en œuvre une ANOVA phylogénétique en R. En effet, il vous suffit de fournir à <code>gls</code> un trait catégoriel en tant que variable indépendante.</p>
 <p>Comme il n’y a pas de variable catégorielle dans le jeu de données des traits fonctionnels des plantes, nous allons en créer une en divisant la catégorie de densité du bois en deux catégories : bois léger et bois dense.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="anova-phylogénétique.html#cb41-1" tabindex="-1"></a><span class="co"># Créer une variable catégorielle</span></span>
-<span id="cb41-2"><a href="anova-phylogénétique.html#cb41-2" tabindex="-1"></a>seedplantsdata<span class="sc">$</span>Wd.cat<span class="ot">&lt;-</span><span class="fu">cut</span>(seedplantsdata<span class="sc">$</span>Wd,<span class="at">breaks=</span><span class="dv">2</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;light&quot;</span>,<span class="st">&quot;dense&quot;</span>))</span>
-<span id="cb41-3"><a href="anova-phylogénétique.html#cb41-3" tabindex="-1"></a><span class="co"># Regarder le résultat</span></span>
-<span id="cb41-4"><a href="anova-phylogénétique.html#cb41-4" tabindex="-1"></a>seedplantsdata<span class="sc">$</span>Wd.cat</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="anova-phylogénétique.html#cb39-1" tabindex="-1"></a><span class="co"># Créer une variable catégorielle</span></span>
+<span id="cb39-2"><a href="anova-phylogénétique.html#cb39-2" tabindex="-1"></a>seedplantsdata<span class="sc">$</span>Wd.cat<span class="ot">&lt;-</span><span class="fu">cut</span>(seedplantsdata<span class="sc">$</span>Wd,<span class="at">breaks=</span><span class="dv">2</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;light&quot;</span>,<span class="st">&quot;dense&quot;</span>))</span>
+<span id="cb39-3"><a href="anova-phylogénétique.html#cb39-3" tabindex="-1"></a><span class="co"># Regarder le résultat</span></span>
+<span id="cb39-4"><a href="anova-phylogénétique.html#cb39-4" tabindex="-1"></a>seedplantsdata<span class="sc">$</span>Wd.cat</span></code></pre></div>
 <pre><code>##  [1] light light dense light dense dense dense light light light light dense
 ## [13] dense light light dense dense dense dense dense dense dense light dense
 ## [25] light dense light light dense dense light light light light light light
@@ -267,12 +267,9 @@ div.csl-indent {
 ## [49] dense light light light light light light light dense
 ## Levels: light dense</code></pre>
 <p>Nous pouvons maintenant ajuster une ANOVA phylogénétique.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="anova-phylogénétique.html#cb43-1" tabindex="-1"></a><span class="co"># ANOVA phylogénétique</span></span>
-<span id="cb43-2"><a href="anova-phylogénétique.html#cb43-2" tabindex="-1"></a>shade.pgls3 <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd.cat, <span class="at">data =</span> seedplantsdata, <span class="at">correlation=</span>pagel.corr)</span></code></pre></div>
-<pre><code>## Warning in Initialize.corPhyl(X[[i]], ...): No covariate specified, species
-## will be taken as ordered in the data frame. To avoid this message, specify a
-## covariate containing the species names with the &#39;form&#39; argument.</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="anova-phylogénétique.html#cb45-1" tabindex="-1"></a><span class="fu">summary</span>(shade.pgls3)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="anova-phylogénétique.html#cb41-1" tabindex="-1"></a><span class="co"># ANOVA phylogénétique</span></span>
+<span id="cb41-2"><a href="anova-phylogénétique.html#cb41-2" tabindex="-1"></a>shade.pgls3 <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd.cat, <span class="at">data =</span> seedplantsdata, <span class="at">correlation=</span>pagel.corr)</span>
+<span id="cb41-3"><a href="anova-phylogénétique.html#cb41-3" tabindex="-1"></a><span class="fu">summary</span>(shade.pgls3)</span></code></pre></div>
 <pre><code>## Generalized least squares fit by REML
 ##   Model: Shade ~ Wd.cat 
 ##   Data: seedplantsdata 
@@ -280,7 +277,7 @@ div.csl-indent {
 ##   166.7352 174.7646 -79.36762
 ## 
 ## Correlation Structure: corPagel
-##  Formula: ~1 
+##  Formula: ~Code 
 ##  Parameter estimate(s):
 ##    lambda 
 ## 0.9439646 

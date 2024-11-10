@@ -47,9 +47,7 @@ Maintenant, nous pouvons jeter un œil aux données, puis ordonner le trait des 
 # Voici à quoi ressemblent les données chargées
 head(seedplantsdata)
 # Nommer les lignes du data.frame avec les codes des espèces utilisés comme étiquettes d'arbre 
-#  et supprimer la colonne obsolète avec les codes des espèces.
 rownames(seedplantsdata) <- seedplantsdata$Code
-seedplantsdata <- seedplantsdata[,-1]
 # Ordonner les données dans le même ordre que les étiquettes de l'arbre. Dans cet exemple 
 #  précis, c'était déjà le cas, mais c'est une étape importante pour toute analyse.
 seedplantsdata <- seedplantsdata[seedplantstree$tip.label,]

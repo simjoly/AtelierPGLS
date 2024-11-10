@@ -267,15 +267,12 @@ div.csl-indent {
 <h2><span class="header-section-number">7.2</span> Exercices pratiques<a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#exercices-pratiques-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Le modèle <span class="math inline">\(\lambda\)</span> de Pagel peut être utilisé dans les PGLS en utilisant la structure de corrélation <code>corPagel</code>. L’utilisation de cette structure de corrélation est similaire à celle de la structure <code>corBrownian</code>, sauf que vous devez fournir une valeur de paramètre initiale pour <span class="math inline">\(\lambda\)</span>.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#cb36-1" tabindex="-1"></a><span class="co"># Obtenir la structure de corrélation</span></span>
-<span id="cb36-2"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#cb36-2" tabindex="-1"></a>pagel.corr <span class="ot">&lt;-</span> <span class="fu">corPagel</span>(<span class="fl">0.3</span>, <span class="at">phy=</span>seedplantstree, <span class="at">fixed=</span><span class="cn">FALSE</span>, <span class="at">form=</span><span class="sc">~</span><span class="dv">1</span>)</span></code></pre></div>
-<p>La valeur donnée à corPagel est la valeur de départ pour le paramètre <span class="math inline">\(\lambda\)</span>. Notez également que l’option <code>fixed=</code> est définie sur <code>FALSE</code>. Cela signifie que le paramètre <span class="math inline">\(\lambda\)</span> sera optimisé en utilisant les moindres carrés généralisés. S’il était défini sur <code>TRUE</code>, alors le modèle serait ajusté avec le paramètre de départ, ici <code>0.3</code>.</p>
+<span id="cb36-2"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#cb36-2" tabindex="-1"></a>pagel.corr <span class="ot">&lt;-</span> <span class="fu">corPagel</span>(<span class="fl">0.3</span>, <span class="at">phy=</span>seedplantstree, <span class="at">fixed=</span><span class="cn">FALSE</span>, <span class="at">form=</span><span class="sc">~</span>Code)</span></code></pre></div>
+<p>La valeur donnée à corPagel est la valeur de départ pour le paramètre <span class="math inline">\(\lambda\)</span>. Notez également que l’option <code>fixed=</code> est définie sur <code>FALSE</code>. Cela signifie que le paramètre <span class="math inline">\(\lambda\)</span> sera optimisé en utilisant les moindres carrés généralisés. S’il était défini sur <code>TRUE</code>, alors le modèle serait ajusté avec le paramètre de départ, ici <code>0.3</code>. Le terme <code>form~Code</code> indique à la fonction d’utiliser l’ordre de la variable <code>Code</code> pour ordonner les noms d’espèces dans l’arbre.</p>
 <p>Ajustons maintenant le PGLS avec cette structure de corrélation.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#cb37-1" tabindex="-1"></a><span class="co"># PGLS avec corPagel</span></span>
-<span id="cb37-2"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#cb37-2" tabindex="-1"></a>shade.pgls2 <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata, <span class="at">correlation=</span>pagel.corr)</span></code></pre></div>
-<pre><code>## Warning in Initialize.corPhyl(X[[i]], ...): No covariate specified, species
-## will be taken as ordered in the data frame. To avoid this message, specify a
-## covariate containing the species names with the &#39;form&#39; argument.</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#cb39-1" tabindex="-1"></a><span class="fu">summary</span>(shade.pgls2)</span></code></pre></div>
+<span id="cb37-2"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#cb37-2" tabindex="-1"></a>shade.pgls2 <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata, <span class="at">correlation=</span>pagel.corr)</span>
+<span id="cb37-3"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#cb37-3" tabindex="-1"></a><span class="fu">summary</span>(shade.pgls2)</span></code></pre></div>
 <pre><code>## Generalized least squares fit by REML
 ##   Model: Shade ~ Wd 
 ##   Data: seedplantsdata 
@@ -283,7 +280,7 @@ div.csl-indent {
 ##   163.3967 171.426 -77.69833
 ## 
 ## Correlation Structure: corPagel
-##  Formula: ~1 
+##  Formula: ~Code 
 ##  Parameter estimate(s):
 ##    lambda 
 ## 0.9581665 
