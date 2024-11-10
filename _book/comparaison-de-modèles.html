@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>9 Comparaison de modèles | Atelier sur les méthodes comparées</title>
+  <meta name="description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="9 Comparaison de modèles | Atelier sur les méthodes comparées" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="9 Comparaison de modèles | Atelier sur les méthodes comparées" />
+  
+  <meta name="twitter:description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  
+
+<meta name="author" content="Simon Joly" />
+
+
+<meta name="date" content="2024-11-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="anova-phylogénétique.html"/>
+<link rel="next" href="quand-devrions-nous-utiliser-les-méthodes-comparatives.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> À propos</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#resources-utiles"><i class="fa fa-check"></i><b>1.1</b> Resources utiles</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#source"><i class="fa fa-check"></i><b>1.2</b> Source</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#disclaimer"><i class="fa fa-check"></i><b>1.3</b> Disclaimer</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="before.html"><a href="before.html"><i class="fa fa-check"></i><b>2</b> Avant l’atelier</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="before.html"><a href="before.html#installer-r-et-les-packages-requis"><i class="fa fa-check"></i><b>2.1</b> Installer R et les packages requis</a></li>
+<li class="chapter" data-level="2.2" data-path="before.html"><a href="before.html#download"><i class="fa fa-check"></i><b>2.2</b> Téléchargement des données</a></li>
+<li class="chapter" data-level="2.3" data-path="before.html"><a href="before.html#familiarisez-vous-avec-les-arbres-phylogénétiques-dans-r"><i class="fa fa-check"></i><b>2.3</b> Familiarisez-vous avec les arbres phylogénétiques dans R</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>3</b> Une introduction aux méthodes comparatives phylogénétiques</a></li>
+<li class="chapter" data-level="4" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>4</b> Le modèle de régression linéaire</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="linear-regression.html"><a href="linear-regression.html#théorie"><i class="fa fa-check"></i><b>4.1</b> Théorie</a></li>
+<li class="chapter" data-level="4.2" data-path="linear-regression.html"><a href="linear-regression.html#pratique"><i class="fa fa-check"></i><b>4.2</b> Pratique</a></li>
+<li class="chapter" data-level="4.3" data-path="linear-regression.html"><a href="linear-regression.html#défi-no.-1"><i class="fa fa-check"></i><b>4.3</b> Défi no. 1</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="pgls.html"><a href="pgls.html"><i class="fa fa-check"></i><b>5</b> Phylogenetic generalized least squares (PGLS)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="pgls.html"><a href="pgls.html#théorie-1"><i class="fa fa-check"></i><b>5.1</b> Théorie</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="pgls.html"><a href="pgls.html#structure-de-corrélation-phylogénétique"><i class="fa fa-check"></i><b>5.1.1</b> Structure de corrélation phylogénétique</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="pgls.html"><a href="pgls.html#défi-no.-2"><i class="fa fa-check"></i><b>5.2</b> Défi no. 2</a></li>
+<li class="chapter" data-level="5.3" data-path="pgls.html"><a href="pgls.html#exercices-pratiques"><i class="fa fa-check"></i><b>5.3</b> Exercices pratiques</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="pgls.html"><a href="pgls.html#autres-structures-de-corrélation"><i class="fa fa-check"></i><b>5.3.1</b> Autres structures de corrélation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="pgls.html"><a href="pgls.html#défi-no.-3"><i class="fa fa-check"></i><b>5.4</b> Défi no. 3</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="pic.html"><a href="pic.html"><i class="fa fa-check"></i><b>6</b> Contrastes Indépendants Phylogénétiques</a></li>
+<li class="chapter" data-level="7" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><i class="fa fa-check"></i><b>7</b> Assouplir l’hypothèse selon laquelle les résidus doivent être parfaitement corrélés phylogénétiquement</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#théorie-structure-de-corrélation-de-pagel"><i class="fa fa-check"></i><b>7.1</b> Théorie : Structure de corrélation de Pagel</a></li>
+<li class="chapter" data-level="7.2" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#exercices-pratiques-1"><i class="fa fa-check"></i><b>7.2</b> Exercices pratiques</a></li>
+<li class="chapter" data-level="7.3" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#défi-no.-4"><i class="fa fa-check"></i><b>7.3</b> Défi no. 4</a></li>
+<li class="chapter" data-level="7.4" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#autres-structures-de-corrélation-ou-modèles-évolutifs"><i class="fa fa-check"></i><b>7.4</b> Autres structures de corrélation (ou modèles évolutifs)</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="anova-phylogénétique.html"><a href="anova-phylogénétique.html"><i class="fa fa-check"></i><b>8</b> ANOVA phylogénétique</a></li>
+<li class="chapter" data-level="9" data-path="comparaison-de-modèles.html"><a href="comparaison-de-modèles.html"><i class="fa fa-check"></i><b>9</b> Comparaison de modèles</a></li>
+<li class="chapter" data-level="10" data-path="quand-devrions-nous-utiliser-les-méthodes-comparatives.html"><a href="quand-devrions-nous-utiliser-les-méthodes-comparatives.html"><i class="fa fa-check"></i><b>10</b> Quand devrions-nous utiliser les méthodes comparatives ?</a></li>
+<li class="chapter" data-level="11" data-path="un-dernier-mot-le-problème-de-la-réplication.html"><a href="un-dernier-mot-le-problème-de-la-réplication.html"><i class="fa fa-check"></i><b>11</b> Un dernier mot : le problème de la réplication</a></li>
+<li class="chapter" data-level="12" data-path="BM-model.html"><a href="BM-model.html"><i class="fa fa-check"></i><b>12</b> Le modèle de Mouvement Brownien (BM)</a></li>
+<li class="chapter" data-level="13" data-path="lectures-supplémentaires.html"><a href="lectures-supplémentaires.html"><i class="fa fa-check"></i><b>13</b> Lectures supplémentaires</a></li>
+<li class="chapter" data-level="14" data-path="trees.html"><a href="trees.html"><i class="fa fa-check"></i><b>14</b> Introduction aux phylogénies dans R</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="trees.html"><a href="trees.html#importer-et-tracer-des-arbres"><i class="fa fa-check"></i><b>14.1</b> Importer et tracer des arbres</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="trees.html"><a href="trees.html#simuler-un-arbre"><i class="fa fa-check"></i><b>14.1.1</b> Simuler un arbre</a></li>
+<li class="chapter" data-level="14.1.2" data-path="trees.html"><a href="trees.html#simulation-de-caractères"><i class="fa fa-check"></i><b>14.1.2</b> Simulation de caractères</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="trees.html"><a href="trees.html#importer-des-données-dans-r"><i class="fa fa-check"></i><b>14.2</b> Importer des données dans R</a></li>
+<li class="chapter" data-level="14.3" data-path="trees.html"><a href="trees.html#représenter-des-arbres"><i class="fa fa-check"></i><b>14.3</b> Représenter des arbres</a></li>
+<li class="chapter" data-level="14.4" data-path="trees.html"><a href="trees.html#gérer-plusieurs-arbres"><i class="fa fa-check"></i><b>14.4</b> Gérer plusieurs arbres</a></li>
+<li class="chapter" data-level="14.5" data-path="trees.html"><a href="trees.html#manipuler-les-arbres"><i class="fa fa-check"></i><b>14.5</b> Manipuler les arbres</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="trees.html"><a href="trees.html#supprimer-des-feuilles-de-larbre"><i class="fa fa-check"></i><b>14.5.1</b> Supprimer des feuilles de l’arbre</a></li>
+<li class="chapter" data-level="14.5.2" data-path="trees.html"><a href="trees.html#réenraciner-les-arbres"><i class="fa fa-check"></i><b>14.5.2</b> Réenraciner les arbres</a></li>
+<li class="chapter" data-level="14.5.3" data-path="trees.html"><a href="trees.html#obtenir-les-distances-cophénétiques"><i class="fa fa-check"></i><b>14.5.3</b> Obtenir les distances cophénétiques</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>15</b> Solutions aux défis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="solutions.html"><a href="solutions.html#défi-1"><i class="fa fa-check"></i><b>15.1</b> Défi 1</a></li>
+<li class="chapter" data-level="15.2" data-path="solutions.html"><a href="solutions.html#défi-2"><i class="fa fa-check"></i><b>15.2</b> Défi 2</a></li>
+<li class="chapter" data-level="15.3" data-path="solutions.html"><a href="solutions.html#défi-3"><i class="fa fa-check"></i><b>15.3</b> Défi 3</a></li>
+<li class="chapter" data-level="15.4" data-path="solutions.html"><a href="solutions.html#défi-4"><i class="fa fa-check"></i><b>15.4</b> Défi 4</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="références.html"><a href="références.html"><i class="fa fa-check"></i>Références</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Atelier sur les méthodes comparées</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="comparaison-de-modèles" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> Comparaison de modèles<a href="comparaison-de-modèles.html#comparaison-de-modèles" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Vous pourriez être intéressé à comparer différents modèles, ce qui est une approche courante en biologie pour la modélisation. Cependant, il y a une petite subtilité à prendre en compte avec les PGLS.</p>
+<p>La méthode par défaut pour l’ajustement des modèles avec <code>gls</code> est l’estimation par maximum de vraisemblance restreinte (REML), obtenue avec <code>method="REML"</code>. Cela diffère de l’estimation standard par maximum de vraisemblance (ML), qui peut être obtenue avec <code>method="ML"</code>. La différence entre ces deux méthodes est complexe, mais il suffit de dire qu’elles diffèrent dans la manière dont les paramètres de variance sont estimés. REML fournit des estimations de paramètres moins biaisées et est la méthode privilégiée pour rapporter les coefficients des paramètres dans une publication. C’est également la méthode de choix si vous souhaitez comparer des modèles avec des structures de corrélation (ou de variance) différentes <span class="citation">(<a href="#ref-zuur2009mixed">Zuur et al. 2009</a>)</span>. Par exemple, si vous voulez tester si un modèle PGLS avec un <span class="math inline">\(\lambda\)</span> de Pagel optimisé s’ajuste mieux aux données qu’un modèle sans corrélation phylogénétique (c’est-à-dire avec <span class="math inline">\(\lambda\)</span> de Pagel = 0) :</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="comparaison-de-modèles.html#cb47-1" tabindex="-1"></a>pagel<span class="fl">.0</span> <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata, </span>
+<span id="cb47-2"><a href="comparaison-de-modèles.html#cb47-2" tabindex="-1"></a>               <span class="at">correlation=</span><span class="fu">corPagel</span>(<span class="dv">0</span>,<span class="at">phy=</span>seedplantstree, </span>
+<span id="cb47-3"><a href="comparaison-de-modèles.html#cb47-3" tabindex="-1"></a>                                    <span class="at">fixed=</span><span class="cn">TRUE</span>, <span class="at">form=</span><span class="sc">~</span><span class="dv">1</span>), </span>
+<span id="cb47-4"><a href="comparaison-de-modèles.html#cb47-4" tabindex="-1"></a>               <span class="at">method=</span><span class="st">&quot;REML&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in Initialize.corPhyl(X[[i]], ...): No covariate specified, species
+## will be taken as ordered in the data frame. To avoid this message, specify a
+## covariate containing the species names with the &#39;form&#39; argument.</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="comparaison-de-modèles.html#cb49-1" tabindex="-1"></a>pagel.fit <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata, </span>
+<span id="cb49-2"><a href="comparaison-de-modèles.html#cb49-2" tabindex="-1"></a>                 <span class="at">correlation=</span><span class="fu">corPagel</span>(<span class="fl">0.8</span>,<span class="at">phy=</span>seedplantstree, </span>
+<span id="cb49-3"><a href="comparaison-de-modèles.html#cb49-3" tabindex="-1"></a>                                      <span class="at">fixed=</span><span class="cn">FALSE</span>, <span class="at">form=</span><span class="sc">~</span><span class="dv">1</span>),</span>
+<span id="cb49-4"><a href="comparaison-de-modèles.html#cb49-4" tabindex="-1"></a>                 <span class="at">method=</span><span class="st">&quot;REML&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in Initialize.corPhyl(X[[i]], ...): No covariate specified, species
+## will be taken as ordered in the data frame. To avoid this message, specify a
+## covariate containing the species names with the &#39;form&#39; argument.</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="comparaison-de-modèles.html#cb51-1" tabindex="-1"></a><span class="fu">anova</span>(pagel<span class="fl">.0</span>,pagel.fit)</span></code></pre></div>
+<pre><code>##           Model df      AIC     BIC    logLik   Test  L.Ratio p-value
+## pagel.0       1  3 180.4720 186.494 -87.23602                        
+## pagel.fit     2  4 163.3967 171.426 -77.69833 1 vs 2 19.07537  &lt;.0001</code></pre>
+<p>Vous pouvez utiliser l’AIC ou le BIC pour comparer le modèle, ou le test du rapport de vraisemblance. Vous pouvez voir ici que le modèle PGLS avec un <span class="math inline">\(\lambda\)</span> de Pagel ajusté offre un meilleur ajustement que celui avec un <span class="math inline">\(\lambda=0\)</span> (AIC plus faible). D’ailleurs, il s’agit également d’un test pour déterminer si un modèle PGLS est meilleur qu’un modèle de régression standard, car une structure <code>corPagel</code> avec <span class="math inline">\(\lambda=0\)</span> est un modèle standard (= pas de corrélation phylogénétique).</p>
+<p>Maintenant, si vous êtes intéressé par le test des paramètres fixes dans le modèle, vous devez utiliser l’ajustement par maximum de vraisemblance <span class="citation">(<a href="#ref-zuur2009mixed">Zuur et al. 2009</a>)</span>. Par exemple, si vous souhaitez utiliser un test du rapport de vraisemblance pour tester le modèle avec la densité du bois comme variable indépendante par rapport à un modèle nul avec seulement l’ordonnée à l’origine, vous pouvez procéder comme suit.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="comparaison-de-modèles.html#cb53-1" tabindex="-1"></a>wd <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata,</span>
+<span id="cb53-2"><a href="comparaison-de-modèles.html#cb53-2" tabindex="-1"></a>          <span class="at">correlation=</span><span class="fu">corBrownian</span>(<span class="at">phy=</span>seedplantstree, <span class="at">form=</span><span class="sc">~</span><span class="dv">1</span>), </span>
+<span id="cb53-3"><a href="comparaison-de-modèles.html#cb53-3" tabindex="-1"></a>          <span class="at">method=</span><span class="st">&quot;ML&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in Initialize.corPhyl(X[[i]], ...): No covariate specified, species
+## will be taken as ordered in the data frame. To avoid this message, specify a
+## covariate containing the species names with the &#39;form&#39; argument.</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="comparaison-de-modèles.html#cb55-1" tabindex="-1"></a>null <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> seedplantsdata,</span>
+<span id="cb55-2"><a href="comparaison-de-modèles.html#cb55-2" tabindex="-1"></a>            <span class="at">correlation=</span><span class="fu">corBrownian</span>(<span class="at">phy=</span>seedplantstree, <span class="at">form=</span><span class="sc">~</span><span class="dv">1</span>), </span>
+<span id="cb55-3"><a href="comparaison-de-modèles.html#cb55-3" tabindex="-1"></a>            <span class="at">method=</span><span class="st">&quot;ML&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in Initialize.corPhyl(X[[i]], ...): No covariate specified, species
+## will be taken as ordered in the data frame. To avoid this message, specify a
+## covariate containing the species names with the &#39;form&#39; argument.</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="comparaison-de-modèles.html#cb57-1" tabindex="-1"></a><span class="fu">anova</span>(wd,null)</span></code></pre></div>
+<pre><code>##      Model df      AIC      BIC    logLik   Test  L.Ratio p-value
+## wd       1  3 222.0088 228.1380 -108.0044                        
+## null     2  2 226.4988 230.5848 -111.2494 1 vs 2 6.489907  0.0108</code></pre>
+<p>Vous pouvez voir que le modèle avec la variable de densité du bois est meilleur que le modèle avec seulement l’ordonnée à l’origine. Cependant, comme mentionné ci-dessus, étant donné que l’ajustement REML fournit de meilleures estimations des paramètres, vous devrez réajuster le modèle en utilisant REML pour présenter les résultats.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="comparaison-de-modèles.html#cb59-1" tabindex="-1"></a>wd.final <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata,</span>
+<span id="cb59-2"><a href="comparaison-de-modèles.html#cb59-2" tabindex="-1"></a>                <span class="at">correlation=</span><span class="fu">corBrownian</span>(<span class="at">phy=</span>seedplantstree, <span class="at">form=</span><span class="sc">~</span><span class="dv">1</span>), </span>
+<span id="cb59-3"><a href="comparaison-de-modèles.html#cb59-3" tabindex="-1"></a>                <span class="at">method=</span><span class="st">&quot;REML&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in Initialize.corPhyl(X[[i]], ...): No covariate specified, species
+## will be taken as ordered in the data frame. To avoid this message, specify a
+## covariate containing the species names with the &#39;form&#39; argument.</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="comparaison-de-modèles.html#cb61-1" tabindex="-1"></a><span class="fu">summary</span>(wd.final)</span></code></pre></div>
+<pre><code>## Generalized least squares fit by REML
+##   Model: Shade ~ Wd 
+##   Data: seedplantsdata 
+##        AIC      BIC    logLik
+##   214.3762 220.3982 -104.1881
+## 
+## Correlation Structure: corBrownian
+##  Formula: ~1 
+##  Parameter estimate(s):
+## numeric(0)
+## 
+## Coefficients:
+##                Value Std.Error   t-value p-value
+## (Intercept) 0.911433  4.409058 0.2067184  0.8370
+## Wd          4.361028  1.693349 2.5753865  0.0127
+## 
+##  Correlation: 
+##    (Intr)
+## Wd -0.166
+## 
+## Standardized residuals:
+##         Min          Q1         Med          Q3         Max 
+## -0.26890642 -0.16431866 -0.02645422  0.09638984  0.34953444 
+## 
+## Residual standard error: 7.455109 
+## Degrees of freedom: 57 total; 55 residual</code></pre>
+</div>
+<h3>Références<a href="références.html#références" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-zuur2009mixed" class="csl-entry">
+Zuur, Alain F, Elena N Ieno, Neil J Walker, Anatoly A Saveliev, Graham M Smith, et al. 2009. <em>Mixed Effects Models and Extensions in Ecology with r</em>. Vol. 574. Springer.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="anova-phylogénétique.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="quand-devrions-nous-utiliser-les-méthodes-comparatives.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+# Introduction aux phylogénies dans R {#trees}
+
+Il existe de nombreux packages pour les analyses phylogénétiques dans R. Je ne vais pas tous les énumérer ici, mais vous pouvez avoir une bonne idée des options disponibles en consultant la [vignette phylogénétique de R](http://cran.r-project.org/web/views/Phylogenetics.html) maintenue par Brian O'Meara. Elle est principalement orientée vers les méthodes comparatives phylogénétiques, mais c'est un bon point de départ.
+
+Le package le plus basique pour utiliser des arbres dans R est *ape*, qui vous permet de lire et de tracer des arbres.
+
+## Importer et tracer des arbres
+
+### Simuler un arbre
+
+Tout au long de ces exercices, nous utiliserons souvent des arbres simulés, qui sont très utiles à des fins pédagogiques. Les arbres peuvent être simulés en utilisant plusieurs fonctions, mais voici un exemple pour simuler un arbre avec 15 espèces.
+
+```{r "Simulate Pure-Birth Tree",message=FALSE}
+require(phytools)
+tree <- pbtree(n=15,nsim=1)
+plot(tree)
+```
+
+Vous enregistrez l'arbre au format nexus dans un fichier. Mais avant de le faire, il est recommandé de définir le répertoire de travail dans le même dossier où votre script est enregistré. Vous pouvez le faire dans RStudio dans le menu Session>Set Working Directory>To Source File Location.
+
+```{r "Save tree file"}
+require(ape)
+write.nexus(tree, file="My_first_tree.tre")
+```
+
+### Simulation de caractères
+
+Les caractères peuvent également être facilement simulés dans R. Par exemple, vous pourriez simuler un caractère en utilisant un modèle de Mouvement Brownien (BM) avec le code suivant.
+
+```{r "Simulate continous character"}
+trait1 <- fastBM(tree, sig2=0.01, nsim=1, internal=FALSE)
+# To get trait values for tree tips:
+trait1
+```
+
+Ensuite, enregistrons ce trait dans un fichier en faisant comme s'il s'agissait de nos données d'origine.
+
+```{r "Write trait to file"}
+write.table(matrix(trait1,ncol=1,dimnames=list(names(trait1),"trait1")), file="mytrait.csv", sep=";")
+```
+
+Maintenant que nous avons simulé un arbre et un caractère, effaçons ce que nous avons fait jusqu'à présent de l'environnement R et faisons comme si c'étaient nos données pour les prochaines sections.
+
+```{r "Clear directory"}
+rm(tree, trait1)
+```
+
+## Importer des données dans R
+
+Voici comment vous devez importer vos données dans R.
+
+```{r "Import tree and data"}
+tree <- read.nexus(file="My_first_tree.tre")
+trait1 <- read.csv2(file="mytrait.csv",dec=".")
+```
+
+Le format d'arbre dans ape contient plusieurs informations, et il est utile de savoir comment y accéder. Par exemple, les étiquettes des extrémités peuvent être consultées avec `tree$tip.label` et les longueurs des branches avec `tree$edge.length`. Nous verrons d'autres options dans d'autres exercices, mais si vous voulez des informations plus détaillées sur la façon dont les objets "phylo" sont organisés, vous pouvez consulter le fichier d'aide `?read.tree` ou ce [document](http://ape-package.ird.fr/misc/FormatTreeR_24Oct2012.pdf) préparé par Emmanuel Paradis, l'auteur de `ape`.
+
+## Représenter des arbres
+
+Tracer des arbres est l'un des aspects les plus intéressants de l'utilisation de R. Les options sont nombreuses et les possibilités larges. La fonction la plus courante est `plot.phylo` du package ape, qui propose de nombreuses options différentes. Je vous conseille vivement de regarder de près les différentes options de la fonction `?plot.phylo`. Voici un exemple de base.
+
+```{r "Basic tree plotting"}
+plot(tree, type="c")
+add.scale.bar()
+```
+
+Mais R est aussi intéressant pour représenter des caractères à côté des arbres. Si vous avez un caractère catégoriel, vous pouvez l'utiliser pour colorer les extrémités de la phylogénie.
+
+```{r "Plot categorical parameter"}
+# Générer un caractère discret
+trait2 <- as.factor(sample(c(1,2,3),size=length(tree$tip.label),replace=TRUE))
+# Créer une palette de couleur
+library(RColorBrewer)
+ColorPalette1 <- brewer.pal(n = length(levels(trait2)), name = "Dark2")
+plot(tree, type="p", use.edge.length = TRUE, label.offset=0.2,cex=1)
+tiplabels(pch=21,bg=ColorPalette1[trait2],col="black",cex=1,adj=0.6)
+op<-par(xpd=TRUE)
+legend(0,0,legend=levels(trait2),col=ColorPalette1,
+       pch=20,bty="n",cex=1,pt.cex=1.5,ncol=length(levels(trait2)))
+par(op) #Remettre les paramètres graphiques par défaut
+```
+
+Un résultat similaire pourrait être obtenu avec une variable continue. Ici, nous utiliserons le modèle de Mouvement Brownien, que nous étudierons dans une prochaine leçon, pour simuler le caractère continu.
+
+```{r "Plot continuous parameter"}
+# Diviser un trait continu en catégories
+trait1.cat <- cut(trait1[,1],breaks=8,labels=FALSE)
+# Créer une palette de couleur
+ColorPalette2 <- brewer.pal(n = 8, name = "Blues")
+# Représenter l'arbre
+plot(tree, type="p", use.edge.length = TRUE, label.offset=0.2,cex=1)
+tiplabels(pch=21,bg=ColorPalette2[trait1.cat],col="black",cex=1,adj=0.6)
+op<-par(xpd=TRUE)
+legend(0,0,legend=levels(cut(trait1[,1],breaks=8)),
+       col=ColorPalette2,pch=20,bty="n",cex=0.7,pt.cex=1.5,ncol=4)
+par(op)
+```
+
+Comme prévu pour un caractère simulé avec un mouvement brownien, vous pouvez voir que les espèces étroitement apparentées ont tendance à avoir des valeurs de caractère plus similaires.
+
+Une autre option pour représenter un paramètre continu est d'utiliser la fonction `table.phylo4d` du package `adephylo` pour représenter le trait, où ses valeurs sont représentées par des tailles et des couleurs différentes. Il est également possible de tracer plusieurs caractères en même temps.
+
+Notez que vous devrez installer les packages `phylobase` et `adephylo` pour exécuter ces fonctions s'ils ne sont pas installés.
+
+```{r "Plot continuous parameter - table.phylo4d", message=FALSE}
+library(phylobase)
+library(adephylo)
+trait3 <- fastBM(tree, sig2=0.1, nsim=1, internal=FALSE) #simuler un caractère
+trait.table <- data.frame(trait1=trait1[,1], trait3)
+obj <- phylo4d(tree, trait.table) # construire un objet phylo4d
+op <- par(mar=c(1,1,1,1))
+table.phylo4d(obj,cex.label=1,cex.symbol=1,ratio.tree=0.8,grid=FALSE,box=FALSE)
+par(op)
+```
+
+On peut aussi représenter avec un traitgram:
+
+```{r "traitgram"}
+require(phytools)
+phenogram(tree,trait3,spread.labels=TRUE)
+```
+
+Enfin, il est également possible de représenter un arbre sur un graphique en deux dimensions, en colorant les points avec la variable catégorielle.
+
+```{r "Phylomorphospace", message=FALSE}
+phylomorphospace(tree,trait.table)
+points(trait.table,pch=21,bg=ColorPalette1[trait2],col="black",cex=1.2,adj=1)
+legend("topleft",legend=levels(trait2),
+       col=ColorPalette1,pch=20,bty="n",cex=1,pt.cex=1.5,ncol=length(levels(trait2)))
+```
+
+## Gérer plusieurs arbres
+
+Dans plusieurs cas, il est important de savoir comment gérer plusieurs arbres dans R. Ceux-ci sont normalement stockés dans un objet `multiPhylo`. Voyons un exemple.
+
+```{r "Simulate several trees"}
+trees <- pbtree(n=15,nsim=10)
+trees
+```
+
+Vous pouvez voir que l'objet n'est pas le même qu'un objet phylo. Par exemple, si vous utilisez le code `plot(trees)`, vous serez invité à appuyer sur Entrée pour passer d'un arbre à l'autre. Pour accéder aux arbres individuels, vous devez utiliser la technique suivante.
+
+```{r "multiPhylo manipulation"}
+trees[[1]]
+plot(trees[[1]])
+```
+
+## Manipuler les arbres
+
+Il existe plusieurs manipulations qui peuvent être effectuées sur les arbres. Voici quelques exemples.
+
+### Supprimer des feuilles de l'arbre
+
+```{r "Drop tips"}
+plot(drop.tip(tree,c("t1","t2","t3","t4","t5")))
+```
+
+### Réenraciner les arbres
+
+```{r "Reroot trees"}
+plot(root(tree,"t1"))
+```
+
+### Obtenir les distances cophénétiques
+
+```{r "Cophenetic distance"}
+cophenetic.phylo(tree)
+```

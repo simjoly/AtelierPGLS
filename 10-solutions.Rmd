@@ -1,0 +1,71 @@
+# Solutions aux défis {#solutions}
+
+## Défi 1
+
+Dans la trame de données `seedplantsdata`, il y avait de nombreux traits différents. Essayez d'ajuster une régression de la tolérance à l'ombre des arbres (`Shade`) en fonction de la masse des graines (`Sm`). En d'autres termes, testez si la tolérance à l'ombre peut être expliquée par la masse des graines des arbres. Ensuite, essayez de voir si les résidus sont corrélés phylogénétiquement.
+
+```{r "Challenge 1 - solution", warning=FALSE, echo=TRUE, eval=TRUE}
+# Ajuster un modèle linéaire en utilisant les moindres carrés (Ordinary Least Squares; OLS)
+Sm.lm <- lm(Shade ~ Sm, data = seedplantsdata)
+summary(Sm.lm)
+# Extraire les résidus
+Sm.res <- residuals(Sm.lm)
+# Représenter les résidus à côté de la phylogénie
+op <- par(mar=c(1,1,1,1))
+plot(seedplantstree,type="p",TRUE,label.offset=0.01,cex=0.5,no.margin=FALSE)
+tiplabels(pch=21,bg=cols[ifelse(Sm.res>0,1,2)],col="black",cex=abs(Sm.res),adj=0.505)
+legend("topleft",legend=c("-2","-1","0","1","2"),pch=21,
+       pt.bg=cols[c(1,1,1,2,2)],bty="n",
+       text.col="gray32",cex=0.8,pt.cex=c(2,1,0.1,1,2))
+par(op)
+```
+
+
+## Défi 2
+
+Pouvez-vous obtenir la matrice de covariance et la matrice de corrélation pour l'arbre phylogénétique des plantes à graines de l'exemple ci-dessus (`seedplantstree`)?
+
+```{r "Challenge 2 - solution", echo=TRUE, eval=TRUE}
+# Covariance matrix
+seedplants.cov <- vcv(seedplantstree,corr=FALSE)
+# Regarder les premières lignes de la matrice
+head(round(seedplants.cov,3))
+# Matrice de corrélation
+seedplants.cor <- vcv(seedplantstree,corr=TRUE)
+# Regarder les premières lignes de la matrice
+head(round(seedplants.cor,3))
+```
+
+
+## Défi 3
+
+Ajustez un modèle PGLS pour voir si la masse des graines (`Sm`) explique la tolérance à l'ombre (`Shade`) avec le jeu de données `seedplantsdata`. Comment cela se compare-t-il aux résultats de la régression standard?
+
+```{r "Challenge 3 - solution", warning=FALSE, echo=TRUE, eval=TRUE}
+# Ajuster un PGLS
+Sm.pgls <- gls(Shade ~ Sm, data = seedplantsdata, correlation=bm.corr)
+summary(Sm.pgls)
+# Extraire les résidus corrigés de la structure de corrélation
+Sm.pgls.res <- residuals(Sm.pgls,type="normalized")
+# Représenter les résidus à côté de la phylogénie
+op <- par(mar=c(1,1,1,1))
+plot(seedplantstree,type="p",TRUE,label.offset=0.01,cex=0.5,no.margin=FALSE)
+tiplabels(pch=21,bg=cols[ifelse(Sm.pgls.res>0,1,2)],col="black",cex=abs(Sm.pgls.res),adj=0.505)
+legend("topleft",legend=c("-2","-1","0","1","2"),pch=21,
+       pt.bg=cols[c(1,1,1,2,2)],bty="n",
+       text.col="gray32",cex=0.8,pt.cex=c(2,1,0.1,1,2))
+par(op)
+```
+
+
+## Défi 4
+
+Essayez d'ajuster un PGLS avec une structure de corrélation de Pagel en régressant la tolérance à l'ombre sur la masse des graines. Les résidus sont-ils aussi corrélés phylogénétiquement que dans la régression précédente avec la densité du bois ?
+
+```{r "Challenge 4 - solution", warning=FALSE, echo=TRUE, eval=TRUE}
+# Ajuster un PGLS
+Sm.pgls2 <- gls(Shade ~ Sm, data = seedplantsdata, correlation=pagel.corr)
+# Résultats
+summary(Sm.pgls2)
+```
+

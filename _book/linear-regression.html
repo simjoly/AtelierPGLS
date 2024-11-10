@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Le modèle de régression linéaire | Atelier sur les méthodes comparées</title>
+  <meta name="description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Le modèle de régression linéaire | Atelier sur les méthodes comparées" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Le modèle de régression linéaire | Atelier sur les méthodes comparées" />
+  
+  <meta name="twitter:description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  
+
+<meta name="author" content="Simon Joly" />
+
+
+<meta name="date" content="2024-11-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro.html"/>
+<link rel="next" href="pgls.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> À propos</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#resources-utiles"><i class="fa fa-check"></i><b>1.1</b> Resources utiles</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#source"><i class="fa fa-check"></i><b>1.2</b> Source</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#disclaimer"><i class="fa fa-check"></i><b>1.3</b> Disclaimer</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="before.html"><a href="before.html"><i class="fa fa-check"></i><b>2</b> Avant l’atelier</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="before.html"><a href="before.html#installer-r-et-les-packages-requis"><i class="fa fa-check"></i><b>2.1</b> Installer R et les packages requis</a></li>
+<li class="chapter" data-level="2.2" data-path="before.html"><a href="before.html#download"><i class="fa fa-check"></i><b>2.2</b> Téléchargement des données</a></li>
+<li class="chapter" data-level="2.3" data-path="before.html"><a href="before.html#familiarisez-vous-avec-les-arbres-phylogénétiques-dans-r"><i class="fa fa-check"></i><b>2.3</b> Familiarisez-vous avec les arbres phylogénétiques dans R</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>3</b> Une introduction aux méthodes comparatives phylogénétiques</a></li>
+<li class="chapter" data-level="4" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>4</b> Le modèle de régression linéaire</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="linear-regression.html"><a href="linear-regression.html#théorie"><i class="fa fa-check"></i><b>4.1</b> Théorie</a></li>
+<li class="chapter" data-level="4.2" data-path="linear-regression.html"><a href="linear-regression.html#pratique"><i class="fa fa-check"></i><b>4.2</b> Pratique</a></li>
+<li class="chapter" data-level="4.3" data-path="linear-regression.html"><a href="linear-regression.html#défi-no.-1"><i class="fa fa-check"></i><b>4.3</b> Défi no. 1</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="pgls.html"><a href="pgls.html"><i class="fa fa-check"></i><b>5</b> Phylogenetic generalized least squares (PGLS)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="pgls.html"><a href="pgls.html#théorie-1"><i class="fa fa-check"></i><b>5.1</b> Théorie</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="pgls.html"><a href="pgls.html#structure-de-corrélation-phylogénétique"><i class="fa fa-check"></i><b>5.1.1</b> Structure de corrélation phylogénétique</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="pgls.html"><a href="pgls.html#défi-no.-2"><i class="fa fa-check"></i><b>5.2</b> Défi no. 2</a></li>
+<li class="chapter" data-level="5.3" data-path="pgls.html"><a href="pgls.html#exercices-pratiques"><i class="fa fa-check"></i><b>5.3</b> Exercices pratiques</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="pgls.html"><a href="pgls.html#autres-structures-de-corrélation"><i class="fa fa-check"></i><b>5.3.1</b> Autres structures de corrélation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="pgls.html"><a href="pgls.html#défi-no.-3"><i class="fa fa-check"></i><b>5.4</b> Défi no. 3</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="pic.html"><a href="pic.html"><i class="fa fa-check"></i><b>6</b> Contrastes Indépendants Phylogénétiques</a></li>
+<li class="chapter" data-level="7" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><i class="fa fa-check"></i><b>7</b> Assouplir l’hypothèse selon laquelle les résidus doivent être parfaitement corrélés phylogénétiquement</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#théorie-structure-de-corrélation-de-pagel"><i class="fa fa-check"></i><b>7.1</b> Théorie : Structure de corrélation de Pagel</a></li>
+<li class="chapter" data-level="7.2" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#exercices-pratiques-1"><i class="fa fa-check"></i><b>7.2</b> Exercices pratiques</a></li>
+<li class="chapter" data-level="7.3" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#défi-no.-4"><i class="fa fa-check"></i><b>7.3</b> Défi no. 4</a></li>
+<li class="chapter" data-level="7.4" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#autres-structures-de-corrélation-ou-modèles-évolutifs"><i class="fa fa-check"></i><b>7.4</b> Autres structures de corrélation (ou modèles évolutifs)</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="anova-phylogénétique.html"><a href="anova-phylogénétique.html"><i class="fa fa-check"></i><b>8</b> ANOVA phylogénétique</a></li>
+<li class="chapter" data-level="9" data-path="comparaison-de-modèles.html"><a href="comparaison-de-modèles.html"><i class="fa fa-check"></i><b>9</b> Comparaison de modèles</a></li>
+<li class="chapter" data-level="10" data-path="quand-devrions-nous-utiliser-les-méthodes-comparatives.html"><a href="quand-devrions-nous-utiliser-les-méthodes-comparatives.html"><i class="fa fa-check"></i><b>10</b> Quand devrions-nous utiliser les méthodes comparatives ?</a></li>
+<li class="chapter" data-level="11" data-path="un-dernier-mot-le-problème-de-la-réplication.html"><a href="un-dernier-mot-le-problème-de-la-réplication.html"><i class="fa fa-check"></i><b>11</b> Un dernier mot : le problème de la réplication</a></li>
+<li class="chapter" data-level="12" data-path="BM-model.html"><a href="BM-model.html"><i class="fa fa-check"></i><b>12</b> Le modèle de Mouvement Brownien (BM)</a></li>
+<li class="chapter" data-level="13" data-path="lectures-supplémentaires.html"><a href="lectures-supplémentaires.html"><i class="fa fa-check"></i><b>13</b> Lectures supplémentaires</a></li>
+<li class="chapter" data-level="14" data-path="trees.html"><a href="trees.html"><i class="fa fa-check"></i><b>14</b> Introduction aux phylogénies dans R</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="trees.html"><a href="trees.html#importer-et-tracer-des-arbres"><i class="fa fa-check"></i><b>14.1</b> Importer et tracer des arbres</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="trees.html"><a href="trees.html#simuler-un-arbre"><i class="fa fa-check"></i><b>14.1.1</b> Simuler un arbre</a></li>
+<li class="chapter" data-level="14.1.2" data-path="trees.html"><a href="trees.html#simulation-de-caractères"><i class="fa fa-check"></i><b>14.1.2</b> Simulation de caractères</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="trees.html"><a href="trees.html#importer-des-données-dans-r"><i class="fa fa-check"></i><b>14.2</b> Importer des données dans R</a></li>
+<li class="chapter" data-level="14.3" data-path="trees.html"><a href="trees.html#représenter-des-arbres"><i class="fa fa-check"></i><b>14.3</b> Représenter des arbres</a></li>
+<li class="chapter" data-level="14.4" data-path="trees.html"><a href="trees.html#gérer-plusieurs-arbres"><i class="fa fa-check"></i><b>14.4</b> Gérer plusieurs arbres</a></li>
+<li class="chapter" data-level="14.5" data-path="trees.html"><a href="trees.html#manipuler-les-arbres"><i class="fa fa-check"></i><b>14.5</b> Manipuler les arbres</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="trees.html"><a href="trees.html#supprimer-des-feuilles-de-larbre"><i class="fa fa-check"></i><b>14.5.1</b> Supprimer des feuilles de l’arbre</a></li>
+<li class="chapter" data-level="14.5.2" data-path="trees.html"><a href="trees.html#réenraciner-les-arbres"><i class="fa fa-check"></i><b>14.5.2</b> Réenraciner les arbres</a></li>
+<li class="chapter" data-level="14.5.3" data-path="trees.html"><a href="trees.html#obtenir-les-distances-cophénétiques"><i class="fa fa-check"></i><b>14.5.3</b> Obtenir les distances cophénétiques</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>15</b> Solutions aux défis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="solutions.html"><a href="solutions.html#défi-1"><i class="fa fa-check"></i><b>15.1</b> Défi 1</a></li>
+<li class="chapter" data-level="15.2" data-path="solutions.html"><a href="solutions.html#défi-2"><i class="fa fa-check"></i><b>15.2</b> Défi 2</a></li>
+<li class="chapter" data-level="15.3" data-path="solutions.html"><a href="solutions.html#défi-3"><i class="fa fa-check"></i><b>15.3</b> Défi 3</a></li>
+<li class="chapter" data-level="15.4" data-path="solutions.html"><a href="solutions.html#défi-4"><i class="fa fa-check"></i><b>15.4</b> Défi 4</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="références.html"><a href="références.html"><i class="fa fa-check"></i>Références</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Atelier sur les méthodes comparées</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="linear-regression" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Le modèle de régression linéaire<a href="linear-regression.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="théorie" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Théorie<a href="linear-regression.html#théorie" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Le modèle linéaire a la forme suivante :</p>
+<p><span class="math display">\[\textbf{y} = \alpha + \beta \textbf{x} + \textbf{e}\]</span></p>
+<p><span class="math inline">\(\textbf{y}\)</span> est la variable de réponse (ou dépendante), <span class="math inline">\(\textbf{x}\)</span> est la variable explicative (ou indépendante), et <span class="math inline">\(\textbf{e}\)</span> représente les résidus ou en d’autres termes la variation non expliquée par le modèle. Pour un modèle de régression linéaire simple, cela représente la distance entre les observations (c’est-à-dire les données réelles) et la ligne de régression (c’est-à-dire la prédiction du modèle) le long de l’axe <span class="math inline">\(y\)</span>. Les paramètres <span class="math inline">\(\alpha\)</span> représentent l’ordonnée à l’origine, qui es…</p>
+<p>Obtenir des estimations fiables avec une régression linéaire implique que les données respectent plusieurs hypothèses, parmi lesquelles la normalité, l’homogénéité, <span class="math inline">\(X\)</span> fixe, l’indépendance et la spécification correcte du modèle. Nous ne passerons pas en revue toutes ces hypothèses ici, mais nous nous concentrerons sur l’une d’entre elles, souvent violée lorsque les données sont structurées phylogénétiquement, qui est <strong>l’indépendance</strong>. Cette hypothèse est importante car un manque d’indépendance inval…</p>
+<p>Vous obtenez une violation de l’indépendance lorsque la valeur <span class="math inline">\(\textbf{y}_i\)</span> à <span class="math inline">\(\textbf{x}_i\)</span> est influencée par d’autres <span class="math inline">\(\textbf{x}_i\)</span>. Évidemment, cela peut se produire avec des données structurées phylogénétiquement, car une variable de réponse est plus susceptible de réagir de manière similaire chez des espèces étroitement apparentées, car elles partagent de nombreux caractères par filiation. En d’autres termes, la valeur <span class="math inline">\(y\)</span> d’une espèce n’est pas complètement indépendante de la valeur <span class="math inline">\(y\)</span> d’un…</p>
+</div>
+<div id="pratique" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Pratique<a href="linear-regression.html#pratique" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Pour fournir des exemples pratiques dans cet atelier, nous utiliserons un jeu de données de traits fonctionnels d’arbres de la province de Québec <span class="citation">(<a href="#ref-paquette2015explaining">Paquette, Joly, and Messier 2015</a>)</span>. Le jeu de données comprend un certain nombre de traits fonctionnels des plantes et une phylogénie moléculaire construite à l’aide des marqueurs <em>rbc</em>L et <em>mat</em>K. Le jeu de données dont vous avez besoin pour exécuter les exemples se trouve déjà dans le dossier /data/ du dépôt github. Cependant, vous pouvez également les télécharger en …</p>
+<p><a href="https://simjoly.github.io/ComparativeMethods-HalfDayWorkshop/data/seedplants.tre">seedplants.tre</a></p>
+<p><a href="https://simjoly.github.io/ComparativeMethods-HalfDayWorkshop/data/seedplants.csv">seedplants.csv</a></p>
+<p>Avant d’analyser les données, nous commencerons par ouvrir les données et l’arbre phylogénétique et les nettoyer pour ne conserver que les espèces présentes à la fois dans l’arbre et dans le tableau des traits. Cela est nécessaire car certaines espèces supplémentaires ont été incluses dans l’analyse phylogénétique.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="linear-regression.html#cb7-1" tabindex="-1"></a><span class="fu">require</span>(ape)</span>
+<span id="cb7-2"><a href="linear-regression.html#cb7-2" tabindex="-1"></a><span class="co"># Ouvrir les documents ; cela suppose que vous êtes dans le répertoire principal du dossier de l&#39;atelier</span></span>
+<span id="cb7-3"><a href="linear-regression.html#cb7-3" tabindex="-1"></a>seedplantstree <span class="ot">&lt;-</span> <span class="fu">read.nexus</span>(<span class="st">&quot;./data/seedplants.tre&quot;</span>)</span>
+<span id="cb7-4"><a href="linear-regression.html#cb7-4" tabindex="-1"></a>seedplantsdata <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;./data/seedplants.csv&quot;</span>)</span>
+<span id="cb7-5"><a href="linear-regression.html#cb7-5" tabindex="-1"></a><span class="co"># Supprimer les espèces pour lesquelles nous n&#39;avons pas de données complètes</span></span>
+<span id="cb7-6"><a href="linear-regression.html#cb7-6" tabindex="-1"></a>seedplantsdata <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(seedplantsdata)</span>
+<span id="cb7-7"><a href="linear-regression.html#cb7-7" tabindex="-1"></a><span class="co"># Supprimer les espèces de l&#39;arbre qui ne sont pas dans la matrice de données</span></span>
+<span id="cb7-8"><a href="linear-regression.html#cb7-8" tabindex="-1"></a>species.to.exclude <span class="ot">&lt;-</span> seedplantstree<span class="sc">$</span>tip.label[<span class="sc">!</span>(seedplantstree<span class="sc">$</span>tip.label <span class="sc">%in%</span> seedplantsdata<span class="sc">$</span>Code)]</span>
+<span id="cb7-9"><a href="linear-regression.html#cb7-9" tabindex="-1"></a>seedplantstree <span class="ot">&lt;-</span> <span class="fu">drop.tip</span>(seedplantstree,species.to.exclude)</span>
+<span id="cb7-10"><a href="linear-regression.html#cb7-10" tabindex="-1"></a><span class="co"># Supprimer l&#39;objet inutile</span></span>
+<span id="cb7-11"><a href="linear-regression.html#cb7-11" tabindex="-1"></a><span class="fu">rm</span>(species.to.exclude)</span>
+<span id="cb7-12"><a href="linear-regression.html#cb7-12" tabindex="-1"></a><span class="co"># Ordonner l&#39;arbre pour qu&#39;il soit plus esthétique lors du tracé</span></span>
+<span id="cb7-13"><a href="linear-regression.html#cb7-13" tabindex="-1"></a>seedplantstree <span class="ot">&lt;-</span> <span class="fu">ladderize</span>(seedplantstree, <span class="at">right =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-14"><a href="linear-regression.html#cb7-14" tabindex="-1"></a><span class="co"># Maintenant, regardons l&#39;arbre</span></span>
+<span id="cb7-15"><a href="linear-regression.html#cb7-15" tabindex="-1"></a><span class="fu">plot</span>(seedplantstree,<span class="at">cex=</span><span class="fl">0.4</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/Open_seed_plant_data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Maintenant, nous pouvons jeter un œil aux données, puis ordonner le trait des plantes pour qu’il soit dans le même ordre que les espèces de l’arbre.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="linear-regression.html#cb8-1" tabindex="-1"></a><span class="co"># Voici à quoi ressemblent les données chargées</span></span>
+<span id="cb8-2"><a href="linear-regression.html#cb8-2" tabindex="-1"></a><span class="fu">head</span>(seedplantsdata)</span></code></pre></div>
+<pre><code>##   Code       Species.name Occurrence maxH   Wd    Sm Shade    N
+## 1 ABBA     Abies balsamea       7759   25 0.34   7.6   5.0 1.66
+## 2 ACNE       Acer negundo          0   20 0.44  34.0   3.5 2.50
+## 3 ACNI        Acer nigrum          1   30 0.52  65.0   3.0 1.83
+## 4 ACPE Acer pensylvanicum        665   10 0.44  41.0   3.5 2.22
+## 5 ACPL   Acer platanoides          0   15 0.51 172.0   4.2 1.99
+## 6 ACRU        Acer rubrum       3669   25 0.49  20.0   3.4 1.91</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="linear-regression.html#cb10-1" tabindex="-1"></a><span class="co"># Nommer les lignes du data.frame avec les codes des espèces utilisés comme étiquettes d&#39;arbre </span></span>
+<span id="cb10-2"><a href="linear-regression.html#cb10-2" tabindex="-1"></a><span class="co">#  et supprimer la colonne obsolète avec les codes des espèces.</span></span>
+<span id="cb10-3"><a href="linear-regression.html#cb10-3" tabindex="-1"></a><span class="fu">rownames</span>(seedplantsdata) <span class="ot">&lt;-</span> seedplantsdata<span class="sc">$</span>Code</span>
+<span id="cb10-4"><a href="linear-regression.html#cb10-4" tabindex="-1"></a>seedplantsdata <span class="ot">&lt;-</span> seedplantsdata[,<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb10-5"><a href="linear-regression.html#cb10-5" tabindex="-1"></a><span class="co"># Ordonner les données dans le même ordre que les étiquettes de l&#39;arbre. Dans cet exemple </span></span>
+<span id="cb10-6"><a href="linear-regression.html#cb10-6" tabindex="-1"></a><span class="co">#  précis, c&#39;était déjà le cas, mais c&#39;est une étape importante pour toute analyse.</span></span>
+<span id="cb10-7"><a href="linear-regression.html#cb10-7" tabindex="-1"></a>seedplantsdata <span class="ot">&lt;-</span> seedplantsdata[seedplantstree<span class="sc">$</span>tip.label,]</span></code></pre></div>
+<p>Maintenant que les données sont prêtes, ajustons un modèle linéaire et essayons d’expliquer la tolérance à l’ombre (Shade) des arbres en utilisant la densité du bois (Wd). En R, une manière très simple de faire une régression est d’utiliser la fonction ‘lm’, qui signifie modèle linéaire. Pour ajuster un modèle linéaire, vous devez dire à la fonction <code>lm</code> quelle variable est la variable de réponse et laquelle est la variable explicative. Cela se fait en utilisant des formules de la forme <code>Shade ~ Wd</code>. La variab…</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="linear-regression.html#cb11-1" tabindex="-1"></a><span class="co"># Ajuster un modèle linéaire en utilisant les moindres carrés ordinaires (MCO)</span></span>
+<span id="cb11-2"><a href="linear-regression.html#cb11-2" tabindex="-1"></a>shade.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata)</span>
+<span id="cb11-3"><a href="linear-regression.html#cb11-3" tabindex="-1"></a><span class="co"># Imprimer les résultats</span></span>
+<span id="cb11-4"><a href="linear-regression.html#cb11-4" tabindex="-1"></a><span class="fu">summary</span>(shade.lm)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Shade ~ Wd, data = seedplantsdata)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.87120 -1.02501  0.05628  0.70132  2.38261 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)   2.0010     0.7501   2.668    0.010 *
+## Wd            1.8130     1.5676   1.157    0.252  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.146 on 55 degrees of freedom
+## Multiple R-squared:  0.02374,    Adjusted R-squared:  0.005992 
+## F-statistic: 1.338 on 1 and 55 DF,  p-value: 0.2525</code></pre>
+<p>Vous pouvez voir que l’estimation de la pente (ici le paramètre <code>Wd</code>) est 1.81 et qu’elle n’est pas significative (<span class="math inline">\(p\)</span>=0.252). Les graphiques descriptifs standards obtenus avec <code>plot(shade.lm)</code> montrent qu’il y a une légère variation plus grande dans les résidus pour les faibles valeurs ajustées, mais elles ne sont pas extrêmes. Cependant, une autre façon de violer l’hypothèse d’indépendance est si les résidus sont corrélés phylog…</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="linear-regression.html#cb13-1" tabindex="-1"></a><span class="co"># Extraire les résidus</span></span>
+<span id="cb13-2"><a href="linear-regression.html#cb13-2" tabindex="-1"></a>shade.res <span class="ot">&lt;-</span> <span class="fu">residuals</span>(shade.lm)</span>
+<span id="cb13-3"><a href="linear-regression.html#cb13-3" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="linear-regression.html#cb13-4" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb13-5"><a href="linear-regression.html#cb13-5" tabindex="-1"></a><span class="co"># Tracer les résidus à côté de la phylogénie</span></span>
+<span id="cb13-6"><a href="linear-regression.html#cb13-6" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="linear-regression.html#cb13-7" tabindex="-1"></a><span class="co"># La commande suivante modifie les paramètres graphiques pour un meilleur rendu de l&#39;arbre</span></span>
+<span id="cb13-8"><a href="linear-regression.html#cb13-8" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb13-9"><a href="linear-regression.html#cb13-9" tabindex="-1"></a><span class="co"># Vecteur de couleurs pour le tracé de l&#39;arbre</span></span>
+<span id="cb13-10"><a href="linear-regression.html#cb13-10" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#7570b3&quot;</span>,<span class="st">&quot;#d95f02&quot;</span>)</span>
+<span id="cb13-11"><a href="linear-regression.html#cb13-11" tabindex="-1"></a><span class="co"># Les trois commandes suivantes vont tracer l&#39;arbre, puis des cercles reflétant </span></span>
+<span id="cb13-12"><a href="linear-regression.html#cb13-12" tabindex="-1"></a><span class="co">#  les valeurs résiduelles aux extrémités de l&#39;arbre, et enfin</span></span>
+<span id="cb13-13"><a href="linear-regression.html#cb13-13" tabindex="-1"></a><span class="co">#  ajouter une légende.</span></span>
+<span id="cb13-14"><a href="linear-regression.html#cb13-14" tabindex="-1"></a><span class="co"># La commande plot trace l&#39;arbre et laisse un espace pour tracer les </span></span>
+<span id="cb13-15"><a href="linear-regression.html#cb13-15" tabindex="-1"></a><span class="co">#  résidus aux extrémités avec l&#39;option &#39;label.offset=0.01&#39;</span></span>
+<span id="cb13-16"><a href="linear-regression.html#cb13-16" tabindex="-1"></a><span class="fu">plot</span>(seedplantstree,<span class="at">type=</span><span class="st">&quot;p&quot;</span>,<span class="cn">TRUE</span>,<span class="at">label.offset=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="fl">0.5</span>,<span class="at">no.margin=</span><span class="cn">FALSE</span>)</span>
+<span id="cb13-17"><a href="linear-regression.html#cb13-17" tabindex="-1"></a><span class="co"># La commande suivante trace les résidus. l&#39;option &#39;bg&#39; est pour la couleur de fond.</span></span>
+<span id="cb13-18"><a href="linear-regression.html#cb13-18" tabindex="-1"></a><span class="co">#  Si les résidus sont supérieurs à 0 (shade.res&gt;0), il affichera la première couleur</span></span>
+<span id="cb13-19"><a href="linear-regression.html#cb13-19" tabindex="-1"></a><span class="co">#  (1) du tableau &#39;cols&#39; et s&#39;il est inférieur à zéro, il affiche la deuxième couleur (2). </span></span>
+<span id="cb13-20"><a href="linear-regression.html#cb13-20" tabindex="-1"></a><span class="co">#  La taille du cercle (l&#39;option &#39;cex&#39;) est relative à la valeur absolue </span></span>
+<span id="cb13-21"><a href="linear-regression.html#cb13-21" tabindex="-1"></a><span class="co">#  des résidus (abs(shade.res). Pour tracer d&#39;autres valeurs, remplacez simplement le </span></span>
+<span id="cb13-22"><a href="linear-regression.html#cb13-22" tabindex="-1"></a><span class="co">#  vecteur &#39;shade.res&#39; par un autre.</span></span>
+<span id="cb13-23"><a href="linear-regression.html#cb13-23" tabindex="-1"></a><span class="fu">tiplabels</span>(<span class="at">pch=</span><span class="dv">21</span>,<span class="at">bg=</span>cols[<span class="fu">ifelse</span>(shade.res<span class="sc">&gt;</span><span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>)],<span class="at">col=</span><span class="st">&quot;black&quot;</span>,<span class="at">cex=</span><span class="fu">abs</span>(shade.res),<span class="at">adj=</span><span class="fl">0.505</span>)</span>
+<span id="cb13-24"><a href="linear-regression.html#cb13-24" tabindex="-1"></a><span class="co"># Imprimer la légende</span></span>
+<span id="cb13-25"><a href="linear-regression.html#cb13-25" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;2&quot;</span>),<span class="at">pch=</span><span class="dv">21</span>,</span>
+<span id="cb13-26"><a href="linear-regression.html#cb13-26" tabindex="-1"></a>       <span class="at">pt.bg=</span>cols[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>)],<span class="at">bty=</span><span class="st">&quot;n&quot;</span>,</span>
+<span id="cb13-27"><a href="linear-regression.html#cb13-27" tabindex="-1"></a>       <span class="at">text.col=</span><span class="st">&quot;gray32&quot;</span>,<span class="at">cex=</span><span class="fl">0.8</span>,<span class="at">pt.cex=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">2</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/Residuals%20of%20lm%20on%20phylogeny-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="linear-regression.html#cb14-1" tabindex="-1"></a><span class="co"># Réinitialiser les paramètres graphiques par défaut</span></span>
+<span id="cb14-2"><a href="linear-regression.html#cb14-2" tabindex="-1"></a><span class="fu">par</span>(op) </span></code></pre></div>
+<p>Vous pouvez voir que dans plusieurs cas, des espèces étroitement apparentées ont tendance à avoir des résidus similaires (elles sont de la même couleur, ce qui signifie qu’elles sont du même côté de la pente de régression). Cela est problématique. En effet, cela montre que l’hypothèse d’indépendance de la régression des moindres carrés ordinaires (MCO) ne tient plus et les tests statistiques pour les hypothèses nulles ne sont plus valides. Nous verrons ensuite comment les moindres carrés généralisés phylo…</p>
+</div>
+<div id="défi-no.-1" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Défi no. 1<a href="linear-regression.html#défi-no.-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Dans le data frame <code>seedplantsdata</code>, il y avait plusieurs traits différents. Essayez d’ajuster une régression de la tolérance à l’ombre des arbres (<code>Shade</code>) en fonction de la masse des graines (<code>Sm</code>). En d’autres termes, testez si la tolérance à l’ombre peut être expliquée par la masse des graines des arbres. Ensuite, essayez de voir si les résidus sont corrélés phylogénétiquement.</p>
+
+</div>
+</div>
+<h3>Références<a href="références.html#références" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-paquette2015explaining" class="csl-entry">
+Paquette, Alain, Simon Joly, and Christian Messier. 2015. <span>“Explaining Forest Productivity Using Tree Functional Traits and Phylogenetic Information: Two Sides of the Same Coin over Evolutionary Scale?”</span> <em>Ecology and Evolution</em> 5 (9): 1774–83.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pgls.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

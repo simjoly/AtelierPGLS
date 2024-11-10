@@ -1,0 +1,48 @@
+--- 
+title: "Atelier sur les méthodes comparées"
+author: "Simon Joly"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib]
+url: https://simjoly.github.io/AtelierPGLS/
+biblio-style: apalike
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+description: "Livre qui contient l'information pour un atelier d'une demi-journée sur les méthodes comparées"
+---
+
+
+# À propos
+
+Ce document consiste en une introduction aux méthodes comparatives. Il contient de la théorie ainsi que des exemples pratiques en R sur les moindres carrés phylogénétiques généralisés (PGLS). Il a été développé pour un atelier d'une demi-journée composé de courtes présentations suivies d'exercices R. Notez que le présent document devrait être autonome car la plupart de la théorie donnée dans les présentations est incorporée dans les sections théoriques. Par conséquent, ce document doit contenir toutes les informations nécessaires pour comprendre les exemples.
+
+Je suppose que les lecteurs sont « raisonnablement » familiers avec R ainsi qu'avec la régression linéaire et ses hypothèses. Il existe de nombreux bons didacticiels d'introduction à R sur le Web et pour les modèles linéaires. Zuur et coll. [@zuur2007analysing] fournit une bonne introduction aux modèles linéaires, aux modèles à effets mixtes et à la comparaison de modèles. De bonnes introductions à l'ajustement de modèles dans R peuvent également être trouvées sur la [page Web] de Dolph Schluter (https://www.zoology.ubc.ca/~schluter/R/fit-model/) et parmi les [ateliers QCBS] (http : //qcbs.ca/wiki/r_workshop4).
+
+
+## Resources utiles
+
+Ces liens contiennent des information complémentaires pertinentes.
+
+Le livre de Luke Harmon - [Phylogenetic Comparative Methods](https://lukejharmon.github.io/pcm/)
+
+Le [blog de Liam Revell](http://blog.phytools.org/)
+
+Le livre de Liam Revell et Luke Harmon [book on Phylogenetic comparative methods in R](https://press.princeton.edu/books/ebook/9780691219042/phylogenetic-comparative-methods-in-r)
+
+La liste des [packages R pour les phylogénies](https://cran.r-project.org/web/views/Phylogenetics.html)
+
+[Mes tutoriels sur les méthodes comparées](http://github.com/simjoly/CourseComparativeMethods/)
+
+Le package R [V.PhyloMaker2](https://doi.org/10.1016/j.pld.2022.05.005) qui peut générer de larges phylogénies pour les plantes vasculaires, et le package [U.PhyloMaker](https://doi.org/10.1016/j.pld.2022.12.007) qui peut générer des phylogénies pour les plantes et les animaux.
+
+
+## Source
+
+Ce tutoriel est disponible publiquement et est hébergé sur github dans de dépôt [github.com/simjoly/AtelierPGLS](https://github.com/simjoly/AtelierPGLS)
+
+
+## Disclaimer
+
+Ce ttoriel est distribué tel quel, avec aucun garantie qu'il va fonctionner ou que les analyses seront à jour.

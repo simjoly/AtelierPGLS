@@ -1,0 +1,42 @@
+
+# Avant l'atelier {#before}
+
+Voici quelques éléments que vous devriez connaître et faire avant l'atelier.
+
+## Installer R et les packages requis
+
+Pour réaliser les exemples de ce document, vous aurez besoin d'avoir le [logiciel R](https://www.r-project.org/) installé sur votre ordinateur. Je vous recommande fortement d'installer [RStudio](https://rstudio.com/). Bien que R Studio ne soit pas requis, il facilite les interactions entre les scripts et la console R et offre de nombreux outils utiles.
+
+Après avoir installé R, vous devrez installer certains packages. Pour ce tutoriel spécifique, nous devrons charger les packages R suivants.
+
+```{r "load libraries", message=FALSE, warning=FALSE}
+library(nlme)
+library(ape)
+library(RColorBrewer)
+library(ggplot2)
+```
+
+Pour exécuter le code de ce tutoriel dans R, je vous suggère de créer un nouveau script (Fichier>Nouveau Fichier>Script R) où vous collerez le code copié depuis les encadrés. Dans R Studio, vous pouvez ensuite exécuter ce code en sélectionnant les lignes que vous souhaitez exécuter puis en appuyant sur "Run" (ou le raccourci associé). Cela reproduira les analyses présentées dans le tutoriel. Vous devriez enregistrer le fichier script dans un répertoire dédié pour l'atelier où vous placerez également les fichiers de données requis (voir section \@ref(download)). Ensuite, vous devez vous assurer que votre script (et les données) sont dans le répertoire de travail R. Dans R Studio, cela peut être défini via le menu : 'Session > Set Working Directory'.
+
+Si certains des packages ci-dessus ne sont pas encore installés sur votre ordinateur, vous recevrez des messages d'erreur lors de leur chargement. Dans ce cas, vous devrez les installer en utilisant la fonction `install.packages()`. Vous n'avez besoin de les installer qu'une seule fois.
+
+```{r "install libraries", message=FALSE, warning=FALSE, eval=FALSE}
+install.packages('nlme')
+install.packages('ape')
+install.packages('RColorBrewer')
+install.packages('ggplot2')
+```
+
+Une fois les packages installés, vous pouvez les charger en utilisant la fonction `library()`. Notez également que si vous utilisez à la fois les packages `nlme` et `ape`, `nlme` doit être chargé en premier. Sinon, vous pourriez rencontrer des erreurs; dans ce cas, vous pouvez redémarrer R et recommencer.
+
+
+## Téléchargement des données {#download}
+
+Les données dont vous aurez besoin pour ce tutoriel peuvent être téléchargées depuis ce dépôt : [data.zip](https://simjoly.github.io/ComparativeMethods-HalfDayWorkshop/data.zip).
+
+Je vous suggère de télécharger le dossier, de le décompresser et de le placer dans un dossier dédié où vous enregistrerez également le script avec toutes les commandes que vous utiliserez.
+
+
+## Familiarisez-vous avec les arbres phylogénétiques dans R
+
+Si vous n'avez jamais utilisé d'arbres phylogénétiques dans R, vous pouvez apprendre quelques techniques de base pour les manipuler et simuler des arbres et des caractères en lisant le chapitre \@ref(trees).

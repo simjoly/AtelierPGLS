@@ -1,0 +1,67 @@
+# Le modèle de Mouvement Brownien (BM) {#BM-model}
+
+Lorsque nous souhaitons prendre en compte la non-indépendance des espèces en raison de leurs histoires évolutives dans les analyses statistiques, un modèle d'évolution est nécessairement impliqué. En effet, nous supposons que les caractères ont évolué au fil du temps (le long de la phylogénie) et que les espèces étroitement apparentées sont plus susceptibles d'être en moyenne plus similaires pour un trait donné que des espèces éloignées. En biologie évolutive, le modèle de base (souvent utilisé comme modèle nul dans de nombreuses analyses) est le modèle de mouvement brownien. Ce modèle d'évolution porte le nom de Robert Brown, un botaniste célèbre qui a publié une importante *Flora of Australia* en 1810. Il fut aussi le premier à distinguer les gymnospermes des angiospermes. Sa découverte du mouvement brownien est due à l'observation que de petites particules en solution ont tendance à se déplacer dans toutes les directions, une observation faite pour la première fois en observant du pollen de *Clarkia* au microscope. L'explication viendrait plus tard, en termes d'impacts moléculaires aléatoires.
+
+Les mathématiciens ont construit un processus stochastique destiné à approcher le mouvement brownien. Dans ce modèle, chaque étape est indépendante des autres et peut aller dans n'importe quelle direction. Le déplacement moyen est nul et la variance est uniforme dans tout l'espace paramétrique. Les déplacements peuvent être additionnés, ce qui signifie que les variances des déplacements indépendants peuvent s'ajouter. Si $\sigma^2$ est la variance d'un seul déplacement, la variance après un temps $t$ sera $\sigma^2t$. Lorsque le nombre d'étapes est grand, comme dans un contexte phylogénétique, le résultat est distribué normalement.
+
+Lorsqu'il est appliqué aux phylogénies, le modèle de mouvement brownien est en quelque sorte appliqué indépendamment à chaque branche de la phylogénie. Cela permet de modéliser la quantité de changement qui s'est produite le long d'une branche donnée. Si la variance du modèle de mouvement brownien est $\sigma^2$ par unité de temps $t$, alors le changement net le long d'une branche de temps $t$ est tiré d'une distribution normale de moyenne $0$ et de variance $\sigma^2t$. Ce modèle peut également être représenté mathématiquement de la manière suivante, où la quantité de changement pour le caractère $X$ sur le temps infinitésimal dans l'intervalle entre le temps $t$ et $t+dt$ est :
+
+$$dX(t)=\sigma^2 dB(t),$$
+
+où $dB(t)$ est la distribution gaussienne. Il est important de noter que ce modèle suppose que :
+
+1. L'évolution se produisant dans chaque branche de la phylogénie est indépendante de celle se produisant dans les autres branches.
+2. L'évolution est complètement aléatoire (c'est-à-dire sans sélection).
+
+Le paramètre $\sigma^2$ dans le modèle donne la variance, ou en d'autres termes, la vitesse d'évolution. Plus la variance est élevée, plus le caractère évoluera rapidement. Voici deux exemples de caractères simulés sur un arbre de 200 espèces avec $\sigma^2=0.5$ et $\sigma^2=4$.
+
+```{r "BM_Model_SigmaExample", echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE, fig.align='center'}
+library(phytools)
+library(ggplot2)
+tree<-pbtree(n=200)
+x<-fastBM(tree,sig2=0.5) # sigma = 0.5
+y<-fastBM(tree,sig2=4) # with a trend
+data<-data.frame(sigma=rep(c(0.5,4),each=200),values=c(x,y))
+ggplot(data,aes(x=values),y=as.factor(sigma))+geom_histogram() +
+  facet_wrap(~sigma)
+rm(data,x,y)
+```
+
+Une introduction plus approfondie au modèle de Mouvement Brownien se trouve au chapitre 23 du livre de Joe Felsenstein [@felsenstein2004inferring].
+
+Le modèle de mouvement brownien est souvent dit modéliser la dérive neutre, bien qu'un bon ajustement à ce modèle ne signifie pas nécessairement que les données ont évolué via des dérives aléatoires, car d'autres processus peuvent également donner des motifs similaires à ceux du mouvement brownien [@hansen1996translating].
+
+Notez également que le modèle est stochastique. C'est-à-dire que même si deux espèces étroitement apparentées sont plus susceptibles de partager des états de caractère similaires qu'une espèce éloignée, cela n'est vrai qu'en moyenne. Pour un caractère donné simulé, des espèces étroitement apparentées peuvent parfois être plus différentes qu'une espèce éloignée. Regardez la figure suivante, qui montre trois caractères simulés selon le mouvement brownien.
+
+```{r "PlotContinuousParameter_tablephylo4d", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
+require(phytools)
+set.seed(667)
+tree <- pbtree(n=30,nsim=1)
+trait1 <- fastBM(tree, sig2=0.15, nsim=1, internal=FALSE)
+trait2 <- fastBM(tree, sig2=0.1, nsim=1, internal=FALSE)
+trait3 <- fastBM(tree, sig2=0.15, nsim=1, internal=FALSE)
+op <- par(mar=c(1,1,1,1))
+plot(tree,type="p",TRUE,label.offset=1,cex=0.5,no.margin=FALSE)
+tiplabels(pch=21,bg=cols[ifelse(trait1>0,1,2)],col="black",cex=abs(trait1)*2,adj=0.75)
+tiplabels(pch=21,bg=cols[ifelse(trait2>0,1,2)],col="black",cex=abs(trait2)*2,adj=1)
+tiplabels(pch=21,bg=cols[ifelse(trait3>0,1,2)],col="black",cex=abs(trait3)*2,adj=1.25)
+legend("bottomleft",legend=c("-4","-2","0","2","4"),pch=21,
+       pt.bg=cols[c(1,1,1,2,2)],bty="n",
+       text.col="gray32",cex=0.8,pt.cex=c(2,1,0.1,1,2))
+par(op) 
+```
+
+
+# Lectures supplémentaires
+
+Pour bien comprendre un nouveau domaine de recherche, il est toujours conseillé de lire beaucoup à ce sujet. Voici quelques références que vous pourriez trouver utiles. Les différentes sources expliquent parfois la théorie de différentes manières ou utilisent des exemples différents, ce qui peut vous aider à mieux comprendre.
+
+- Felsenstein, J. (1985) Phylogenies and the comparative method. *The American Naturalist* 125, 1-15. **The classic initial paper that launched the field of comparative analyses. The phylogenetic independent contrasts are introduced here**
+- Felsenstein, J. (2004) *Inferring phylogenies*. Sinauer Associates, Inc. Sunderland, MA. **A thorough reference on phylogenies, from reconstruction to phylogenetic methods**
+- Hadfield, J. D., S. Nakagawa. 2010. General quantitative genetic methods for comparative biology: phylogenies, taxonomies and multi-trait models for continuous and categorical characters. *Journal of Evolutionary Biology* 23:494–508. **This paper describes the phylogenetic mixed model and its implementation in MCMCglmm. It is a very important paper**
+- Housworth, E.A., E.P. Martins, M. Lynch. 2004. The phylogenetic mixed model. *The American Naturalist* 163:84–96. **Excellent paper on the Phylogenetic Mixed Model**
+- Paradis, E. (2012). *Analysis of phylogenetics and evolution with R*. New York, USA: Springer. **This is the book that explains the analyses available in the R package APE. It is also a great reference on many phylogenetic analyses, including the comparative method. This is a classic and a must for users of phylogenies in R.**
+- Revell, L J. (2010). Phylogenetic signal and linear regression on species data. *Methods in Ecology and Evolution* 1: 319-329. **A great paper on PGLS. It uses simulations to show when it is important to use PGLS.**
+- Villemereuil, P., S. Nakagawa. 2014. General quantitative genetic methods for comparative biology. Pp. 287–303 in L. Z. Garamszegi, ed. *Modern phylogenetic comparative methods and their application in evolutionary biology*. Springer-Verlag, Berlin, Heidelberg. **Nice book chapter explaining the phylogenetic mixed model**
+- Zuur, A.F., E.N. Ieno, N. Walker, A. A. Saveliev, G.M. Smith. (2009). *Mixed effects models and extensions in ecology with R*. New York, NY: Springer New York. **This is not a book on phylogenetic methods, but it is a great book on the analysis of ecological data with examples in R. Its chapter 6 and 7 discuss correlation structures and although they are not about phylogenies, they are very instructive on how to deal with them and how to compare models and analyse complex data. It also has tons of information on how to deal with more complex data, along with correlation structure. A very good read!**
+

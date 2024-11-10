@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Phylogenetic generalized least squares (PGLS) | Atelier sur les méthodes comparées</title>
+  <meta name="description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Phylogenetic generalized least squares (PGLS) | Atelier sur les méthodes comparées" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Phylogenetic generalized least squares (PGLS) | Atelier sur les méthodes comparées" />
+  
+  <meta name="twitter:description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
+  
+
+<meta name="author" content="Simon Joly" />
+
+
+<meta name="date" content="2024-11-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="linear-regression.html"/>
+<link rel="next" href="pic.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> À propos</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#resources-utiles"><i class="fa fa-check"></i><b>1.1</b> Resources utiles</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#source"><i class="fa fa-check"></i><b>1.2</b> Source</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#disclaimer"><i class="fa fa-check"></i><b>1.3</b> Disclaimer</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="before.html"><a href="before.html"><i class="fa fa-check"></i><b>2</b> Avant l’atelier</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="before.html"><a href="before.html#installer-r-et-les-packages-requis"><i class="fa fa-check"></i><b>2.1</b> Installer R et les packages requis</a></li>
+<li class="chapter" data-level="2.2" data-path="before.html"><a href="before.html#download"><i class="fa fa-check"></i><b>2.2</b> Téléchargement des données</a></li>
+<li class="chapter" data-level="2.3" data-path="before.html"><a href="before.html#familiarisez-vous-avec-les-arbres-phylogénétiques-dans-r"><i class="fa fa-check"></i><b>2.3</b> Familiarisez-vous avec les arbres phylogénétiques dans R</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>3</b> Une introduction aux méthodes comparatives phylogénétiques</a></li>
+<li class="chapter" data-level="4" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>4</b> Le modèle de régression linéaire</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="linear-regression.html"><a href="linear-regression.html#théorie"><i class="fa fa-check"></i><b>4.1</b> Théorie</a></li>
+<li class="chapter" data-level="4.2" data-path="linear-regression.html"><a href="linear-regression.html#pratique"><i class="fa fa-check"></i><b>4.2</b> Pratique</a></li>
+<li class="chapter" data-level="4.3" data-path="linear-regression.html"><a href="linear-regression.html#défi-no.-1"><i class="fa fa-check"></i><b>4.3</b> Défi no. 1</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="pgls.html"><a href="pgls.html"><i class="fa fa-check"></i><b>5</b> Phylogenetic generalized least squares (PGLS)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="pgls.html"><a href="pgls.html#théorie-1"><i class="fa fa-check"></i><b>5.1</b> Théorie</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="pgls.html"><a href="pgls.html#structure-de-corrélation-phylogénétique"><i class="fa fa-check"></i><b>5.1.1</b> Structure de corrélation phylogénétique</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="pgls.html"><a href="pgls.html#défi-no.-2"><i class="fa fa-check"></i><b>5.2</b> Défi no. 2</a></li>
+<li class="chapter" data-level="5.3" data-path="pgls.html"><a href="pgls.html#exercices-pratiques"><i class="fa fa-check"></i><b>5.3</b> Exercices pratiques</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="pgls.html"><a href="pgls.html#autres-structures-de-corrélation"><i class="fa fa-check"></i><b>5.3.1</b> Autres structures de corrélation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="pgls.html"><a href="pgls.html#défi-no.-3"><i class="fa fa-check"></i><b>5.4</b> Défi no. 3</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="pic.html"><a href="pic.html"><i class="fa fa-check"></i><b>6</b> Contrastes Indépendants Phylogénétiques</a></li>
+<li class="chapter" data-level="7" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><i class="fa fa-check"></i><b>7</b> Assouplir l’hypothèse selon laquelle les résidus doivent être parfaitement corrélés phylogénétiquement</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#théorie-structure-de-corrélation-de-pagel"><i class="fa fa-check"></i><b>7.1</b> Théorie : Structure de corrélation de Pagel</a></li>
+<li class="chapter" data-level="7.2" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#exercices-pratiques-1"><i class="fa fa-check"></i><b>7.2</b> Exercices pratiques</a></li>
+<li class="chapter" data-level="7.3" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#défi-no.-4"><i class="fa fa-check"></i><b>7.3</b> Défi no. 4</a></li>
+<li class="chapter" data-level="7.4" data-path="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html"><a href="assouplir-lhypothèse-selon-laquelle-les-résidus-doivent-être-parfaitement-corrélés-phylogénétiquement.html#autres-structures-de-corrélation-ou-modèles-évolutifs"><i class="fa fa-check"></i><b>7.4</b> Autres structures de corrélation (ou modèles évolutifs)</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="anova-phylogénétique.html"><a href="anova-phylogénétique.html"><i class="fa fa-check"></i><b>8</b> ANOVA phylogénétique</a></li>
+<li class="chapter" data-level="9" data-path="comparaison-de-modèles.html"><a href="comparaison-de-modèles.html"><i class="fa fa-check"></i><b>9</b> Comparaison de modèles</a></li>
+<li class="chapter" data-level="10" data-path="quand-devrions-nous-utiliser-les-méthodes-comparatives.html"><a href="quand-devrions-nous-utiliser-les-méthodes-comparatives.html"><i class="fa fa-check"></i><b>10</b> Quand devrions-nous utiliser les méthodes comparatives ?</a></li>
+<li class="chapter" data-level="11" data-path="un-dernier-mot-le-problème-de-la-réplication.html"><a href="un-dernier-mot-le-problème-de-la-réplication.html"><i class="fa fa-check"></i><b>11</b> Un dernier mot : le problème de la réplication</a></li>
+<li class="chapter" data-level="12" data-path="BM-model.html"><a href="BM-model.html"><i class="fa fa-check"></i><b>12</b> Le modèle de Mouvement Brownien (BM)</a></li>
+<li class="chapter" data-level="13" data-path="lectures-supplémentaires.html"><a href="lectures-supplémentaires.html"><i class="fa fa-check"></i><b>13</b> Lectures supplémentaires</a></li>
+<li class="chapter" data-level="14" data-path="trees.html"><a href="trees.html"><i class="fa fa-check"></i><b>14</b> Introduction aux phylogénies dans R</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="trees.html"><a href="trees.html#importer-et-tracer-des-arbres"><i class="fa fa-check"></i><b>14.1</b> Importer et tracer des arbres</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="trees.html"><a href="trees.html#simuler-un-arbre"><i class="fa fa-check"></i><b>14.1.1</b> Simuler un arbre</a></li>
+<li class="chapter" data-level="14.1.2" data-path="trees.html"><a href="trees.html#simulation-de-caractères"><i class="fa fa-check"></i><b>14.1.2</b> Simulation de caractères</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="trees.html"><a href="trees.html#importer-des-données-dans-r"><i class="fa fa-check"></i><b>14.2</b> Importer des données dans R</a></li>
+<li class="chapter" data-level="14.3" data-path="trees.html"><a href="trees.html#représenter-des-arbres"><i class="fa fa-check"></i><b>14.3</b> Représenter des arbres</a></li>
+<li class="chapter" data-level="14.4" data-path="trees.html"><a href="trees.html#gérer-plusieurs-arbres"><i class="fa fa-check"></i><b>14.4</b> Gérer plusieurs arbres</a></li>
+<li class="chapter" data-level="14.5" data-path="trees.html"><a href="trees.html#manipuler-les-arbres"><i class="fa fa-check"></i><b>14.5</b> Manipuler les arbres</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="trees.html"><a href="trees.html#supprimer-des-feuilles-de-larbre"><i class="fa fa-check"></i><b>14.5.1</b> Supprimer des feuilles de l’arbre</a></li>
+<li class="chapter" data-level="14.5.2" data-path="trees.html"><a href="trees.html#réenraciner-les-arbres"><i class="fa fa-check"></i><b>14.5.2</b> Réenraciner les arbres</a></li>
+<li class="chapter" data-level="14.5.3" data-path="trees.html"><a href="trees.html#obtenir-les-distances-cophénétiques"><i class="fa fa-check"></i><b>14.5.3</b> Obtenir les distances cophénétiques</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>15</b> Solutions aux défis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="solutions.html"><a href="solutions.html#défi-1"><i class="fa fa-check"></i><b>15.1</b> Défi 1</a></li>
+<li class="chapter" data-level="15.2" data-path="solutions.html"><a href="solutions.html#défi-2"><i class="fa fa-check"></i><b>15.2</b> Défi 2</a></li>
+<li class="chapter" data-level="15.3" data-path="solutions.html"><a href="solutions.html#défi-3"><i class="fa fa-check"></i><b>15.3</b> Défi 3</a></li>
+<li class="chapter" data-level="15.4" data-path="solutions.html"><a href="solutions.html#défi-4"><i class="fa fa-check"></i><b>15.4</b> Défi 4</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="références.html"><a href="références.html"><i class="fa fa-check"></i>Références</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Atelier sur les méthodes comparées</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="pgls" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Phylogenetic generalized least squares (PGLS)<a href="pgls.html#pgls" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="théorie-1" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Théorie<a href="pgls.html#théorie-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Les moindres carrés généralisés phylogénétiques (PGLS) sont juste une application spécifique de la méthode plus générale appelée moindres carrés généralisés (GLS). Les moindres carrés généralisés relâchent l’hypothèse selon laquelle l’erreur du modèle linéaire doit être non corrélée. Ils permettent à l’utilisateur de spécifier la structure de cette corrélation résiduelle. Cela est utilisé, par exemple, pour corriger la corrélation spatiale, les séries temporelles ou la corrélation phylogénétique.</p>
+<p>Les GLS ont la même structure que les Moindres Carrés Ordinaires (OLS) :</p>
+<p><span class="math display">\[\textbf{y} = \alpha + \beta \textbf{x} + \textbf{e}\]</span></p>
+<p>La seule différence est que les résidus sont corrélés entre eux selon une structure de corrélation <span class="math inline">\(\textbf{C}\)</span> :</p>
+<p><span class="math display">\[\textbf{e} \sim N(0,\sigma^2\textbf{C})\]</span></p>
+<p>Ici, <span class="math inline">\(\textbf{C}\)</span> est une matrice de corrélation qui décrit comment les résidus sont corrélés entre eux. Pour pouvoir tenir compte des relations phylogénétiques dans un PGLS, nous devons donc être capables d’exprimer les relations phylogénétiques sous la forme d’une matrice de corrélation.</p>
+<div id="structure-de-corrélation-phylogénétique" class="section level3 hasAnchor" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Structure de corrélation phylogénétique<a href="pgls.html#structure-de-corrélation-phylogénétique" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Les relations phylogénétiques peuvent être décrites en utilisant une structure de corrélation. Ci-dessous, vous avez un arbre phylogénétique avec les longueurs de branches indiquées au-dessus des branches.</p>
+<p><img src="_main_files/figure-html/phylogenetic%20tree%20example-1.png" width="288" style="display: block; margin: auto auto auto 0;" /></p>
+<p>Maintenant, cet arbre peut être parfaitement représenté par une matrice de variance-covariance.</p>
+<pre><code>##      a    b    c    d    e
+## a 1.05 0.90 0.50 0.00 0.00
+## b 0.90 1.05 0.50 0.00 0.00
+## c 0.50 0.50 1.05 0.00 0.00
+## d 0.00 0.00 0.00 1.05 0.80
+## e 0.00 0.00 0.00 0.80 1.05</code></pre>
+<p>Les éléments diagonaux de la matrice sont les variances des espèces ; ces nombres représentent la distance totale de la racine de l’arbre aux extrémités. Cela détermine dans quelle mesure les extrémités ont évolué par rapport à la racine. Les éléments hors diagonale sont les covariances entre les espèces. Ils indiquent la proportion du temps pendant laquelle les espèces ont évolué ensemble. Cela correspond à la longueur des branches que deux espèces partagent, à partir de la racine de l’arbre. Par exemple, les espèces <span class="math inline">\(a\)</span> et <span class="math inline">\(c\)</span> ont partagé une histoire commune pendant 0,5 unité de temps ; elles ont donc une covariance de 0,5. Plus la covariance est grande, plus les deux espèces ont partagé la même histoire évolutive.</p>
+<p>Si toute la variation entre les espèces était due à la phylogénie et non à la sélection, alors cette matrice de variance-covariance représenterait l’attente de la similitude entre toutes les espèces.</p>
+<blockquote>
+<p>Notez que toutes les extrémités sont équidistantes de la racine. Lorsque les arbres ont cette propriété, on dit qu’ils sont <strong><em>ultramétriques</em></strong>. La plupart des méthodes comparatives phylogénétiques nécessitent que les arbres soient ultramétriques, bien qu’il existe parfois des moyens de relâcher cette hypothèse. Si vous n’avez pas un arbre ultramétrique, il est possible de le rendre ultramétrique en utilisant la fonction chronopl du package ape. Mais idéalement, il est préférable d’utiliser une méthode phylogénétique qui reconstruit directement des arbres ultramétriques.</p>
+</blockquote>
+<p>La matrice de variance-covariance d’un arbre phylogénétique peut être obtenue à partir d’un arbre en utilisant la fonction vcv du package ape.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="pgls.html#cb16-1" tabindex="-1"></a><span class="co"># &#39;atree&#39; correspond à l&#39;arbre phylogénétique montré ci-dessus au format newick</span></span>
+<span id="cb16-2"><a href="pgls.html#cb16-2" tabindex="-1"></a>atree <span class="ot">&lt;-</span> <span class="st">&quot;(((a:0.15,b:0.15):0.4,c:0.55):0.5,(d:0.25,e:0.25):0.8);&quot;</span></span>
+<span id="cb16-3"><a href="pgls.html#cb16-3" tabindex="-1"></a><span class="co"># Lisons maintenant cet arbre et stockons-le comme un objet d&#39;arbre phylogénétique dans R</span></span>
+<span id="cb16-4"><a href="pgls.html#cb16-4" tabindex="-1"></a>atree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="at">text=</span>atree)</span>
+<span id="cb16-5"><a href="pgls.html#cb16-5" tabindex="-1"></a><span class="co"># Afficher l&#39;arbre</span></span>
+<span id="cb16-6"><a href="pgls.html#cb16-6" tabindex="-1"></a><span class="fu">plot</span>(atree)</span></code></pre></div>
+<p><img src="_main_files/figure-html/vcv%20function-1.png" width="672" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="pgls.html#cb17-1" tabindex="-1"></a><span class="co"># Extraire la matrice de variance-covariance</span></span>
+<span id="cb17-2"><a href="pgls.html#cb17-2" tabindex="-1"></a>varcovar <span class="ot">&lt;-</span> <span class="fu">vcv</span>(atree)</span>
+<span id="cb17-3"><a href="pgls.html#cb17-3" tabindex="-1"></a><span class="co"># Imprimer la matrice de variance-covariance</span></span>
+<span id="cb17-4"><a href="pgls.html#cb17-4" tabindex="-1"></a>varcovar</span></code></pre></div>
+<pre><code>##      a    b    c    d    e
+## a 1.05 0.90 0.50 0.00 0.00
+## b 0.90 1.05 0.50 0.00 0.00
+## c 0.50 0.50 1.05 0.00 0.00
+## d 0.00 0.00 0.00 1.05 0.80
+## e 0.00 0.00 0.00 0.80 1.05</code></pre>
+<p>C’est excellent, mais nous avons mentionné ci-dessus qu’il s’agit d’une matrice de corrélation dont nous avons besoin dans un GLS pour tenir compte de la corrélation dans les résidus. Pour obtenir une matrice de corrélation à partir de la matrice de variance-covariance montrée ci-dessus, il suffit de diviser la matrice de variance-covariance par la longueur de l’arbre, ou la distance de la racine aux extrémités. Elle peut également être obtenue en utilisant la fonction R <code>cov2cor</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="pgls.html#cb19-1" tabindex="-1"></a><span class="co"># Convertir la matrice de covariance en une matrice de corrélation</span></span>
+<span id="cb19-2"><a href="pgls.html#cb19-2" tabindex="-1"></a>corrmat <span class="ot">&lt;-</span> <span class="fu">cov2cor</span>(varcovar)</span>
+<span id="cb19-3"><a href="pgls.html#cb19-3" tabindex="-1"></a><span class="co"># Imprimer la matrice, arrondie à trois décimales</span></span>
+<span id="cb19-4"><a href="pgls.html#cb19-4" tabindex="-1"></a><span class="fu">round</span>(corrmat,<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##       a     b     c     d     e
+## a 1.000 0.857 0.476 0.000 0.000
+## b 0.857 1.000 0.476 0.000 0.000
+## c 0.476 0.476 1.000 0.000 0.000
+## d 0.000 0.000 0.000 1.000 0.762
+## e 0.000 0.000 0.000 0.762 1.000</code></pre>
+<p>Maintenant, les éléments diagonaux sont égaux à 1, indiquant que les espèces sont parfaitement corrélées avec elles-mêmes. Notez qu’il est également possible d’obtenir directement la matrice de corrélation à partir de la fonction <code>vcv</code> en utilisant l’option <code>corr=TRUE</code>.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="pgls.html#cb21-1" tabindex="-1"></a><span class="co"># Obtention d&#39;une matrice de corrélation en utilisant la fonction &#39;vcv&#39;</span></span>
+<span id="cb21-2"><a href="pgls.html#cb21-2" tabindex="-1"></a>corrmat <span class="ot">&lt;-</span> <span class="fu">vcv</span>(atree,<span class="at">corr=</span><span class="cn">TRUE</span>)</span>
+<span id="cb21-3"><a href="pgls.html#cb21-3" tabindex="-1"></a><span class="fu">round</span>(corrmat,<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##       a     b     c     d     e
+## a 1.000 0.857 0.476 0.000 0.000
+## b 0.857 1.000 0.476 0.000 0.000
+## c 0.476 0.476 1.000 0.000 0.000
+## d 0.000 0.000 0.000 1.000 0.762
+## e 0.000 0.000 0.000 0.762 1.000</code></pre>
+<p>Maintenant que nous savons comment obtenir une matrice de corrélation à partir d’un arbre phylogénétique, nous sommes prêts à exécuter un PGLS.</p>
+</div>
+</div>
+<div id="défi-no.-2" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Défi no. 2<a href="pgls.html#défi-no.-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Pouvez-vous obtenir la matrice de covariance et la matrice de corrélation pour l’arbre phylogénétique des plantes à graines de l’exemple ci-dessus (<code>seedplantstree</code>)?</p>
+</div>
+<div id="exercices-pratiques" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Exercices pratiques<a href="pgls.html#exercices-pratiques" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Il existe plusieurs façons d’exécuter un PGLS en R. Par exemple, le package <code>caper</code> est un package bien connu pour PGLS. Cependant, nous allons utiliser ici la fonction gls du package <code>nlme</code>. Cette fonction est robuste et a l’avantage d’être très flexible. En effet, elle permet d’utiliser facilement des modèles plus complexes tels que les modèles à effets mixtes, bien que cela ne soit pas abordé ici.</p>
+<p>Avant d’exécuter le PGLS, exécutons le modèle de base avec la fonction <code>gls</code> comme référence. Exécuter le modèle linéaire standard avec le package nlme permettra d’exécuter des fonctions de comparaison de modèles dans R (voir ci-dessous), ce qui ne serait pas possible si différents modèles étaient ajustés en utilisant différents packages.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="pgls.html#cb23-1" tabindex="-1"></a><span class="fu">require</span>(nlme)</span>
+<span id="cb23-2"><a href="pgls.html#cb23-2" tabindex="-1"></a>shade.pgls0 <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata)</span>
+<span id="cb23-3"><a href="pgls.html#cb23-3" tabindex="-1"></a><span class="fu">summary</span>(shade.pgls0)</span></code></pre></div>
+<pre><code>## Generalized least squares fit by REML
+##   Model: Shade ~ Wd 
+##   Data: seedplantsdata 
+##       AIC     BIC    logLik
+##   180.472 186.494 -87.23602
+## 
+## Coefficients:
+##               Value Std.Error  t-value p-value
+## (Intercept) 2.00098 0.7500707 2.667722  0.0100
+## Wd          1.81296 1.5675668 1.156544  0.2525
+## 
+##  Correlation: 
+##    (Intr)
+## Wd -0.979
+## 
+## Standardized residuals:
+##         Min          Q1         Med          Q3         Max 
+## -1.63307700 -0.89457443  0.04911902  0.61207032  2.07940955 
+## 
+## Residual standard error: 1.145813 
+## Degrees of freedom: 57 total; 55 residual</code></pre>
+<p>Vous pouvez voir que la sortie est essentiellement identique à celle de la fonction lm. Cependant, il y a quelques différences. L’une est la présence de l’élément « Correlation: » qui donne la corrélation entre les paramètres estimés. De plus, les « résidus standardisés » sont les résidus bruts divisés par l’erreur standard des résidus (les résidus bruts peuvent être affichés avec <code>residuals(shade.gls,"response")</code>).</p>
+<p>Maintenant, exécutons un modèle PGLS. Pour attribuer la matrice de corrélation à la fonction <code>gls</code>, il suffit d’utiliser l’option <code>corr</code> de la fonction <code>gls</code>. Cependant, vous devez utiliser une fonction de corrélation spécifique pour que R comprenne qu’il s’agit d’une matrice de corrélation et estime correctement le modèle.</p>
+<p>Il existe plusieurs types de structures de corrélation disponibles dans R. Nous commencerons par utiliser l’une des plus simples, appelée <code>corSymm</code>, qui suppose que la matrice de corrélation est symétrique. C’est le cas avec les arbres phylogénétiques; la corrélation entre les espèces <span class="math inline">\(a\)</span> et <span class="math inline">\(b\)</span> est la même qu’entre <span class="math inline">\(b\)</span> et <span class="math inline">\(a\)</span>. Seule la partie triangulaire inférieure de la matrice doit être transmise à la structure corSymm. Si <code>mat</code> est la matrice de corrélation, cela se fait avec la commande <code>mat[lower.tri(mat)]</code>. Ensuite, vous passez la matrice de corrélation à la function <code>gls</code> en utilisant l’argument <code>correlation</code>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="pgls.html#cb25-1" tabindex="-1"></a><span class="co"># Calculer la matrice de corrélation à partir de l&#39;arbre</span></span>
+<span id="cb25-2"><a href="pgls.html#cb25-2" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">vcv</span>(seedplantstree,<span class="at">corr=</span><span class="cn">TRUE</span>)</span>
+<span id="cb25-3"><a href="pgls.html#cb25-3" tabindex="-1"></a><span class="co"># Créer la structure de corrélation pour gls</span></span>
+<span id="cb25-4"><a href="pgls.html#cb25-4" tabindex="-1"></a>corr.struct <span class="ot">&lt;-</span> <span class="fu">corSymm</span>(mat[<span class="fu">lower.tri</span>(mat)],<span class="at">fixed=</span><span class="cn">TRUE</span>)</span>
+<span id="cb25-5"><a href="pgls.html#cb25-5" tabindex="-1"></a><span class="co"># Exécuter le pgls</span></span>
+<span id="cb25-6"><a href="pgls.html#cb25-6" tabindex="-1"></a>shade.pgls1 <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata, <span class="at">correlation=</span>corr.struct)</span>
+<span id="cb25-7"><a href="pgls.html#cb25-7" tabindex="-1"></a><span class="fu">summary</span>(shade.pgls1)</span></code></pre></div>
+<pre><code>## Generalized least squares fit by REML
+##   Model: Shade ~ Wd 
+##   Data: seedplantsdata 
+##        AIC      BIC    logLik
+##   214.3762 220.3982 -104.1881
+## 
+## Correlation Structure: General
+##  Formula: ~1 
+##  Parameter estimate(s):
+##  Correlation: 
+##    1     2     3     4     5     6     7     8     9     10    11    12   
+## 2  0.000                                                                  
+## 3  0.000 0.967                                                            
+## 4  0.000 0.967 0.976                                                      
+## 5  0.000 0.967 0.981 0.976                                                
+## 6  0.000 0.967 0.974 0.974 0.974                                          
+## 7  0.000 0.967 0.997 0.976 0.981 0.974                                    
+## 8  0.000 0.967 0.974 0.974 0.974 0.997 0.974                              
+## 9  0.000 0.967 0.976 0.983 0.976 0.974 0.976 0.974                        
+## 10 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654                  
+## 11 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.984            
+## 12 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726      
+## 13 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.952 0.952 0.726
+## 14 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.952 0.952 0.726
+## 15 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.952 0.952 0.726
+## 16 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.945 0.945 0.726
+## 17 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.876 0.876 0.726
+## 18 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.876 0.876 0.726
+## 19 0.000 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596
+## 20 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.989
+## 21 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.835 0.835 0.726
+## 22 0.000 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596
+## 23 0.000 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596
+## 24 0.000 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596 0.596
+## 25 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.876 0.876 0.726
+## 26 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.876 0.876 0.726
+## 27 0.528 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 28 0.843 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 29 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.983
+## 30 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.945 0.945 0.726
+## 31 0.860 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 32 0.860 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 33 0.860 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 34 0.860 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 35 0.860 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 36 0.860 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 37 0.860 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 38 0.000 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523
+## 39 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.675 0.675 0.675
+## 40 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.675 0.675 0.675
+## 41 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.675 0.675 0.675
+## 42 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.675 0.675 0.675
+## 43 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.898
+## 44 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.898
+## 45 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.898
+## 46 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.835 0.835 0.726
+## 47 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.835 0.835 0.726
+## 48 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.835 0.835 0.726
+## 49 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.835 0.835 0.726
+## 50 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.675 0.675 0.675
+## 51 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.980
+## 52 0.528 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 53 0.000 0.720 0.720 0.720 0.720 0.720 0.720 0.720 0.720 0.654 0.654 0.654
+## 54 0.906 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 55 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.800
+## 56 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.800
+## 57 0.000 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.726 0.726 0.800
+##    13    14    15    16    17    18    19    20    21    22    23    24   
+## 2                                                                         
+## 3                                                                         
+## 4                                                                         
+## 5                                                                         
+## 6                                                                         
+## 7                                                                         
+## 8                                                                         
+## 9                                                                         
+## 10                                                                        
+## 11                                                                        
+## 12                                                                        
+## 13                                                                        
+## 14 0.998                                                                  
+## 15 0.994 0.994                                                            
+## 16 0.945 0.945 0.945                                                      
+## 17 0.876 0.876 0.876 0.876                                                
+## 18 0.876 0.876 0.876 0.876 0.998                                          
+## 19 0.596 0.596 0.596 0.596 0.596 0.596                                    
+## 20 0.726 0.726 0.726 0.726 0.726 0.726 0.596                              
+## 21 0.835 0.835 0.835 0.835 0.835 0.835 0.596 0.726                        
+## 22 0.596 0.596 0.596 0.596 0.596 0.596 0.715 0.596 0.596                  
+## 23 0.596 0.596 0.596 0.596 0.596 0.596 0.715 0.596 0.596 0.997            
+## 24 0.596 0.596 0.596 0.596 0.596 0.596 0.715 0.596 0.596 0.999 0.997      
+## 25 0.876 0.876 0.876 0.876 0.984 0.984 0.596 0.726 0.835 0.596 0.596 0.596
+## 26 0.876 0.876 0.876 0.876 0.984 0.984 0.596 0.726 0.835 0.596 0.596 0.596
+## 27 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 28 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 29 0.726 0.726 0.726 0.726 0.726 0.726 0.596 0.983 0.726 0.596 0.596 0.596
+## 30 0.945 0.945 0.945 0.988 0.876 0.876 0.596 0.726 0.835 0.596 0.596 0.596
+## 31 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 32 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 33 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 34 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 35 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 36 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 37 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 38 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523 0.523
+## 39 0.675 0.675 0.675 0.675 0.675 0.675 0.596 0.675 0.675 0.596 0.596 0.596
+## 40 0.675 0.675 0.675 0.675 0.675 0.675 0.596 0.675 0.675 0.596 0.596 0.596
+## 41 0.675 0.675 0.675 0.675 0.675 0.675 0.596 0.675 0.675 0.596 0.596 0.596
+## 42 0.675 0.675 0.675 0.675 0.675 0.675 0.596 0.675 0.675 0.596 0.596 0.596
+## 43 0.726 0.726 0.726 0.726 0.726 0.726 0.596 0.898 0.726 0.596 0.596 0.596
+## 44 0.726 0.726 0.726 0.726 0.726 0.726 0.596 0.898 0.726 0.596 0.596 0.596
+## 45 0.726 0.726 0.726 0.726 0.726 0.726 0.596 0.898 0.726 0.596 0.596 0.596
+## 46 0.835 0.835 0.835 0.835 0.835 0.835 0.596 0.726 0.881 0.596 0.596 0.596
+## 47 0.835 0.835 0.835 0.835 0.835 0.835 0.596 0.726 0.881 0.596 0.596 0.596
+## 48 0.835 0.835 0.835 0.835 0.835 0.835 0.596 0.726 0.881 0.596 0.596 0.596
+## 49 0.835 0.835 0.835 0.835 0.835 0.835 0.596 0.726 0.881 0.596 0.596 0.596
+## 50 0.675 0.675 0.675 0.675 0.675 0.675 0.596 0.675 0.675 0.596 0.596 0.596
+## 51 0.726 0.726 0.726 0.726 0.726 0.726 0.596 0.980 0.726 0.596 0.596 0.596
+## 52 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 53 0.654 0.654 0.654 0.654 0.654 0.654 0.596 0.654 0.654 0.596 0.596 0.596
+## 54 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 55 0.726 0.726 0.726 0.726 0.726 0.726 0.596 0.800 0.726 0.596 0.596 0.596
+## 56 0.726 0.726 0.726 0.726 0.726 0.726 0.596 0.800 0.726 0.596 0.596 0.596
+## 57 0.726 0.726 0.726 0.726 0.726 0.726 0.596 0.800 0.726 0.596 0.596 0.596
+##    25    26    27    28    29    30    31    32    33    34    35    36   
+## 2                                                                         
+## 3                                                                         
+## 4                                                                         
+## 5                                                                         
+## 6                                                                         
+## 7                                                                         
+## 8                                                                         
+## 9                                                                         
+## 10                                                                        
+## 11                                                                        
+## 12                                                                        
+## 13                                                                        
+## 14                                                                        
+## 15                                                                        
+## 16                                                                        
+## 17                                                                        
+## 18                                                                        
+## 19                                                                        
+## 20                                                                        
+## 21                                                                        
+## 22                                                                        
+## 23                                                                        
+## 24                                                                        
+## 25                                                                        
+## 26 0.992                                                                  
+## 27 0.000 0.000                                                            
+## 28 0.000 0.000 0.528                                                      
+## 29 0.726 0.726 0.000 0.000                                                
+## 30 0.876 0.876 0.000 0.000 0.726                                          
+## 31 0.000 0.000 0.528 0.843 0.000 0.000                                    
+## 32 0.000 0.000 0.528 0.843 0.000 0.000 0.874                              
+## 33 0.000 0.000 0.528 0.843 0.000 0.000 0.985 0.874                        
+## 34 0.000 0.000 0.528 0.843 0.000 0.000 0.997 0.874 0.985                  
+## 35 0.000 0.000 0.528 0.843 0.000 0.000 0.874 0.965 0.874 0.874            
+## 36 0.000 0.000 0.528 0.843 0.000 0.000 0.999 0.874 0.985 0.997 0.874      
+## 37 0.000 0.000 0.528 0.843 0.000 0.000 0.874 0.926 0.874 0.874 0.926 0.874
+## 38 0.523 0.523 0.000 0.000 0.523 0.523 0.000 0.000 0.000 0.000 0.000 0.000
+## 39 0.675 0.675 0.000 0.000 0.675 0.675 0.000 0.000 0.000 0.000 0.000 0.000
+## 40 0.675 0.675 0.000 0.000 0.675 0.675 0.000 0.000 0.000 0.000 0.000 0.000
+## 41 0.675 0.675 0.000 0.000 0.675 0.675 0.000 0.000 0.000 0.000 0.000 0.000
+## 42 0.675 0.675 0.000 0.000 0.675 0.675 0.000 0.000 0.000 0.000 0.000 0.000
+## 43 0.726 0.726 0.000 0.000 0.898 0.726 0.000 0.000 0.000 0.000 0.000 0.000
+## 44 0.726 0.726 0.000 0.000 0.898 0.726 0.000 0.000 0.000 0.000 0.000 0.000
+## 45 0.726 0.726 0.000 0.000 0.898 0.726 0.000 0.000 0.000 0.000 0.000 0.000
+## 46 0.835 0.835 0.000 0.000 0.726 0.835 0.000 0.000 0.000 0.000 0.000 0.000
+## 47 0.835 0.835 0.000 0.000 0.726 0.835 0.000 0.000 0.000 0.000 0.000 0.000
+## 48 0.835 0.835 0.000 0.000 0.726 0.835 0.000 0.000 0.000 0.000 0.000 0.000
+## 49 0.835 0.835 0.000 0.000 0.726 0.835 0.000 0.000 0.000 0.000 0.000 0.000
+## 50 0.675 0.675 0.000 0.000 0.675 0.675 0.000 0.000 0.000 0.000 0.000 0.000
+## 51 0.726 0.726 0.000 0.000 0.980 0.726 0.000 0.000 0.000 0.000 0.000 0.000
+## 52 0.000 0.000 0.918 0.528 0.000 0.000 0.528 0.528 0.528 0.528 0.528 0.528
+## 53 0.654 0.654 0.000 0.000 0.654 0.654 0.000 0.000 0.000 0.000 0.000 0.000
+## 54 0.000 0.000 0.528 0.843 0.000 0.000 0.860 0.860 0.860 0.860 0.860 0.860
+## 55 0.726 0.726 0.000 0.000 0.800 0.726 0.000 0.000 0.000 0.000 0.000 0.000
+## 56 0.726 0.726 0.000 0.000 0.800 0.726 0.000 0.000 0.000 0.000 0.000 0.000
+## 57 0.726 0.726 0.000 0.000 0.800 0.726 0.000 0.000 0.000 0.000 0.000 0.000
+##    37    38    39    40    41    42    43    44    45    46    47    48   
+## 2                                                                         
+## 3                                                                         
+## 4                                                                         
+## 5                                                                         
+## 6                                                                         
+## 7                                                                         
+## 8                                                                         
+## 9                                                                         
+## 10                                                                        
+## 11                                                                        
+## 12                                                                        
+## 13                                                                        
+## 14                                                                        
+## 15                                                                        
+## 16                                                                        
+## 17                                                                        
+## 18                                                                        
+## 19                                                                        
+## 20                                                                        
+## 21                                                                        
+## 22                                                                        
+## 23                                                                        
+## 24                                                                        
+## 25                                                                        
+## 26                                                                        
+## 27                                                                        
+## 28                                                                        
+## 29                                                                        
+## 30                                                                        
+## 31                                                                        
+## 32                                                                        
+## 33                                                                        
+## 34                                                                        
+## 35                                                                        
+## 36                                                                        
+## 37                                                                        
+## 38 0.000                                                                  
+## 39 0.000 0.523                                                            
+## 40 0.000 0.523 0.959                                                      
+## 41 0.000 0.523 0.964 0.959                                                
+## 42 0.000 0.523 0.964 0.959 0.982                                          
+## 43 0.000 0.523 0.675 0.675 0.675 0.675                                    
+## 44 0.000 0.523 0.675 0.675 0.675 0.675 0.986                              
+## 45 0.000 0.523 0.675 0.675 0.675 0.675 0.998 0.986                        
+## 46 0.000 0.523 0.675 0.675 0.675 0.675 0.726 0.726 0.726                  
+## 47 0.000 0.523 0.675 0.675 0.675 0.675 0.726 0.726 0.726 0.997            
+## 48 0.000 0.523 0.675 0.675 0.675 0.675 0.726 0.726 0.726 0.997 0.999      
+## 49 0.000 0.523 0.675 0.675 0.675 0.675 0.726 0.726 0.726 0.984 0.984 0.984
+## 50 0.000 0.523 0.936 0.936 0.936 0.936 0.675 0.675 0.675 0.675 0.675 0.675
+## 51 0.000 0.523 0.675 0.675 0.675 0.675 0.898 0.898 0.898 0.726 0.726 0.726
+## 52 0.528 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 53 0.000 0.523 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654 0.654
+## 54 0.860 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 55 0.000 0.523 0.675 0.675 0.675 0.675 0.800 0.800 0.800 0.726 0.726 0.726
+## 56 0.000 0.523 0.675 0.675 0.675 0.675 0.800 0.800 0.800 0.726 0.726 0.726
+## 57 0.000 0.523 0.675 0.675 0.675 0.675 0.800 0.800 0.800 0.726 0.726 0.726
+##    49    50    51    52    53    54    55    56   
+## 2                                                 
+## 3                                                 
+## 4                                                 
+## 5                                                 
+## 6                                                 
+## 7                                                 
+## 8                                                 
+## 9                                                 
+## 10                                                
+## 11                                                
+## 12                                                
+## 13                                                
+## 14                                                
+## 15                                                
+## 16                                                
+## 17                                                
+## 18                                                
+## 19                                                
+## 20                                                
+## 21                                                
+## 22                                                
+## 23                                                
+## 24                                                
+## 25                                                
+## 26                                                
+## 27                                                
+## 28                                                
+## 29                                                
+## 30                                                
+## 31                                                
+## 32                                                
+## 33                                                
+## 34                                                
+## 35                                                
+## 36                                                
+## 37                                                
+## 38                                                
+## 39                                                
+## 40                                                
+## 41                                                
+## 42                                                
+## 43                                                
+## 44                                                
+## 45                                                
+## 46                                                
+## 47                                                
+## 48                                                
+## 49                                                
+## 50 0.675                                          
+## 51 0.726 0.675                                    
+## 52 0.000 0.000 0.000                              
+## 53 0.654 0.654 0.654 0.000                        
+## 54 0.000 0.000 0.000 0.528 0.000                  
+## 55 0.726 0.675 0.800 0.000 0.654 0.000            
+## 56 0.726 0.675 0.800 0.000 0.654 0.000 0.983      
+## 57 0.726 0.675 0.800 0.000 0.654 0.000 0.999 0.983
+## 
+## Coefficients:
+##                Value Std.Error   t-value p-value
+## (Intercept) 0.911433  4.409058 0.2067184  0.8370
+## Wd          4.361028  1.693349 2.5753865  0.0127
+## 
+##  Correlation: 
+##    (Intr)
+## Wd -0.166
+## 
+## Standardized residuals:
+##         Min          Q1         Med          Q3         Max 
+## -0.26890642 -0.16431866 -0.02645422  0.09638984  0.34953444 
+## 
+## Residual standard error: 7.455109 
+## Degrees of freedom: 57 total; 55 residual</code></pre>
+<p>Notez que le terme <code>fixed=TRUE</code> dans la structure corSymm indique que la structure de corrélation est fixée pendant l’optimisation des paramètres.</p>
+<p>La sortie est similaire à celle du modèle sans corrélation, sauf pour la sortie de la matrice de corrélation.</p>
+<p>Fait intéressant, vous pouvez voir que l’estimation du coefficient pour la pente est plus grande (4.361) qu’avec la régression standard et également significative (<span class="math inline">\(p\)</span>=0.0127). C’est un exemple positif de PGLS. En effet, la relation entre la tolérance à l’ombre et la densité du bois était obscurcie par la corrélation phylogénétique des résidus. Une fois cette corrélation prise en compte, la relation significative est révélée.</p>
+<p>Une relation significative entre la tolérance à l’ombre et la densité du bois a en fait un sens, bien que cette relation ne soit probablement pas causale. En effet, les arbres tolérants à l’ombre sont généralement des espèces de succession et poussent souvent plus lentement, en partie à cause de la disponibilité limitée de la lumière, et ont donc tendance à développer des bois de densité plus élevée.</p>
+<p>Maintenant, regardons les résidus du modèle. Pour extraire les résidus corrigés par la structure de corrélation, vous devez demander les résidus normalisés.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="pgls.html#cb27-1" tabindex="-1"></a><span class="co"># Extraire les résidus corrigés par la structure de corrélation</span></span>
+<span id="cb27-2"><a href="pgls.html#cb27-2" tabindex="-1"></a>pgls1.res <span class="ot">&lt;-</span> <span class="fu">residuals</span>(shade.pgls1,<span class="at">type=</span><span class="st">&quot;normalized&quot;</span>)</span>
+<span id="cb27-3"><a href="pgls.html#cb27-3" tabindex="-1"></a><span class="co"># Modifier les paramètres graphiques</span></span>
+<span id="cb27-4"><a href="pgls.html#cb27-4" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb27-5"><a href="pgls.html#cb27-5" tabindex="-1"></a><span class="co"># Même tracé que ci-dessus sauf pour utiliser pgls1.res comme résidus</span></span>
+<span id="cb27-6"><a href="pgls.html#cb27-6" tabindex="-1"></a><span class="fu">plot</span>(seedplantstree,<span class="at">type=</span><span class="st">&quot;p&quot;</span>,<span class="cn">TRUE</span>,<span class="at">label.offset=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="fl">0.5</span>,<span class="at">no.margin=</span><span class="cn">FALSE</span>)</span>
+<span id="cb27-7"><a href="pgls.html#cb27-7" tabindex="-1"></a><span class="fu">tiplabels</span>(<span class="at">pch=</span><span class="dv">21</span>,<span class="at">bg=</span>cols[<span class="fu">ifelse</span>(pgls1.res<span class="sc">&gt;</span><span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>)],<span class="at">col=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb27-8"><a href="pgls.html#cb27-8" tabindex="-1"></a>          <span class="at">cex=</span><span class="fu">abs</span>(pgls1.res),<span class="at">adj=</span><span class="fl">0.505</span>)</span>
+<span id="cb27-9"><a href="pgls.html#cb27-9" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;2&quot;</span>),<span class="at">pch=</span><span class="dv">21</span>,</span>
+<span id="cb27-10"><a href="pgls.html#cb27-10" tabindex="-1"></a>       <span class="at">pt.bg=</span>cols[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>)],<span class="at">bty=</span><span class="st">&quot;n&quot;</span>,</span>
+<span id="cb27-11"><a href="pgls.html#cb27-11" tabindex="-1"></a>       <span class="at">text.col=</span><span class="st">&quot;black&quot;</span>,<span class="at">cex=</span><span class="fl">0.8</span>,<span class="at">pt.cex=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">2</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/pgls%20residual%20fit-1.png" width="672" /></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="pgls.html#cb28-1" tabindex="-1"></a><span class="co"># Réinitialiser les paramètres graphiques par défaut</span></span>
+<span id="cb28-2"><a href="pgls.html#cb28-2" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div>
+<p>Si vous comparez avec l’optimisation des moindres carrés ordinaires, les résidus sont beaucoup moins corrélés phylogénétiquement.</p>
+<div id="autres-structures-de-corrélation" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Autres structures de corrélation<a href="pgls.html#autres-structures-de-corrélation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Dans le PGLS précédent, nous avons utilisé la structure corSymm pour transmettre la structure de corrélation phylogénétique à gls. Cela fonctionne parfaitement, mais il existe des moyens plus simples. Julien Dutheil a développé des structures phylogénétiques à utiliser spécialement dans les PGLS.</p>
+<p>Celui que nous avons utilisé ci-dessus est équivalent à la structure <code>corBrownian</code> de <code>ape</code>. Cette approche est plus simple et il suffit de transmettre l’arbre à la structure de corrélation. Voici le même exemple en utilisant la structure <code>corBrownian</code>.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="pgls.html#cb29-1" tabindex="-1"></a><span class="co"># Obtenir la structure de corrélation</span></span>
+<span id="cb29-2"><a href="pgls.html#cb29-2" tabindex="-1"></a>bm.corr <span class="ot">&lt;-</span> <span class="fu">corBrownian</span>(<span class="at">phy=</span>seedplantstree, <span class="at">form=</span><span class="sc">~</span><span class="dv">1</span>)</span>
+<span id="cb29-3"><a href="pgls.html#cb29-3" tabindex="-1"></a><span class="co"># PGLS</span></span>
+<span id="cb29-4"><a href="pgls.html#cb29-4" tabindex="-1"></a>shade.pgls1b <span class="ot">&lt;-</span> <span class="fu">gls</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata, <span class="at">correlation=</span>bm.corr)</span></code></pre></div>
+<pre><code>## Warning in Initialize.corPhyl(X[[i]], ...): No covariate specified, species
+## will be taken as ordered in the data frame. To avoid this message, specify a
+## covariate containing the species names with the &#39;form&#39; argument.</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="pgls.html#cb31-1" tabindex="-1"></a><span class="fu">summary</span>(shade.pgls1b)</span></code></pre></div>
+<pre><code>## Generalized least squares fit by REML
+##   Model: Shade ~ Wd 
+##   Data: seedplantsdata 
+##        AIC      BIC    logLik
+##   214.3762 220.3982 -104.1881
+## 
+## Correlation Structure: corBrownian
+##  Formula: ~1 
+##  Parameter estimate(s):
+## numeric(0)
+## 
+## Coefficients:
+##                Value Std.Error   t-value p-value
+## (Intercept) 0.911433  4.409058 0.2067184  0.8370
+## Wd          4.361028  1.693349 2.5753865  0.0127
+## 
+##  Correlation: 
+##    (Intr)
+## Wd -0.166
+## 
+## Standardized residuals:
+##         Min          Q1         Med          Q3         Max 
+## -0.26890642 -0.16431866 -0.02645422  0.09638984  0.34953444 
+## 
+## Residual standard error: 7.455109 
+## Degrees of freedom: 57 total; 55 residual</code></pre>
+<p>Vous pouvez voir que les résultats sont identiques. La seule différence est que la structure de corrélation n’est pas affichée dans le résumé. Le <code>numeric(0)</code> signifie qu’aucun paramètre n’a été estimé pendant l’optimisation (il et fixe).</p>
+<p>Maintenant, vous vous demandez peut-être pourquoi la structure de corrélation ets appelée corBrownian. C’est parce qu’elle utilise le mouvement Brownien pour modéliser l’évolution le long des branches de l’arbre. Ce processus est souvent référé comme un modèle neutre. Si vous voulez en savoir davantage du le modèle Brownien, vous pouvez lire la section <a href="BM-model.html#BM-model">12</a> à propos de ce modèle.</p>
+</div>
+</div>
+<div id="défi-no.-3" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Défi no. 3<a href="pgls.html#défi-no.-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ajuster un modèle PGLS pour voir si le poids des graines (<code>Sm</code>) explique la tolérance à l’ombre (<code>Shade</code>) à l’aide du jeu de données seedplantdataset. Comment est-ce que ces résultats se comparent avec les résultats d’une régression standard.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="linear-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pic.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

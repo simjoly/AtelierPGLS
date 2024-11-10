@@ -1,0 +1,185 @@
+# Phylogenetic generalized least squares (PGLS) {#pgls}
+
+## Théorie
+
+Les moindres carrés généralisés phylogénétiques (PGLS) sont juste une application spécifique de la méthode plus générale appelée moindres carrés généralisés (GLS). Les moindres carrés généralisés relâchent l'hypothèse selon laquelle l'erreur du modèle linéaire doit être non corrélée. Ils permettent à l'utilisateur de spécifier la structure de cette corrélation résiduelle. Cela est utilisé, par exemple, pour corriger la corrélation spatiale, les séries temporelles ou la corrélation phylogénétique.
+
+Les GLS ont la même structure que les Moindres Carrés Ordinaires (OLS) :
+
+$$\textbf{y} = \alpha + \beta \textbf{x} + \textbf{e}$$
+
+La seule différence est que les résidus sont corrélés entre eux selon une structure de corrélation $\textbf{C}$ :
+
+$$\textbf{e} \sim N(0,\sigma^2\textbf{C})$$
+
+Ici, $\textbf{C}$ est une matrice de corrélation qui décrit comment les résidus sont corrélés entre eux. Pour pouvoir tenir compte des relations phylogénétiques dans un PGLS, nous devons donc être capables d'exprimer les relations phylogénétiques sous la forme d'une matrice de corrélation.
+
+### Structure de corrélation phylogénétique
+
+Les relations phylogénétiques peuvent être décrites en utilisant une structure de corrélation. Ci-dessous, vous avez un arbre phylogénétique avec les longueurs de branches indiquées au-dessus des branches.
+
+```{r "phylogenetic tree example",echo=FALSE, fig.width=3, fig.height=2.5, fig.align='left'}
+atree <- "(((a:0.15,b:0.15):0.4,c:0.55):0.5,(d:0.25,e:0.25):0.8);"
+atree <- read.tree(text=atree)
+plot(atree,no.margin=TRUE,label.offset=0.05)
+edgelabels(c(0.5,0.4,0.15,0.15,0.55,0.8,0.25,0.25),adj=c(0.5,-0.5),frame="none",bg="",cex=0.7)
+```
+
+Maintenant, cet arbre peut être parfaitement représenté par une matrice de variance-covariance.
+
+``` {r "vcv of a tree", echo=FALSE}
+(VCV <- vcv(atree))
+```
+
+Les éléments diagonaux de la matrice sont les variances des espèces ; ces nombres représentent la distance totale de la racine de l’arbre aux extrémités. Cela détermine dans quelle mesure les extrémités ont évolué par rapport à la racine. Les éléments hors diagonale sont les covariances entre les espèces. Ils indiquent la proportion du temps pendant laquelle les espèces ont évolué ensemble. Cela correspond à la longueur des branches que deux espèces partagent, à partir de la racine de l’arbre. Par exemple, les espèces $a$ et $c$ ont partagé une histoire commune pendant 0,5 unité de temps ; elles ont donc une covariance de 0,5. Plus la covariance est grande, plus les deux espèces ont partagé la même histoire évolutive.
+
+Si toute la variation entre les espèces était due à la phylogénie et non à la sélection, alors cette matrice de variance-covariance représenterait l’attente de la similitude entre toutes les espèces.
+
+> Notez que toutes les extrémités sont équidistantes de la racine. Lorsque les arbres ont cette propriété, on dit qu’ils sont ***ultramétriques***. La plupart des méthodes comparatives phylogénétiques nécessitent que les arbres soient ultramétriques, bien qu’il existe parfois des moyens de relâcher cette hypothèse. Si vous n’avez pas un arbre ultramétrique, il est possible de le rendre ultramétrique en utilisant la fonction chronopl du package ape. Mais idéalement, il est préférable d’utiliser une méthode phylogénétique qui reconstruit directement des arbres ultramétriques.
+
+La matrice de variance-covariance d’un arbre phylogénétique peut être obtenue à partir d’un arbre en utilisant la fonction vcv du package ape.
+
+```{r "vcv function"}
+# 'atree' correspond à l'arbre phylogénétique montré ci-dessus au format newick
+atree <- "(((a:0.15,b:0.15):0.4,c:0.55):0.5,(d:0.25,e:0.25):0.8);"
+# Lisons maintenant cet arbre et stockons-le comme un objet d'arbre phylogénétique dans R
+atree <- read.tree(text=atree)
+# Afficher l'arbre
+plot(atree)
+# Extraire la matrice de variance-covariance
+varcovar <- vcv(atree)
+# Imprimer la matrice de variance-covariance
+varcovar
+```
+
+C'est excellent, mais nous avons mentionné ci-dessus qu'il s'agit d'une matrice de corrélation dont nous avons besoin dans un GLS pour tenir compte de la corrélation dans les résidus. Pour obtenir une matrice de corrélation à partir de la matrice de variance-covariance montrée ci-dessus, il suffit de diviser la matrice de variance-covariance par la longueur de l'arbre, ou la distance de la racine aux extrémités. Elle peut également être obtenue en utilisant la fonction R `cov2cor`.
+
+```{r "cov2cor"}
+# Convertir la matrice de covariance en une matrice de corrélation
+corrmat <- cov2cor(varcovar)
+# Imprimer la matrice, arrondie à trois décimales
+round(corrmat,3)
+```
+
+Maintenant, les éléments diagonaux sont égaux à 1, indiquant que les espèces sont parfaitement corrélées avec elles-mêmes. Notez qu’il est également possible d’obtenir directement la matrice de corrélation à partir de la fonction `vcv` en utilisant l’option `corr=TRUE`.
+
+```{r "vcv corr=TRUE option"}
+# Obtention d'une matrice de corrélation en utilisant la fonction 'vcv'
+corrmat <- vcv(atree,corr=TRUE)
+round(corrmat,3)
+```
+
+Maintenant que nous savons comment obtenir une matrice de corrélation à partir d’un arbre phylogénétique, nous sommes prêts à exécuter un PGLS.
+
+## Défi no. 2
+
+Pouvez-vous obtenir la matrice de covariance et la matrice de corrélation pour l’arbre phylogénétique des plantes à graines de l’exemple ci-dessus  (`seedplantstree`)?
+
+```{r "Challenge 2", echo=FALSE, eval=FALSE}
+# Matrice de covariance
+seedplants.cov <- vcv(seedplantstree,corr=FALSE)
+round(seedplants.cov,3)
+# Matrice de corrélation
+seedplants.cor <- vcv(seedplantstree,corr=TRUE)
+round(seedplants.cor,3)
+```
+
+
+## Exercices pratiques
+
+Il existe plusieurs façons d’exécuter un PGLS en R. Par exemple, le package `caper` est un package bien connu pour PGLS. Cependant, nous allons utiliser ici la fonction gls du package `nlme`. Cette fonction est robuste et a l’avantage d’être très flexible. En effet, elle permet d’utiliser facilement des modèles plus complexes tels que les modèles à effets mixtes, bien que cela ne soit pas abordé ici.
+
+Avant d’exécuter le PGLS, exécutons le modèle de base avec la fonction `gls` comme référence. Exécuter le modèle linéaire standard avec le package nlme permettra d’exécuter des fonctions de comparaison de modèles dans R (voir ci-dessous), ce qui ne serait pas possible si différents modèles étaient ajustés en utilisant différents packages.
+
+```{r "gls reference"}
+require(nlme)
+shade.pgls0 <- gls(Shade ~ Wd, data = seedplantsdata)
+summary(shade.pgls0)
+```
+
+Vous pouvez voir que la sortie est essentiellement identique à celle de la fonction lm. Cependant, il y a quelques différences. L’une est la présence de l’élément « Correlation: » qui donne la corrélation entre les paramètres estimés. De plus, les « résidus standardisés » sont les résidus bruts divisés par l’erreur standard des résidus (les résidus bruts peuvent être affichés avec `residuals(shade.gls,"response")`).
+
+Maintenant, exécutons un modèle PGLS. Pour attribuer la matrice de corrélation à la fonction `gls`, il suffit d’utiliser l’option `corr` de la fonction `gls`. Cependant, vous devez utiliser une fonction de corrélation spécifique pour que R comprenne qu’il s’agit d’une matrice de corrélation et estime correctement le modèle.
+
+Il existe plusieurs types de structures de corrélation disponibles dans R. Nous commencerons par utiliser l’une des plus simples, appelée `corSymm`, qui suppose que la matrice de corrélation est symétrique. C’est le cas avec les arbres phylogénétiques; la corrélation entre les espèces $a$ et $b$ est la même qu’entre $b$ et $a$. Seule la partie triangulaire inférieure de la matrice doit être transmise à la structure corSymm. Si `mat` est la matrice de corrélation, cela se fait avec la commande `mat[lower.tri(mat)]`. Ensuite, vous passez la matrice de corrélation à la function `gls` en utilisant l'argument `correlation`.
+
+```{r "pgls"}
+# Calculer la matrice de corrélation à partir de l'arbre
+mat <- vcv(seedplantstree,corr=TRUE)
+# Créer la structure de corrélation pour gls
+corr.struct <- corSymm(mat[lower.tri(mat)],fixed=TRUE)
+# Exécuter le pgls
+shade.pgls1 <- gls(Shade ~ Wd, data = seedplantsdata, correlation=corr.struct)
+summary(shade.pgls1)
+```
+
+Notez que le terme `fixed=TRUE` dans la structure corSymm indique que la structure de corrélation est fixée pendant l’optimisation des paramètres.
+
+La sortie est similaire à celle du modèle sans corrélation, sauf pour la sortie de la matrice de corrélation.
+
+Fait intéressant, vous pouvez voir que l’estimation du coefficient pour la pente est plus grande (`r round(summary(shade.pgls1)$tTable[2,1],3)`) qu’avec la régression standard et également significative ($p$=`r round(summary(shade.pgls1)$tTable[2,4],4)`). C’est un exemple positif de PGLS. En effet, la relation entre la tolérance à l’ombre et la densité du bois était obscurcie par la corrélation phylogénétique des résidus. Une fois cette corrélation prise en compte, la relation significative est révélée.
+
+Une relation significative entre la tolérance à l’ombre et la densité du bois a en fait un sens, bien que cette relation ne soit probablement pas causale. En effet, les arbres tolérants à l’ombre sont généralement des espèces de succession et poussent souvent plus lentement, en partie à cause de la disponibilité limitée de la lumière, et ont donc tendance à développer des bois de densité plus élevée.
+
+Maintenant, regardons les résidus du modèle. Pour extraire les résidus corrigés par la structure de corrélation, vous devez demander les résidus normalisés.
+
+
+```{r "pgls residual fit"}
+# Extraire les résidus corrigés par la structure de corrélation
+pgls1.res <- residuals(shade.pgls1,type="normalized")
+# Modifier les paramètres graphiques
+op <- par(mar=c(1,1,1,1))
+# Même tracé que ci-dessus sauf pour utiliser pgls1.res comme résidus
+plot(seedplantstree,type="p",TRUE,label.offset=0.01,cex=0.5,no.margin=FALSE)
+tiplabels(pch=21,bg=cols[ifelse(pgls1.res>0,1,2)],col="black",
+          cex=abs(pgls1.res),adj=0.505)
+legend("topleft",legend=c("-2","-1","0","1","2"),pch=21,
+       pt.bg=cols[c(1,1,1,2,2)],bty="n",
+       text.col="black",cex=0.8,pt.cex=c(2,1,0.1,1,2))
+# Réinitialiser les paramètres graphiques par défaut
+par(op)
+```
+
+Si vous comparez avec l’optimisation des moindres carrés ordinaires, les résidus sont beaucoup moins corrélés phylogénétiquement.
+
+
+### Autres structures de corrélation
+
+Dans le PGLS précédent, nous avons utilisé la structure corSymm pour transmettre la structure de corrélation phylogénétique à gls. Cela fonctionne parfaitement, mais il existe des moyens plus simples. Julien Dutheil a développé des structures phylogénétiques à utiliser spécialement dans les PGLS.
+
+Celui que nous avons utilisé ci-dessus est équivalent à la structure `corBrownian` de `ape`. Cette approche est plus simple et il suffit de transmettre l’arbre à la structure de corrélation. Voici le même exemple en utilisant la structure `corBrownian`.
+
+
+```{r "corBrownian"}
+# Obtenir la structure de corrélation
+bm.corr <- corBrownian(phy=seedplantstree, form=~1)
+# PGLS
+shade.pgls1b <- gls(Shade ~ Wd, data = seedplantsdata, correlation=bm.corr)
+summary(shade.pgls1b)
+```
+
+Vous pouvez voir que les résultats sont identiques. La seule différence est que la structure de corrélation n’est pas affichée dans le résumé. Le `numeric(0)` signifie qu’aucun paramètre n’a été estimé pendant l’optimisation (il et fixe).
+
+Maintenant, vous vous demandez peut-être pourquoi la structure de corrélation ets appelée corBrownian. C'est parce qu'elle utilise le mouvement Brownien pour modéliser l'évolution le long des branches de l'arbre. Ce processus est souvent référé comme un modèle neutre. Si vous voulez en savoir davantage du le modèle Brownien, vous pouvez lire la section \@ref(BM-model) à propos de ce modèle.
+
+## Défi no. 3
+
+Ajuster un modèle PGLS pour voir si le poids des graines (`Sm`) explique la tolérance à l'ombre (`Shade`) à l'aide du jeu de données seedplantdataset. Comment est-ce que ces résultats se comparent avec les résultats d'une régression standard.
+
+```{r "Challenge 3", warning=FALSE, echo=FALSE, eval=FALSE}
+# Ajuster un PGLS avec la fonction gls
+Sm.pgls <- gls(Shade ~ Sm, data = seedplantsdata, correlation=bm.corr)
+# Regarder les résultats
+summary(Sm.pgls)
+# Extraire les résidus corrigés de la structure de corrélation
+Sm.pgls.res <- residuals(Sm.pgls,type="normalized")
+# Représenter les résidus à côté de la phylogénie
+op <- par(mar=c(1,1,1,1))
+plot(seedplantstree,type="p",TRUE,label.offset=0.01,cex=0.5,no.margin=FALSE)
+tiplabels(pch=21,bg=cols[ifelse(Sm.pgls.res>0,1,2)],col="black",
+          cex=abs(Sm.pgls.res),adj=0.505)
+legend("topleft",legend=c("-2","-1","0","1","2"),pch=21,
+       pt.bg=cols[c(1,1,1,2,2)],bty="n",
+       text.col="gray32",cex=0.8,pt.cex=c(2,1,0.1,1,2))
+par(op)
+```

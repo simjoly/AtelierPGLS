@@ -1,0 +1,108 @@
+# Comparaison de modèles
+
+Vous pourriez être intéressé à comparer différents modèles, ce qui est une approche courante en biologie pour la modélisation. Cependant, il y a une petite subtilité à prendre en compte avec les PGLS.
+
+La méthode par défaut pour l'ajustement des modèles avec `gls` est l'estimation par maximum de vraisemblance restreinte (REML), obtenue avec `method="REML"`. Cela diffère de l'estimation standard par maximum de vraisemblance (ML), qui peut être obtenue avec `method="ML"`. La différence entre ces deux méthodes est complexe, mais il suffit de dire qu'elles diffèrent dans la manière dont les paramètres de variance sont estimés. REML fournit des estimations de paramètres moins biaisées et est la méthode privilégiée pour rapporter les coefficients des paramètres dans une publication. C'est également la méthode de choix si vous souhaitez comparer des modèles avec des structures de corrélation (ou de variance) différentes [@zuur2009mixed]. Par exemple, si vous voulez tester si un modèle PGLS avec un $\lambda$ de Pagel optimisé s'ajuste mieux aux données qu'un modèle sans corrélation phylogénétique (c'est-à-dire avec $\lambda$ de Pagel = 0) :
+
+
+```{r "cor structure comparison"}
+pagel.0 <- gls(Shade ~ Wd, data = seedplantsdata, 
+               correlation=corPagel(0,phy=seedplantstree, 
+                                    fixed=TRUE, form=~1), 
+               method="REML")
+pagel.fit <- gls(Shade ~ Wd, data = seedplantsdata, 
+                 correlation=corPagel(0.8,phy=seedplantstree, 
+                                      fixed=FALSE, form=~1),
+                 method="REML")
+anova(pagel.0,pagel.fit)
+```
+
+Vous pouvez utiliser l'AIC ou le BIC pour comparer le modèle, ou le test du rapport de vraisemblance. Vous pouvez voir ici que le modèle PGLS avec un $\lambda$ de Pagel ajusté offre un meilleur ajustement que celui avec un $\lambda=0$ (AIC plus faible). D'ailleurs, il s'agit également d'un test pour déterminer si un modèle PGLS est meilleur qu'un modèle de régression standard, car une structure `corPagel` avec $\lambda=0$ est un modèle standard (= pas de corrélation phylogénétique).
+
+Maintenant, si vous êtes intéressé par le test des paramètres fixes dans le modèle, vous devez utiliser l'ajustement par maximum de vraisemblance [@zuur2009mixed]. Par exemple, si vous souhaitez utiliser un test du rapport de vraisemblance pour tester le modèle avec la densité du bois comme variable indépendante par rapport à un modèle nul avec seulement l'ordonnée à l'origine, vous pouvez procéder comme suit.
+
+
+```{r "fixed effect comparison"}
+wd <- gls(Shade ~ Wd, data = seedplantsdata,
+          correlation=corBrownian(phy=seedplantstree, form=~1), 
+          method="ML")
+null <- gls(Shade ~ 1, data = seedplantsdata,
+            correlation=corBrownian(phy=seedplantstree, form=~1), 
+            method="ML")
+anova(wd,null)
+```
+
+Vous pouvez voir que le modèle avec la variable de densité du bois est meilleur que le modèle avec seulement l'ordonnée à l'origine. Cependant, comme mentionné ci-dessus, étant donné que l'ajustement REML fournit de meilleures estimations des paramètres, vous devrez réajuster le modèle en utilisant REML pour présenter les résultats.
+
+```{r "Final fitting"}
+wd.final <- gls(Shade ~ Wd, data = seedplantsdata,
+                correlation=corBrownian(phy=seedplantstree, form=~1), 
+                method="REML")
+summary(wd.final)
+```
+
+
+
+# Quand devrions-nous utiliser les méthodes comparatives ?
+
+Les méthodes comparatives devraient toujours être utilisées lorsqu'on travaille avec des ensembles de données qui comprennent plusieurs espèces. Un bon conseil est d'utiliser une méthode permettant aux résidus du modèle de ne pas être tous corrélés phylogénétiquement, comme lors de l'utilisation des PGLS avec la structure `corPagel` ou en utilisant le modèle mixte phylogénétique. Des études antérieures ont montré que l'utilisation de telles méthodes comparatives donne lieu à des estimations plus précises et exactes de l'effet fixe, un taux d'erreur de type I plus faible et une puissance statistique plus grande [@revell2010phylogenetic]. Par conséquent, il est toujours avantageux d'utiliser ces méthodes.
+
+Une erreur courante consiste à utiliser les PGLS pour tester le signal phylogénétique dans $Y$ ou $X$ en utilisant soit le $\lambda$ de Pagel ou le $K$ de Blomberg, et si un signal phylogénétique est présent, utiliser un PGLS pour analyser les données et sinon utiliser une régression standard. C'est une **grosse erreur**. Comme nous l'avons vu précédemment, les PGLS corrigent la corrélation phylogénétique dans les résidus et non dans les variables. Par conséquent, la présence d'un signal phylogénétique dans les variables ne signifie pas nécessairement que les résidus sont corrélés phylogénétiquement. Et l'inverse est également vrai : les variables peuvent ne pas être corrélées phylogénétiquement, mais les résidus pourraient l'être !
+
+Une autre idée fausse courante concernant les méthodes comparatives est qu'elles éliminent toute variation dans les données liée à la phylogénie et que cela pourrait affecter l'interprétation de la variable d'intérêt. Cela était vrai pour les anciennes méthodes telles que l'autorégression phylogénétique qui, d'abord, éliminait le signal phylogénétique des données avant de les analyser. Ces approches posaient effectivement problème. Mais les méthodes présentées ici ne souffrent pas de ces problèmes. Elles tiennent compte de la structure phylogénétique et la quantifient, mais elles n'éliminent pas la variation du modèle.
+
+
+# Un dernier mot : le problème de la réplication
+
+Tout biologiste est bien conscient de l'importance de répliquer ses expériences afin d'avoir confiance en ses conclusions. Cela est beaucoup plus complexe lorsque nous considérons l'évolution. Pour tester nos hypothèses sur l'évolution, l'approche idéale serait de rembobiner la "bande de l'évolution" (S. J. Gould) et de laisser l'histoire se répéter plusieurs fois pour voir ce qui se passe. Cela n'est malheureusement pas possible, bien que certaines études d'évolution expérimentale parviennent à reproduire des expériences évolutives.
+
+La méthode comparative phylogénétique introduite dans ce tutoriel est une approche appropriée pour nous protéger d'arriver à des conclusions qui ne sont pas fortement soutenues dans un contexte évolutif. Cependant, même cette approche peut parfois échouer. C'est pourquoi une attention supplémentaire est nécessaire dans de telles études.
+
+En interprétant leurs résultats, les biologistes devraient d'abord se demander s'ils ont suffisamment de réplicats dans leurs données pour tirer des conclusions solides. Et par réplicat, j'entends réplicat évolutif. Considérons l'exemple des plantes à graines présenté ci-dessus.
+
+
+```{r "AngiospermsWithCharacters2", echo=FALSE, warning=FALSE, message=FALSE, fig.height=4, fig.width=5.5, fig.align='center'}
+require(RColorBrewer)
+ColorPalette1 <- brewer.pal(n = 4, name = "Dark2")
+names(ColorPalette1) <- c("no","yes","no","yes")
+
+enclosed.ovules <- as.factor(c("no","no","no","no","no","no","yes","yes","yes","yes","yes"))
+names(enclosed.ovules) <- reduced.landplants.chronos$tip.label
+double.fertilization <- as.factor(c("no","no","no","no","no","no","yes","yes","yes","yes","yes"))
+names(double.fertilization) <- reduced.landplants.chronos$tip.label
+```
+
+```{r "AngiospermsWithCharacters3", echo=FALSE, warning=FALSE, message=FALSE, include=FALSE, fig.height=4, fig.width=5.5, fig.align='center'}
+# SIMMAP
+library(phytools)
+set.seed(10)
+ov<-make.simmap(reduced.landplants.chronos,enclosed.ovules,model="SYM")
+fert<-make.simmap(reduced.landplants.chronos,double.fertilization,model="SYM")
+```
+
+```{r "AngiospermsWithCharacters4", echo=FALSE, warning=FALSE, message=FALSE, fig.height=4, fig.width=5.5, fig.align='center'}
+layout(matrix(1:3,1,3),widths=c(0.41,0.18,0.41))
+plotSimmap(ov, colors=ColorPalette1[1:2], lwd=8, outline=TRUE, mar=c(0,0,1.2,0), offset=10,
+           xlim=c(0,1*max(nodeHeights(reduced.landplants.chronos))))
+title("Ovules enclosed", cex.main=1.5)
+add.simmap.legend(colors=ColorPalette1[1:2],x=0.01*max(nodeHeights(reduced.landplants.chronos)),
+                  y=Ntip(reduced.landplants.chronos),vertical=TRUE,prompt=FALSE)
+
+plot.new()
+plot.window(xlim=c(-0.1,0.1),
+            ylim=get("last_plot.phylo",envir=.PlotPhyloEnv)$y.lim)
+text(rep(0,length(reduced.landplants.chronos$tip.label)),1:Ntip(reduced.landplants.chronos),
+     gsub("_"," ",reduced.landplants.chronos$tip.label),font=3, cex=1.5)
+
+plotSimmap(fert, colors=ColorPalette1[3:4], direction="leftwards", lwd=8, outline=TRUE, 
+           mar=c(0,0,1.2,0), offset=10, xlim=c(0,1*max(nodeHeights(reduced.landplants.chronos))))
+title("Double fertilization", cex.main=1.5)
+add.simmap.legend(colors=ColorPalette1[3:4],x=0.75*max(nodeHeights(reduced.landplants.chronos)),
+                  y=Ntip(reduced.landplants.chronos),vertical=TRUE,prompt=FALSE)
+```
+
+S'il existe plusieurs espèces avec des ovules enfermés ou non et qui effectuent ou non une double fécondation, le scénario le plus parcimonieux pour les deux caractères est que chacun a évolué une fois le long de la branche de l'arbre qui mène aux plantes à fleurs. En d'autres termes, il n'y a eu qu'une seule transition entre les états de chaque caractère dans l'évolution de ce groupe.
+
+Ainsi, même s'il semble y avoir une réplication lorsque nous regardons les espèces (plusieurs espèces avec chaque état de caractère ont été échantillonnées), il n'y a pas de réplication évolutive ! Donc, même si la probabilité que ces deux événements se produisent sur la même branche est très faible et même si un test de contingence pour calculer la probabilité d'un tel événement est significatif, c'est un peu comme une expérience avec un seul réplicat. Par conséquent, même lorsqu'un test qui prend en compte la phylogénie est significatif, une grande prudence est nécessaire lors de l'interprétation de ces résultats. Idéalement, une étude devrait avoir un nombre décent de réplicats évolutifs pour que les résultats soient significatifs sur le plan biologique. Je vous encourage à lire le très bon article de Maddison et Fitzjohn sur le sujet [@maddison2015unsolved].
+
+Idéalement, avant de planifier une expérience, on devrait s'assurer qu'il existe une réplication suffisante dans l'évolution des traits étudiés parmi les espèces considérées pour avoir plus de confiance dans les résultats. Par exemple, il serait beaucoup mieux si chaque caractère avait évolué 5 à 6 fois chacun dans l'exemple précédent, en particulier si les deux caractères évoluaient toujours simultanément !

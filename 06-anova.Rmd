@@ -1,0 +1,24 @@
+# ANOVA phylogénétique
+
+Jusqu'à présent, nous n'avons analysé que des caractères quantitatifs continus. Mais il est également possible de réaliser une ANOVA avec PGLS.
+
+L'avantage de PGLS, tel qu'il est implémenté avec la fonction `gls`, est qu'il peut être facilement adapté pour tester de nombreux types de modèles différents. Pour donner un exemple ici, il est facile de mettre en œuvre une ANOVA phylogénétique en R. En effet, il vous suffit de fournir à `gls` un trait catégoriel en tant que variable indépendante.
+
+Comme il n'y a pas de variable catégorielle dans le jeu de données des traits fonctionnels des plantes, nous allons en créer une en divisant la catégorie de densité du bois en deux catégories : bois léger et bois dense.
+
+```{r "make categorical variable"}
+# Créer une variable catégorielle
+seedplantsdata$Wd.cat<-cut(seedplantsdata$Wd,breaks=2,labels=c("light","dense"))
+# Regarder le résultat
+seedplantsdata$Wd.cat
+```
+
+Nous pouvons maintenant ajuster une ANOVA phylogénétique.
+
+```{r "Phylogenetic ANOVA"}
+# ANOVA phylogénétique
+shade.pgls3 <- gls(Shade ~ Wd.cat, data = seedplantsdata, correlation=pagel.corr)
+summary(shade.pgls3)
+```
+
+Vous pouvez voir que la densité du bois, même transformée en variable catégorielle, a un effet significatif sur la tolérance à l'ombre.
