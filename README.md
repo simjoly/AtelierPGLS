@@ -1,15 +1,15 @@
-# Half-day Workshop on Phylogenetic Comparative Methods
+# Atelier sur les méthodes comparatives
 
-This folder contains material for a half-day workshop introducing Phylogenetic Generalized Least Squares (PGLS) in the R language.
+Ce dépôt contient du matériel pour un atelier d'une demi-journée sur les méthodes comparatives en phylogénie, plus précisément sur les Phylogenetic Generalized Least Squares (PGLS) dans le language R.
 
-The tutorial is published as an html book with bookdown and is available here: https://simjoly.github.io/AtelierPGLS/](https://simjoly.github.io/AtelierPGLS/)
+Le tutoriel est publié dans un livre html et il peut être consulté ici: https://simjoly.github.io/AtelierPGLS/](https://simjoly.github.io/AtelierPGLS/)
 
 
-## Presentation
+## Présentation
 
-[Phylogenies and Statistics](https://github.com/simjoly/AtelierPGLS/blob/master/PGLS_presentation.pdf) | pdf of the presentation
+[Phylogenies and Statistics](https://github.com/simjoly/AtelierPGLS/blob/master/PGLS_presentation.pdf) | pdf de la présentation
 
 
 ----
 
-The material was last updated in February 2023.
+Material mis à jour en novembre 2024.

@@ -45,4 +45,4 @@ Ce tutoriel est disponible publiquement et est hébergé sur github dans de dép
 
 ## Disclaimer
 
-Ce ttoriel est distribué tel quel, avec aucun garantie qu'il va fonctionner ou que les analyses seront à jour.
+Ce tutoriel est distribué tel quel, avec aucun garantie qu'il va fonctionner ou que les analyses seront à jour.
