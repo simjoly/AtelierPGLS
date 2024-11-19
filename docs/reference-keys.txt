@@ -9,11 +9,11 @@ download
 familiarisez-vous-avec-les-arbres-phylogénétiques-dans-r
 intro
 linear-regression
-théorie
-pratique
-défi-no.-1
+theory
+practice
+challenge-1
 pgls
-théorie-1
+théorie
 structure-de-corrélation-phylogénétique
 défi-no.-2
 exercices-pratiques
