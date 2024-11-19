@@ -7,7 +7,7 @@ Le tutoriel est publié dans un livre html et il peut être consulté ici: [http
 
 ## Présentation
 
-[Phylogenies and Statistics](https://github.com/simjoly/AtelierPGLS/blob/master/PGLS_presentation.pdf) | pdf de la présentation
+[Introduction aux PGLS](https://github.com/simjoly/AtelierPGLS/blob/master/PGLS_presentation.pdf) | pdf de la présentation
 
 
 ----
