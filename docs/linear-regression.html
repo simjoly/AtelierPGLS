@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 The linear regression model | Atelier sur les méthodes comparées</title>
+  <title>4 Le modèle de régression linéaire | Atelier sur les méthodes comparées</title>
   <meta name="description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 The linear regression model | Atelier sur les méthodes comparées" />
+  <meta property="og:title" content="4 Le modèle de régression linéaire | Atelier sur les méthodes comparées" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 The linear regression model | Atelier sur les méthodes comparées" />
+  <meta name="twitter:title" content="4 Le modèle de régression linéaire | Atelier sur les méthodes comparées" />
   
   <meta name="twitter:description" content="Livre qui contient l’information pour un atelier d’une demi-journée sur les méthodes comparées" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Simon Joly" />
 
 
-<meta name="date" content="2024-11-19" />
+<meta name="date" content="2024-12-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,15 +180,15 @@ div.csl-indent {
 <li class="chapter" data-level="2.3" data-path="before.html"><a href="before.html#familiarisez-vous-avec-les-arbres-phylogénétiques-dans-r"><i class="fa fa-check"></i><b>2.3</b> Familiarisez-vous avec les arbres phylogénétiques dans R</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>3</b> Une introduction aux méthodes comparatives phylogénétiques</a></li>
-<li class="chapter" data-level="4" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>4</b> The linear regression model</a>
+<li class="chapter" data-level="4" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>4</b> Le modèle de régression linéaire</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="linear-regression.html"><a href="linear-regression.html#theory"><i class="fa fa-check"></i><b>4.1</b> Theory</a></li>
-<li class="chapter" data-level="4.2" data-path="linear-regression.html"><a href="linear-regression.html#practice"><i class="fa fa-check"></i><b>4.2</b> Practice</a></li>
-<li class="chapter" data-level="4.3" data-path="linear-regression.html"><a href="linear-regression.html#challenge-1"><i class="fa fa-check"></i><b>4.3</b> Challenge 1</a></li>
+<li class="chapter" data-level="4.1" data-path="linear-regression.html"><a href="linear-regression.html#théorie"><i class="fa fa-check"></i><b>4.1</b> Théorie</a></li>
+<li class="chapter" data-level="4.2" data-path="linear-regression.html"><a href="linear-regression.html#pratique"><i class="fa fa-check"></i><b>4.2</b> Pratique</a></li>
+<li class="chapter" data-level="4.3" data-path="linear-regression.html"><a href="linear-regression.html#défi-no.-1"><i class="fa fa-check"></i><b>4.3</b> Défi no. 1</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="pgls.html"><a href="pgls.html"><i class="fa fa-check"></i><b>5</b> Phylogenetic generalized least squares (PGLS)</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="pgls.html"><a href="pgls.html#théorie"><i class="fa fa-check"></i><b>5.1</b> Théorie</a>
+<li class="chapter" data-level="5.1" data-path="pgls.html"><a href="pgls.html#théorie-1"><i class="fa fa-check"></i><b>5.1</b> Théorie</a>
 <ul>
 <li class="chapter" data-level="5.1.1" data-path="pgls.html"><a href="pgls.html#structure-de-corrélation-phylogénétique"><i class="fa fa-check"></i><b>5.1.1</b> Structure de corrélation phylogénétique</a></li>
 </ul></li>
@@ -259,39 +259,39 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="linear-regression" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">4</span> The linear regression model<a href="linear-regression.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="theory" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> Theory<a href="linear-regression.html#theory" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The linear model has the following form:</p>
+<h1><span class="header-section-number">4</span> Le modèle de régression linéaire<a href="linear-regression.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="théorie" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Théorie<a href="linear-regression.html#théorie" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Le modèle linéaire a la forme suivante :</p>
 <p><span class="math display">\[\textbf{y} = \alpha + \beta \textbf{x} + \textbf{e}\]</span></p>
-<p><span class="math inline">\(\textbf{y}\)</span> is the response (or dependent) variable, <span class="math inline">\(\textbf{x}\)</span> is the explanatory (or independent) variable, and <span class="math inline">\(\textbf{e}\)</span> represent the residuals or in other words the variation not explained by the model. For a simple linear regression model, this represents the distance between the observations (i.e., the real data) and the regression line (i.e., the prediction of the model) along the <span class="math inline">\(y\)</span> axis. The parameters <span class="math inline">\(\alpha\)</span> represents the intercept, which is the <span class="math inline">\(y\)</span> value where the regression line crosses the <span class="math inline">\(y\)</span> axis, whereas the parameter <span class="math inline">\(\beta\)</span> represent the slope of the line. In practice, you take a sample of size <span class="math inline">\(N\)</span> and you get estimates <span class="math inline">\(\hat{\alpha}\)</span> and <span class="math inline">\(\hat{\beta}\)</span> for the intercept and the slope, respectively. When the linear regression is fitted using ordinary least squares (OLS), the residuals <span class="math inline">\(\textbf{e}\)</span> are assumed to be normally distributed with an expectation <span class="math inline">\(0\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. In mathematical terms, <span class="math inline">\(\textbf{e} \sim N(0,\sigma^2)\)</span>.</p>
-<p>Obtaining reliable estimates with a linear regression implies that the data meets several assumptions, amongst which are normality, homogeneity, fixed <span class="math inline">\(X\)</span>, independence, and correct model specification. We won’t review all these here, but we will focus on one that is often violated when the data are phylogenetically structured, which is <strong>independence</strong>. This assumption is important as a lack of independence invalidates important tests such as the F-test and the t-test.</p>
-<p>You get a violation of independence when the <span class="math inline">\(\textbf{y}_i\)</span> value at <span class="math inline">\(\textbf{x}_i\)</span> is influenced by other <span class="math inline">\(\textbf{x}_i\)</span>. Obviously, this can happen with phylogenetically structured data as a response variable is be more likely to react similarly in closely related species because they share many characters by decent. In other words, the <span class="math inline">\(y\)</span> value for a species in not completely independent from the <span class="math inline">\(y\)</span> value of a closely related species: their <span class="math inline">\(y\)</span> are correlated. We’ll illustrate this in an example below.</p>
+<p><span class="math inline">\(\textbf{y}\)</span> est la variable de réponse (ou dépendante), <span class="math inline">\(\textbf{x}\)</span> est la variable explicative (ou indépendante), et <span class="math inline">\(\textbf{e}\)</span> représente les résidus ou en d’autres termes la variation non expliqué par le modèle. Pour un modèle de régression linéaire simple, cela représente la distance entre les observations (c’est-à-dire les données réelles) et la ligne de régression (c’est-à-dire la prédiction du modèle) le long de l’axe <span class="math inline">\(y\)</span>. Le paramètre <span class="math inline">\(\alpha\)</span> représente l’ordonnée à l’origine, qui est la valeur <span class="math inline">\(y\)</span> où la ligne de régression croise l’axe <span class="math inline">\(y\)</span>, tandis que le paramètre <span class="math inline">\(\beta\)</span> représente la pente de la ligne. En pratique, vous prenez un échantillon de taille <span class="math inline">\(N\)</span> et vous obtenez des estimations <span class="math inline">\(\hat{\alpha}\)</span> et <span class="math inline">\(\hat{\beta}\)</span> pour l’ordonnée à l’origine et la pente, respectivement. Lorsque la régression linéaire est ajustée à l’aide des moindres carrés ordinaires (OLS), les résidus <span class="math inline">\(\textbf{e}\)</span> sont supposés être normalement distribués avec une espérance <span class="math inline">\(0\)</span> et une variance <span class="math inline">\(\sigma^2\)</span>. En termes mathématiques, <span class="math inline">\(\textbf{e} \sim N(0,\sigma^2)\)</span>.</p>
+<p>L’obtention d’estimations fiables avec une régression linéaire implique que les données répondent à plusieurs hypothèses, parmi lesquelles la normalité, l’homogénéité, le <span class="math inline">\(X\)</span> fixe, l’indépendance et la spécification correcte du modèle. Nous n’examinerons pas tous ces éléments ici, mais nous nous concentrerons sur celui qui est souvent violé lorsque les données sont structurées phylogénétiquement, à savoir l’<strong>indépendance</strong>. Cette hypothèse est importante car un manque d’indépendance invalide des tests importants tels que le test F et le test t.</p>
+<p>Vous obtenez une violation de l’indépendance lorsque la valeur <span class="math inline">\(\textbf{y}_i\)</span> à <span class="math inline">\(\textbf{x}_i\)</span> est influencée par d’autres <span class="math inline">\(\textbf{x}_i\)</span>. Évidemment, cela peut se produire avec des données phylogénétiquement structurées, car une variable de réponse est plus susceptible de réagir de la même manière chez des espèces étroitement apparentées, car elles partagent de nombreux caractères par voie décente. En d’autres termes, la valeur <span class="math inline">\(y\)</span> d’une espèce n’est pas complètement indépendante de la valeur <span class="math inline">\(y\)</span> d’une espèce étroitement apparentée : leurs <span class="math inline">\(y\)</span> sont corrélés. Nous allons illustrer cela dans un exemple ci-dessous.</p>
 </div>
-<div id="practice" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Practice<a href="linear-regression.html#practice" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To provide pratical examples in this workshop, we will use a dataset of tree functional traits from the province of Quebec <span class="citation">(<a href="#ref-paquette2015explaining">Paquette, Joly, and Messier 2015</a>)</span>. The dataset consists in a number of plant functional traits and in a molecular phylogeny built using the plant barcode markers <em>rbc</em>L and <em>mat</em>K. The dataset you need to run the examples are already in the /data/ folder of the github repository. However, you can also download them by clicking on the links below.</p>
+<div id="pratique" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Pratique<a href="linear-regression.html#pratique" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Pour fournir des exemples pratiques dans cet atelier, nous utiliserons un ensemble de données de traits fonctionnels d’arbres de la province de Québec <span class="citation">(<a href="#ref-paquette2015explaining">Paquette, Joly, and Messier 2015</a>)</span>. L’ensemble de données comprend un certain nombre de traits fonctionnels des plantes et une phylogénie moléculaire construite à l’aide des marqueurs de codes-barres végétaux <em>rbc</em>L et <em>mat</em>K. L’ensemble de données dont vous avez besoin pour exécuter les exemples se trouve déjà dans le dossier /data/ du référentiel github. Cependant, vous pouvez également les télécharger en cliquant sur les liens ci-dessous.</p>
 <p><a href="https://simjoly.github.io/ComparativeMethods-HalfDayWorkshop/data/seedplants.tre">seedplants.tre</a></p>
 <p><a href="https://simjoly.github.io/ComparativeMethods-HalfDayWorkshop/data/seedplants.csv">seedplants.csv</a></p>
-<p>Before analysing the data, we will start by opening the data and the phylogenetic tree and clean them to keep only the species present in both the tree and the trait table. This is necessary because some additional species were included in the phylogenetic tree analysis.</p>
+<p>Avant d’analyser les données, nous commencerons par ouvrir les données et l’arbre phylogénétique et les nettoyer pour ne conserver que les espèces présentes à la fois dans l’arbre et dans le tableau des traits. Cela est nécessaire car certaines espèces supplémentaires ont été incluses dans l’analyse phylogénétique.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="linear-regression.html#cb7-1" tabindex="-1"></a><span class="fu">require</span>(ape)</span>
-<span id="cb7-2"><a href="linear-regression.html#cb7-2" tabindex="-1"></a><span class="co"># Open the documents; it assumes that you are in the main directory of the workshop folder</span></span>
+<span id="cb7-2"><a href="linear-regression.html#cb7-2" tabindex="-1"></a><span class="co"># Ouvrir les documents ; cela suppose que vous êtes dans le répertoire principal du dossier de l&#39;atelier</span></span>
 <span id="cb7-3"><a href="linear-regression.html#cb7-3" tabindex="-1"></a>seedplantstree <span class="ot">&lt;-</span> <span class="fu">read.nexus</span>(<span class="st">&quot;./data/seedplants.tre&quot;</span>)</span>
 <span id="cb7-4"><a href="linear-regression.html#cb7-4" tabindex="-1"></a>seedplantsdata <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;./data/seedplants.csv&quot;</span>)</span>
-<span id="cb7-5"><a href="linear-regression.html#cb7-5" tabindex="-1"></a><span class="co"># Remove species for which we don&#39;t have complete data</span></span>
+<span id="cb7-5"><a href="linear-regression.html#cb7-5" tabindex="-1"></a><span class="co"># Supprimer les espèces pour lesquelles nous n&#39;avons pas de données complètes</span></span>
 <span id="cb7-6"><a href="linear-regression.html#cb7-6" tabindex="-1"></a>seedplantsdata <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(seedplantsdata)</span>
-<span id="cb7-7"><a href="linear-regression.html#cb7-7" tabindex="-1"></a><span class="co"># Remove species in the tree that are not in the data matrix</span></span>
+<span id="cb7-7"><a href="linear-regression.html#cb7-7" tabindex="-1"></a><span class="co"># Supprimer les espèces de l&#39;arbre qui ne sont pas dans la matrice de données</span></span>
 <span id="cb7-8"><a href="linear-regression.html#cb7-8" tabindex="-1"></a>species.to.exclude <span class="ot">&lt;-</span> seedplantstree<span class="sc">$</span>tip.label[<span class="sc">!</span>(seedplantstree<span class="sc">$</span>tip.label <span class="sc">%in%</span> seedplantsdata<span class="sc">$</span>Code)]</span>
 <span id="cb7-9"><a href="linear-regression.html#cb7-9" tabindex="-1"></a>seedplantstree <span class="ot">&lt;-</span> <span class="fu">drop.tip</span>(seedplantstree,species.to.exclude)</span>
-<span id="cb7-10"><a href="linear-regression.html#cb7-10" tabindex="-1"></a><span class="co"># Remove unnecessary object</span></span>
+<span id="cb7-10"><a href="linear-regression.html#cb7-10" tabindex="-1"></a><span class="co"># Supprimer l&#39;objet inutile</span></span>
 <span id="cb7-11"><a href="linear-regression.html#cb7-11" tabindex="-1"></a><span class="fu">rm</span>(species.to.exclude)</span>
-<span id="cb7-12"><a href="linear-regression.html#cb7-12" tabindex="-1"></a><span class="co"># Order the tree to make it nicer when plotting</span></span>
+<span id="cb7-12"><a href="linear-regression.html#cb7-12" tabindex="-1"></a><span class="co"># Ordonner l&#39;arbre pour qu&#39;il soit plus esthétique lors du tracé</span></span>
 <span id="cb7-13"><a href="linear-regression.html#cb7-13" tabindex="-1"></a>seedplantstree <span class="ot">&lt;-</span> <span class="fu">ladderize</span>(seedplantstree, <span class="at">right =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb7-14"><a href="linear-regression.html#cb7-14" tabindex="-1"></a><span class="co"># Now let&#39;s look at the tree</span></span>
+<span id="cb7-14"><a href="linear-regression.html#cb7-14" tabindex="-1"></a><span class="co"># Maintenant, regardons l&#39;arbre</span></span>
 <span id="cb7-15"><a href="linear-regression.html#cb7-15" tabindex="-1"></a><span class="fu">plot</span>(seedplantstree,<span class="at">cex=</span><span class="fl">0.4</span>)</span></code></pre></div>
 <p><img src="pcm-workshop_files/figure-html/Open_seed_plant_data-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Now, we can have a look at the data, and then order the plant trait to be in the same order as the species in the tree.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="linear-regression.html#cb8-1" tabindex="-1"></a><span class="co"># Here is what the loaded data looks like</span></span>
+<p>Maintenant, nous pouvons jeter un œil aux données, puis ordonner le trait des plantes pour qu’il soit dans le même ordre que les espèces de l’arbre.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="linear-regression.html#cb8-1" tabindex="-1"></a><span class="co"># Voici à quoi ressemblent les données chargées</span></span>
 <span id="cb8-2"><a href="linear-regression.html#cb8-2" tabindex="-1"></a><span class="fu">head</span>(seedplantsdata)</span></code></pre></div>
 <pre><code>##   Code       Species.name Occurrence maxH   Wd    Sm Shade    N
 ## 1 ABBA     Abies balsamea       7759   25 0.34   7.6   5.0 1.66
@@ -300,16 +300,15 @@ div.csl-indent {
 ## 4 ACPE Acer pensylvanicum        665   10 0.44  41.0   3.5 2.22
 ## 5 ACPL   Acer platanoides          0   15 0.51 172.0   4.2 1.99
 ## 6 ACRU        Acer rubrum       3669   25 0.49  20.0   3.4 1.91</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="linear-regression.html#cb10-1" tabindex="-1"></a><span class="co"># Name the rows of the data.frame with the species codes used as tree labels </span></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="linear-regression.html#cb10-1" tabindex="-1"></a><span class="co"># Nommer les lignes du data.frame avec les codes des espèces utilisés comme étiquettes d&#39;arbre </span></span>
 <span id="cb10-2"><a href="linear-regression.html#cb10-2" tabindex="-1"></a><span class="fu">rownames</span>(seedplantsdata) <span class="ot">&lt;-</span> seedplantsdata<span class="sc">$</span>Code</span>
-<span id="cb10-3"><a href="linear-regression.html#cb10-3" tabindex="-1"></a><span class="co"># Order the data in the same order as the tip.label of the tree. In the present </span></span>
-<span id="cb10-4"><a href="linear-regression.html#cb10-4" tabindex="-1"></a><span class="co">#  example, this was already the case, but it is an important step for </span></span>
-<span id="cb10-5"><a href="linear-regression.html#cb10-5" tabindex="-1"></a><span class="co">#  any analysis.</span></span>
-<span id="cb10-6"><a href="linear-regression.html#cb10-6" tabindex="-1"></a>seedplantsdata <span class="ot">&lt;-</span> seedplantsdata[seedplantstree<span class="sc">$</span>tip.label,]</span></code></pre></div>
-<p>Now that the data is ready, let’s fit a linear model and try to explain shade tolerance (Shade) of trees using wood density (Wd). In R, a very simple way to do a regression is to use the function ‘lm’, which stands for linear model. To fit a linear model, you need to tell the <code>lm</code> function which variable is the response variable and which one is the explanatory variable. This is done using formulas in the form <code>Shade ~ Wd</code>. The variable at the left of the tilde (‘~’) is the response variable (<code>Shade</code>) whereas the explanatory variale (1 or more) are at the right of the tilde.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="linear-regression.html#cb11-1" tabindex="-1"></a><span class="co"># Fit a linear model using Ordinary Least Squares (OLS)</span></span>
+<span id="cb10-3"><a href="linear-regression.html#cb10-3" tabindex="-1"></a><span class="co"># Ordonner les données dans le même ordre que les étiquettes de l&#39;arbre. Dans cet exemple </span></span>
+<span id="cb10-4"><a href="linear-regression.html#cb10-4" tabindex="-1"></a><span class="co">#  précis, c&#39;était déjà le cas, mais c&#39;est une étape importante pour toute analyse.</span></span>
+<span id="cb10-5"><a href="linear-regression.html#cb10-5" tabindex="-1"></a>seedplantsdata <span class="ot">&lt;-</span> seedplantsdata[seedplantstree<span class="sc">$</span>tip.label,]</span></code></pre></div>
+<p>Maintenant que les données sont prêtes, réalisons un modèle linéaire et essayons d’expliquer la tolérance à l’ombre (Ombre) des arbres en utilisant la densité du bois (Wd). En R, un moyen très simple de faire une régression consiste à utiliser la fonction « lm », qui signifie modèle linéaire. Pour ajuster un modèle linéaire, vous devez indiquer à la fonction <code>lm</code> quelle variable est la variable de réponse et laquelle est la variable explicative. Cela se fait à l’aide de formules sous la forme « Shade ~ Wd ». La variable à gauche du tilde (« ~ ») est la variable de réponse (« Shade ») tandis que les variables explicatives (1 ou plus) sont à droite du tilde.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="linear-regression.html#cb11-1" tabindex="-1"></a><span class="co"># Ajuster un modèle linéaire en utilisant les moindres carrés ordinaires (MCO)</span></span>
 <span id="cb11-2"><a href="linear-regression.html#cb11-2" tabindex="-1"></a>shade.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(Shade <span class="sc">~</span> Wd, <span class="at">data =</span> seedplantsdata)</span>
-<span id="cb11-3"><a href="linear-regression.html#cb11-3" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb11-3"><a href="linear-regression.html#cb11-3" tabindex="-1"></a><span class="co"># Imprimer les résultats</span></span>
 <span id="cb11-4"><a href="linear-regression.html#cb11-4" tabindex="-1"></a><span class="fu">summary</span>(shade.lm)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -329,42 +328,42 @@ div.csl-indent {
 ## Residual standard error: 1.146 on 55 degrees of freedom
 ## Multiple R-squared:  0.02374,    Adjusted R-squared:  0.005992 
 ## F-statistic: 1.338 on 1 and 55 DF,  p-value: 0.2525</code></pre>
-<p>You can see that the slope estimate (here the parameter <code>Wd</code>) is 1.81 and that is not significant (<span class="math inline">\(p\)</span>=0.252). The standard descriptive plots obtained with <code>plot(shade.lm)</code> show that there is slightly greater variation in the residuals for low fitted values, but these are not extreme. However, another way that the assumption of independence can be violated is if the residuals are phylogenetically correlated. One way to test this is to plot the residuals at the tips of the phylogeny. Let’s see what this gives.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="linear-regression.html#cb13-1" tabindex="-1"></a><span class="co"># Extract the residuals</span></span>
+<p>Vous pouvez voir que l’estimation de la pente (ici le paramètre <code>Wd</code>) est 1.81 et ce n’est pas significatif (<span class="math inline">\(p\)</span>=0.252). Les tracés descriptifs standard obtenus avec <code>plot(shade.lm)</code> montrent qu’il existe une variation légèrement plus grande dans les résidus pour les valeurs ajustées faibles, mais celles-ci ne sont pas extrêmes. Cependant, l’hypothèse d’indépendance peut également être violée si les résidus sont phylogénétiquement corrélés. Une façon de tester cela consiste à tracer les résidus aux extrémités de la phylogénie. Voyons ce que cela donne.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="linear-regression.html#cb13-1" tabindex="-1"></a><span class="co"># Extraire les résidus</span></span>
 <span id="cb13-2"><a href="linear-regression.html#cb13-2" tabindex="-1"></a>shade.res <span class="ot">&lt;-</span> <span class="fu">residuals</span>(shade.lm)</span>
 <span id="cb13-3"><a href="linear-regression.html#cb13-3" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="linear-regression.html#cb13-4" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb13-5"><a href="linear-regression.html#cb13-5" tabindex="-1"></a><span class="co"># Plot the residuals beside the phylogeny</span></span>
+<span id="cb13-5"><a href="linear-regression.html#cb13-5" tabindex="-1"></a><span class="co"># Tracer les résidus à côté de la phylogénie</span></span>
 <span id="cb13-6"><a href="linear-regression.html#cb13-6" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="linear-regression.html#cb13-7" tabindex="-1"></a><span class="co"># The following command changes the graphical parameters for nicer tree output</span></span>
+<span id="cb13-7"><a href="linear-regression.html#cb13-7" tabindex="-1"></a><span class="co"># La commande suivante modifie les paramètres graphiques pour un meilleur rendu de l&#39;arbre</span></span>
 <span id="cb13-8"><a href="linear-regression.html#cb13-8" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb13-9"><a href="linear-regression.html#cb13-9" tabindex="-1"></a><span class="co"># Vector of colors for the tree plotting</span></span>
+<span id="cb13-9"><a href="linear-regression.html#cb13-9" tabindex="-1"></a><span class="co"># Vecteur de couleurs pour le tracé de l&#39;arbre</span></span>
 <span id="cb13-10"><a href="linear-regression.html#cb13-10" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#7570b3&quot;</span>,<span class="st">&quot;#d95f02&quot;</span>)</span>
-<span id="cb13-11"><a href="linear-regression.html#cb13-11" tabindex="-1"></a><span class="co"># The next three commands will plot the tree, then circles that reflect </span></span>
-<span id="cb13-12"><a href="linear-regression.html#cb13-12" tabindex="-1"></a><span class="co">#  the residuals values at the tips of the tree, and will finally</span></span>
-<span id="cb13-13"><a href="linear-regression.html#cb13-13" tabindex="-1"></a><span class="co">#  add a legend.</span></span>
-<span id="cb13-14"><a href="linear-regression.html#cb13-14" tabindex="-1"></a><span class="co"># The plot command plots the tree and leaves some space to plot the </span></span>
-<span id="cb13-15"><a href="linear-regression.html#cb13-15" tabindex="-1"></a><span class="co">#  residuals at the tips with the &#39;label.offset=0.01&#39; option</span></span>
+<span id="cb13-11"><a href="linear-regression.html#cb13-11" tabindex="-1"></a><span class="co"># Les trois commandes suivantes vont tracer l&#39;arbre, puis des cercles reflétant </span></span>
+<span id="cb13-12"><a href="linear-regression.html#cb13-12" tabindex="-1"></a><span class="co">#  les valeurs résiduelles aux extrémités de l&#39;arbre, et enfin</span></span>
+<span id="cb13-13"><a href="linear-regression.html#cb13-13" tabindex="-1"></a><span class="co">#  ajouter une légende.</span></span>
+<span id="cb13-14"><a href="linear-regression.html#cb13-14" tabindex="-1"></a><span class="co"># La commande plot trace l&#39;arbre et laisse un espace pour tracer les </span></span>
+<span id="cb13-15"><a href="linear-regression.html#cb13-15" tabindex="-1"></a><span class="co">#  résidus aux extrémités avec l&#39;option &#39;label.offset=0.01&#39;</span></span>
 <span id="cb13-16"><a href="linear-regression.html#cb13-16" tabindex="-1"></a><span class="fu">plot</span>(seedplantstree,<span class="at">type=</span><span class="st">&quot;p&quot;</span>,<span class="cn">TRUE</span>,<span class="at">label.offset=</span><span class="fl">0.01</span>,<span class="at">cex=</span><span class="fl">0.5</span>,<span class="at">no.margin=</span><span class="cn">FALSE</span>)</span>
-<span id="cb13-17"><a href="linear-regression.html#cb13-17" tabindex="-1"></a><span class="co"># The next command plots the residuals. the &#39;bg&#39; option is for the background color.</span></span>
-<span id="cb13-18"><a href="linear-regression.html#cb13-18" tabindex="-1"></a><span class="co">#  If the residuals are greater than 0 (shade.res&gt;0), it will print the first color</span></span>
-<span id="cb13-19"><a href="linear-regression.html#cb13-19" tabindex="-1"></a><span class="co">#  (1) of the &#39;cols&#39; array and if it is below zero, it prints the second color (2). </span></span>
-<span id="cb13-20"><a href="linear-regression.html#cb13-20" tabindex="-1"></a><span class="co">#  The the size of the circle (the &#39;cex&#39; option) is relative to the absolute value </span></span>
-<span id="cb13-21"><a href="linear-regression.html#cb13-21" tabindex="-1"></a><span class="co">#  of the residuals (abs(shade.res). To plot other values, just replace the </span></span>
-<span id="cb13-22"><a href="linear-regression.html#cb13-22" tabindex="-1"></a><span class="co">#  &#39;shade.res&#39; vector by another one.</span></span>
+<span id="cb13-17"><a href="linear-regression.html#cb13-17" tabindex="-1"></a><span class="co"># La commande suivante trace les résidus. l&#39;option &#39;bg&#39; est pour la couleur de fond.</span></span>
+<span id="cb13-18"><a href="linear-regression.html#cb13-18" tabindex="-1"></a><span class="co">#  Si les résidus sont supérieurs à 0 (shade.res&gt;0), il affichera la première couleur</span></span>
+<span id="cb13-19"><a href="linear-regression.html#cb13-19" tabindex="-1"></a><span class="co">#  (1) du tableau &#39;cols&#39; et s&#39;il est inférieur à zéro, il affiche la deuxième couleur (2). </span></span>
+<span id="cb13-20"><a href="linear-regression.html#cb13-20" tabindex="-1"></a><span class="co">#  La taille du cercle (l&#39;option &#39;cex&#39;) est relative à la valeur absolue </span></span>
+<span id="cb13-21"><a href="linear-regression.html#cb13-21" tabindex="-1"></a><span class="co">#  des résidus (abs(shade.res). Pour tracer d&#39;autres valeurs, remplacez simplement le </span></span>
+<span id="cb13-22"><a href="linear-regression.html#cb13-22" tabindex="-1"></a><span class="co">#  vecteur &#39;shade.res&#39; par un autre.</span></span>
 <span id="cb13-23"><a href="linear-regression.html#cb13-23" tabindex="-1"></a><span class="fu">tiplabels</span>(<span class="at">pch=</span><span class="dv">21</span>,<span class="at">bg=</span>cols[<span class="fu">ifelse</span>(shade.res<span class="sc">&gt;</span><span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>)],<span class="at">col=</span><span class="st">&quot;black&quot;</span>,<span class="at">cex=</span><span class="fu">abs</span>(shade.res),<span class="at">adj=</span><span class="fl">0.505</span>)</span>
-<span id="cb13-24"><a href="linear-regression.html#cb13-24" tabindex="-1"></a><span class="co"># Print the legend</span></span>
+<span id="cb13-24"><a href="linear-regression.html#cb13-24" tabindex="-1"></a><span class="co"># Imprimer la légende</span></span>
 <span id="cb13-25"><a href="linear-regression.html#cb13-25" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;2&quot;</span>),<span class="at">pch=</span><span class="dv">21</span>,</span>
 <span id="cb13-26"><a href="linear-regression.html#cb13-26" tabindex="-1"></a>       <span class="at">pt.bg=</span>cols[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>)],<span class="at">bty=</span><span class="st">&quot;n&quot;</span>,</span>
 <span id="cb13-27"><a href="linear-regression.html#cb13-27" tabindex="-1"></a>       <span class="at">text.col=</span><span class="st">&quot;gray32&quot;</span>,<span class="at">cex=</span><span class="fl">0.8</span>,<span class="at">pt.cex=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">2</span>))</span></code></pre></div>
 <p><img src="pcm-workshop_files/figure-html/Residuals%20of%20lm%20on%20phylogeny-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="linear-regression.html#cb14-1" tabindex="-1"></a><span class="co"># Reset graphical parameters to defaults</span></span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="linear-regression.html#cb14-1" tabindex="-1"></a><span class="co"># Réinitialiser les paramètres graphiques par défaut</span></span>
 <span id="cb14-2"><a href="linear-regression.html#cb14-2" tabindex="-1"></a><span class="fu">par</span>(op) </span></code></pre></div>
-<p>You can see that in several cases, closely related species tend to have similar residuals (they are of the same color, which means that they are of the same side of the regression slope). This is problematic. Indeed, it shows that the assumption of independence of the ordinary least squares (OLS) regression no longer holds and the statistical tests for the null hypotheses are no longer valid. We will see next how phylogenetic generalized least squares can correct this.</p>
+<p>Vous pouvez voir que dans plusieurs cas, des espèces étroitement apparentées ont tendance à avoir des résidus similaires (ils sont de la même couleur, ce qui signifie qu’ils sont du même côté de la pente de régression). C’est problématique. En effet, cela montre que l’hypothèse d’indépendance de la régression des moindres carrés ordinaires (MCO) n’est plus valable et que les tests statistiques pour les hypothèses nulles ne sont plus valides. Nous verrons ensuite comment les moindres carrés généralisés phylogénétiques peuvent corriger cela.</p>
 </div>
-<div id="challenge-1" class="section level2 hasAnchor" number="4.3">
-<h2><span class="header-section-number">4.3</span> Challenge 1<a href="linear-regression.html#challenge-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In the <code>seedplantsdata</code> data frame, there were many different traits. Try to fit a regression of tree shade tolerance (<code>shade</code>) on the seed mass (<code>Sm</code>). In other words, test if shade tolerance can be explained by the seed mass of the trees. Then, try to see if the residuals are phylogenetically correlated.</p>
+<div id="défi-no.-1" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Défi no. 1<a href="linear-regression.html#défi-no.-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Dans le data frame <code>seedplantsdata</code>, il y avait plusieurs traits différents. Essayez d’ajuster une régression de la tolérance à l’ombre des arbres (<code>Shade</code>) en fonction de la masse des graines (<code>Sm</code>). En d’autres termes, testez si la tolérance à l’ombre peut être expliquée par la masse des graines des arbres. Ensuite, essayez de voir si les résidus sont corrélés phylogénétiquement.</p>
 
 </div>
 </div>
@@ -411,7 +410,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-linear-regression.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-regression-lineaire.Rmd",
 "text": "Edit"
 },
 "history": {

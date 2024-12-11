@@ -158,7 +158,7 @@ shade.pgls1b <- gls(Shade ~ Wd, data = seedplantsdata, correlation=bm.corr)
 summary(shade.pgls1b)
 ```
 
-Vous pouvez voir que les résultats sont identiques. La seule différence est que la structure de corrélation n’est pas affichée dans le résumé. Le `numeric(0)` signifie qu’aucun paramètre n’a été estimé pendant l’optimisation (il et fixe).
+Vous pouvez voir que les résultats sont identiques. La seule différence est que la structure de corrélation n’est pas affichée dans le résumé. Le `numeric(0)` signifie qu’aucun paramètre n’a été estimé pendant l’optimisation (il est fixe).
 
 Maintenant, vous vous demandez peut-être pourquoi la structure de corrélation ets appelée corBrownian. C'est parce qu'elle utilise le mouvement Brownien pour modéliser l'évolution le long des branches de l'arbre. Ce processus est souvent référé comme un modèle neutre. Si vous voulez en savoir davantage du le modèle Brownien, vous pouvez lire la section \@ref(BM-model) à propos de ce modèle.
 

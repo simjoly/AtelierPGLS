@@ -134,7 +134,7 @@
 
 \title{Atelier sur les méthodes comparées}
 \author{Simon Joly}
-\date{2024-11-19}
+\date{2024-12-10}
 
 \begin{document}
 \maketitle
@@ -298,57 +298,57 @@ Vous pouvez voir que le résultat n'est plus significatif.
 
 Bien que cette approche pour prendre en compte les relations phylogénétiques soit correcte, des méthodes comparatives plus puissantes ont été développées. Une approche utile et puissante est le modèle de moindres carrés généralisés phylogénétiques (PGLS). Mais avant d'introduire PGLS, nous allons faire une révision et examiner brièvement la régression standard.
 
-\chapter{The linear regression model}\label{linear-regression}
+\chapter{Le modèle de régression linéaire}\label{linear-regression}
 
-\section{Theory}\label{theory}
+\section{Théorie}\label{thuxe9orie}
 
-The linear model has the following form:
+Le modèle linéaire a la forme suivante :
 
 \[\textbf{y} = \alpha + \beta \textbf{x} + \textbf{e}\]
 
-\(\textbf{y}\) is the response (or dependent) variable, \(\textbf{x}\) is the explanatory (or independent) variable, and \(\textbf{e}\) represent the residuals or in other words the variation not explained by the model. For a simple linear regression model, this represents the distance between the observations (i.e., the real data) and the regression line (i.e., the prediction of the model) along the \(y\) axis. The parameters \(\alpha\) represents the intercept, which is the \(y\) value where the regression line crosses the \(y\) axis, whereas the parameter \(\beta\) represent the slope of the line. In practice, you take a sample of size \(N\) and you get estimates \(\hat{\alpha}\) and \(\hat{\beta}\) for the intercept and the slope, respectively. When the linear regression is fitted using ordinary least squares (OLS), the residuals \(\textbf{e}\) are assumed to be normally distributed with an expectation \(0\) and variance \(\sigma^2\). In mathematical terms, \(\textbf{e} \sim N(0,\sigma^2)\).
+\(\textbf{y}\) est la variable de réponse (ou dépendante), \(\textbf{x}\) est la variable explicative (ou indépendante), et \(\textbf{e}\) représente les résidus ou en d'autres termes la variation non expliqué par le modèle. Pour un modèle de régression linéaire simple, cela représente la distance entre les observations (c'est-à-dire les données réelles) et la ligne de régression (c'est-à-dire la prédiction du modèle) le long de l'axe \(y\). Le paramètre \(\alpha\) représente l'ordonnée à l'origine, qui est la valeur \(y\) où la ligne de régression croise l'axe \(y\), tandis que le paramètre \(\beta\) représente la pente de la ligne. En pratique, vous prenez un échantillon de taille \(N\) et vous obtenez des estimations \(\hat{\alpha}\) et \(\hat{\beta}\) pour l'ordonnée à l'origine et la pente, respectivement. Lorsque la régression linéaire est ajustée à l'aide des moindres carrés ordinaires (OLS), les résidus \(\textbf{e}\) sont supposés être normalement distribués avec une espérance \(0\) et une variance \(\sigma^2\). En termes mathématiques, \(\textbf{e} \sim N(0,\sigma^2)\).
 
-Obtaining reliable estimates with a linear regression implies that the data meets several assumptions, amongst which are normality, homogeneity, fixed \(X\), independence, and correct model specification. We won't review all these here, but we will focus on one that is often violated when the data are phylogenetically structured, which is \textbf{independence}. This assumption is important as a lack of independence invalidates important tests such as the F-test and the t-test.
+L'obtention d'estimations fiables avec une régression linéaire implique que les données répondent à plusieurs hypothèses, parmi lesquelles la normalité, l'homogénéité, le \(X\) fixe, l'indépendance et la spécification correcte du modèle. Nous n'examinerons pas tous ces éléments ici, mais nous nous concentrerons sur celui qui est souvent violé lorsque les données sont structurées phylogénétiquement, à savoir l'\textbf{indépendance}. Cette hypothèse est importante car un manque d'indépendance invalide des tests importants tels que le test F et le test t.
 
-You get a violation of independence when the \(\textbf{y}_i\) value at \(\textbf{x}_i\) is influenced by other \(\textbf{x}_i\). Obviously, this can happen with phylogenetically structured data as a response variable is be more likely to react similarly in closely related species because they share many characters by decent. In other words, the \(y\) value for a species in not completely independent from the \(y\) value of a closely related species: their \(y\) are correlated. We'll illustrate this in an example below.
+Vous obtenez une violation de l'indépendance lorsque la valeur \(\textbf{y}_i\) à \(\textbf{x}_i\) est influencée par d'autres \(\textbf{x}_i\). Évidemment, cela peut se produire avec des données phylogénétiquement structurées, car une variable de réponse est plus susceptible de réagir de la même manière chez des espèces étroitement apparentées, car elles partagent de nombreux caractères par voie décente. En d'autres termes, la valeur \(y\) d'une espèce n'est pas complètement indépendante de la valeur \(y\) d'une espèce étroitement apparentée : leurs \(y\) sont corrélés. Nous allons illustrer cela dans un exemple ci-dessous.
 
-\section{Practice}\label{practice}
+\section{Pratique}\label{pratique}
 
-To provide pratical examples in this workshop, we will use a dataset of tree functional traits from the province of Quebec \citep{paquette2015explaining}. The dataset consists in a number of plant functional traits and in a molecular phylogeny built using the plant barcode markers \emph{rbc}L and \emph{mat}K. The dataset you need to run the examples are already in the /data/ folder of the github repository. However, you can also download them by clicking on the links below.
+Pour fournir des exemples pratiques dans cet atelier, nous utiliserons un ensemble de données de traits fonctionnels d'arbres de la province de Québec \citep{paquette2015explaining}. L'ensemble de données comprend un certain nombre de traits fonctionnels des plantes et une phylogénie moléculaire construite à l'aide des marqueurs de codes-barres végétaux \emph{rbc}L et \emph{mat}K. L'ensemble de données dont vous avez besoin pour exécuter les exemples se trouve déjà dans le dossier /data/ du référentiel github. Cependant, vous pouvez également les télécharger en cliquant sur les liens ci-dessous.
 
 \href{https://simjoly.github.io/ComparativeMethods-HalfDayWorkshop/data/seedplants.tre}{seedplants.tre}
 
 \href{https://simjoly.github.io/ComparativeMethods-HalfDayWorkshop/data/seedplants.csv}{seedplants.csv}
 
-Before analysing the data, we will start by opening the data and the phylogenetic tree and clean them to keep only the species present in both the tree and the trait table. This is necessary because some additional species were included in the phylogenetic tree analysis.
+Avant d'analyser les données, nous commencerons par ouvrir les données et l'arbre phylogénétique et les nettoyer pour ne conserver que les espèces présentes à la fois dans l'arbre et dans le tableau des traits. Cela est nécessaire car certaines espèces supplémentaires ont été incluses dans l'analyse phylogénétique.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{require}\NormalTok{(ape)}
-\CommentTok{\# Open the documents; it assumes that you are in the main directory of the workshop folder}
+\CommentTok{\# Ouvrir les documents ; cela suppose que vous êtes dans le répertoire principal du dossier de l\textquotesingle{}atelier}
 \NormalTok{seedplantstree }\OtherTok{\textless{}{-}} \FunctionTok{read.nexus}\NormalTok{(}\StringTok{"./data/seedplants.tre"}\NormalTok{)}
 \NormalTok{seedplantsdata }\OtherTok{\textless{}{-}} \FunctionTok{read.csv2}\NormalTok{(}\StringTok{"./data/seedplants.csv"}\NormalTok{)}
-\CommentTok{\# Remove species for which we don\textquotesingle{}t have complete data}
+\CommentTok{\# Supprimer les espèces pour lesquelles nous n\textquotesingle{}avons pas de données complètes}
 \NormalTok{seedplantsdata }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(seedplantsdata)}
-\CommentTok{\# Remove species in the tree that are not in the data matrix}
+\CommentTok{\# Supprimer les espèces de l\textquotesingle{}arbre qui ne sont pas dans la matrice de données}
 \NormalTok{species.to.exclude }\OtherTok{\textless{}{-}}\NormalTok{ seedplantstree}\SpecialCharTok{$}\NormalTok{tip.label[}\SpecialCharTok{!}\NormalTok{(seedplantstree}\SpecialCharTok{$}\NormalTok{tip.label }\SpecialCharTok{\%in\%}\NormalTok{ seedplantsdata}\SpecialCharTok{$}\NormalTok{Code)]}
 \NormalTok{seedplantstree }\OtherTok{\textless{}{-}} \FunctionTok{drop.tip}\NormalTok{(seedplantstree,species.to.exclude)}
-\CommentTok{\# Remove unnecessary object}
+\CommentTok{\# Supprimer l\textquotesingle{}objet inutile}
 \FunctionTok{rm}\NormalTok{(species.to.exclude)}
-\CommentTok{\# Order the tree to make it nicer when plotting}
+\CommentTok{\# Ordonner l\textquotesingle{}arbre pour qu\textquotesingle{}il soit plus esthétique lors du tracé}
 \NormalTok{seedplantstree }\OtherTok{\textless{}{-}} \FunctionTok{ladderize}\NormalTok{(seedplantstree, }\AttributeTok{right =} \ConstantTok{FALSE}\NormalTok{)}
-\CommentTok{\# Now let\textquotesingle{}s look at the tree}
+\CommentTok{\# Maintenant, regardons l\textquotesingle{}arbre}
 \FunctionTok{plot}\NormalTok{(seedplantstree,}\AttributeTok{cex=}\FloatTok{0.4}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{center}\includegraphics{pcm-workshop_files/figure-latex/Open_seed_plant_data-1} \end{center}
 
-Now, we can have a look at the data, and then order the plant trait to be in the same order as the species in the tree.
+Maintenant, nous pouvons jeter un œil aux données, puis ordonner le trait des plantes pour qu'il soit dans le même ordre que les espèces de l'arbre.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Here is what the loaded data looks like}
+\CommentTok{\# Voici à quoi ressemblent les données chargées}
 \FunctionTok{head}\NormalTok{(seedplantsdata)}
 \end{Highlighting}
 \end{Shaded}
@@ -365,22 +365,21 @@ Now, we can have a look at the data, and then order the plant trait to be in the
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Name the rows of the data.frame with the species codes used as tree labels }
+\CommentTok{\# Nommer les lignes du data.frame avec les codes des espèces utilisés comme étiquettes d\textquotesingle{}arbre }
 \FunctionTok{rownames}\NormalTok{(seedplantsdata) }\OtherTok{\textless{}{-}}\NormalTok{ seedplantsdata}\SpecialCharTok{$}\NormalTok{Code}
-\CommentTok{\# Order the data in the same order as the tip.label of the tree. In the present }
-\CommentTok{\#  example, this was already the case, but it is an important step for }
-\CommentTok{\#  any analysis.}
+\CommentTok{\# Ordonner les données dans le même ordre que les étiquettes de l\textquotesingle{}arbre. Dans cet exemple }
+\CommentTok{\#  précis, c\textquotesingle{}était déjà le cas, mais c\textquotesingle{}est une étape importante pour toute analyse.}
 \NormalTok{seedplantsdata }\OtherTok{\textless{}{-}}\NormalTok{ seedplantsdata[seedplantstree}\SpecialCharTok{$}\NormalTok{tip.label,]}
 \end{Highlighting}
 \end{Shaded}
 
-Now that the data is ready, let's fit a linear model and try to explain shade tolerance (Shade) of trees using wood density (Wd). In R, a very simple way to do a regression is to use the function `lm', which stands for linear model. To fit a linear model, you need to tell the \texttt{lm} function which variable is the response variable and which one is the explanatory variable. This is done using formulas in the form \texttt{Shade\ \textasciitilde{}\ Wd}. The variable at the left of the tilde (`\textasciitilde{}') is the response variable (\texttt{Shade}) whereas the explanatory variale (1 or more) are at the right of the tilde.
+Maintenant que les données sont prêtes, réalisons un modèle linéaire et essayons d'expliquer la tolérance à l'ombre (Ombre) des arbres en utilisant la densité du bois (Wd). En R, un moyen très simple de faire une régression consiste à utiliser la fonction « lm », qui signifie modèle linéaire. Pour ajuster un modèle linéaire, vous devez indiquer à la fonction \texttt{lm} quelle variable est la variable de réponse et laquelle est la variable explicative. Cela se fait à l'aide de formules sous la forme « Shade \textasciitilde{} Wd ». La variable à gauche du tilde (« \textasciitilde{} ») est la variable de réponse (« Shade ») tandis que les variables explicatives (1 ou plus) sont à droite du tilde.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Fit a linear model using Ordinary Least Squares (OLS)}
+\CommentTok{\# Ajuster un modèle linéaire en utilisant les moindres carrés ordinaires (MCO)}
 \NormalTok{shade.lm }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Shade }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Wd, }\AttributeTok{data =}\NormalTok{ seedplantsdata)}
-\CommentTok{\# Print the results}
+\CommentTok{\# Imprimer les résultats}
 \FunctionTok{summary}\NormalTok{(shade.lm)}
 \end{Highlighting}
 \end{Shaded}
@@ -406,34 +405,34 @@ Now that the data is ready, let's fit a linear model and try to explain shade to
 ## F-statistic: 1.338 on 1 and 55 DF,  p-value: 0.2525
 \end{verbatim}
 
-You can see that the slope estimate (here the parameter \texttt{Wd}) is 1.81 and that is not significant (\(p\)=0.252). The standard descriptive plots obtained with \texttt{plot(shade.lm)} show that there is slightly greater variation in the residuals for low fitted values, but these are not extreme. However, another way that the assumption of independence can be violated is if the residuals are phylogenetically correlated. One way to test this is to plot the residuals at the tips of the phylogeny. Let's see what this gives.
+Vous pouvez voir que l'estimation de la pente (ici le paramètre \texttt{Wd}) est 1.81 et ce n'est pas significatif (\(p\)=0.252). Les tracés descriptifs standard obtenus avec \texttt{plot(shade.lm)} montrent qu'il existe une variation légèrement plus grande dans les résidus pour les valeurs ajustées faibles, mais celles-ci ne sont pas extrêmes. Cependant, l'hypothèse d'indépendance peut également être violée si les résidus sont phylogénétiquement corrélés. Une façon de tester cela consiste à tracer les résidus aux extrémités de la phylogénie. Voyons ce que cela donne.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Extract the residuals}
+\CommentTok{\# Extraire les résidus}
 \NormalTok{shade.res }\OtherTok{\textless{}{-}} \FunctionTok{residuals}\NormalTok{(shade.lm)}
 
 \CommentTok{\#}
-\CommentTok{\# Plot the residuals beside the phylogeny}
+\CommentTok{\# Tracer les résidus à côté de la phylogénie}
 
-\CommentTok{\# The following command changes the graphical parameters for nicer tree output}
+\CommentTok{\# La commande suivante modifie les paramètres graphiques pour un meilleur rendu de l\textquotesingle{}arbre}
 \NormalTok{op }\OtherTok{\textless{}{-}} \FunctionTok{par}\NormalTok{(}\AttributeTok{mar=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
-\CommentTok{\# Vector of colors for the tree plotting}
+\CommentTok{\# Vecteur de couleurs pour le tracé de l\textquotesingle{}arbre}
 \NormalTok{cols }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"\#7570b3"}\NormalTok{,}\StringTok{"\#d95f02"}\NormalTok{)}
-\CommentTok{\# The next three commands will plot the tree, then circles that reflect }
-\CommentTok{\#  the residuals values at the tips of the tree, and will finally}
-\CommentTok{\#  add a legend.}
-\CommentTok{\# The plot command plots the tree and leaves some space to plot the }
-\CommentTok{\#  residuals at the tips with the \textquotesingle{}label.offset=0.01\textquotesingle{} option}
+\CommentTok{\# Les trois commandes suivantes vont tracer l\textquotesingle{}arbre, puis des cercles reflétant }
+\CommentTok{\#  les valeurs résiduelles aux extrémités de l\textquotesingle{}arbre, et enfin}
+\CommentTok{\#  ajouter une légende.}
+\CommentTok{\# La commande plot trace l\textquotesingle{}arbre et laisse un espace pour tracer les }
+\CommentTok{\#  résidus aux extrémités avec l\textquotesingle{}option \textquotesingle{}label.offset=0.01\textquotesingle{}}
 \FunctionTok{plot}\NormalTok{(seedplantstree,}\AttributeTok{type=}\StringTok{"p"}\NormalTok{,}\ConstantTok{TRUE}\NormalTok{,}\AttributeTok{label.offset=}\FloatTok{0.01}\NormalTok{,}\AttributeTok{cex=}\FloatTok{0.5}\NormalTok{,}\AttributeTok{no.margin=}\ConstantTok{FALSE}\NormalTok{)}
-\CommentTok{\# The next command plots the residuals. the \textquotesingle{}bg\textquotesingle{} option is for the background color.}
-\CommentTok{\#  If the residuals are greater than 0 (shade.res\textgreater{}0), it will print the first color}
-\CommentTok{\#  (1) of the \textquotesingle{}cols\textquotesingle{} array and if it is below zero, it prints the second color (2). }
-\CommentTok{\#  The the size of the circle (the \textquotesingle{}cex\textquotesingle{} option) is relative to the absolute value }
-\CommentTok{\#  of the residuals (abs(shade.res). To plot other values, just replace the }
-\CommentTok{\#  \textquotesingle{}shade.res\textquotesingle{} vector by another one.}
+\CommentTok{\# La commande suivante trace les résidus. l\textquotesingle{}option \textquotesingle{}bg\textquotesingle{} est pour la couleur de fond.}
+\CommentTok{\#  Si les résidus sont supérieurs à 0 (shade.res\textgreater{}0), il affichera la première couleur}
+\CommentTok{\#  (1) du tableau \textquotesingle{}cols\textquotesingle{} et s\textquotesingle{}il est inférieur à zéro, il affiche la deuxième couleur (2). }
+\CommentTok{\#  La taille du cercle (l\textquotesingle{}option \textquotesingle{}cex\textquotesingle{}) est relative à la valeur absolue }
+\CommentTok{\#  des résidus (abs(shade.res). Pour tracer d\textquotesingle{}autres valeurs, remplacez simplement le }
+\CommentTok{\#  vecteur \textquotesingle{}shade.res\textquotesingle{} par un autre.}
 \FunctionTok{tiplabels}\NormalTok{(}\AttributeTok{pch=}\DecValTok{21}\NormalTok{,}\AttributeTok{bg=}\NormalTok{cols[}\FunctionTok{ifelse}\NormalTok{(shade.res}\SpecialCharTok{\textgreater{}}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)],}\AttributeTok{col=}\StringTok{"black"}\NormalTok{,}\AttributeTok{cex=}\FunctionTok{abs}\NormalTok{(shade.res),}\AttributeTok{adj=}\FloatTok{0.505}\NormalTok{)}
-\CommentTok{\# Print the legend}
+\CommentTok{\# Imprimer la légende}
 \FunctionTok{legend}\NormalTok{(}\StringTok{"topleft"}\NormalTok{,}\AttributeTok{legend=}\FunctionTok{c}\NormalTok{(}\StringTok{"{-}2"}\NormalTok{,}\StringTok{"{-}1"}\NormalTok{,}\StringTok{"0"}\NormalTok{,}\StringTok{"1"}\NormalTok{,}\StringTok{"2"}\NormalTok{),}\AttributeTok{pch=}\DecValTok{21}\NormalTok{,}
        \AttributeTok{pt.bg=}\NormalTok{cols[}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)],}\AttributeTok{bty=}\StringTok{"n"}\NormalTok{,}
        \AttributeTok{text.col=}\StringTok{"gray32"}\NormalTok{,}\AttributeTok{cex=}\FloatTok{0.8}\NormalTok{,}\AttributeTok{pt.cex=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\FloatTok{0.1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
@@ -444,20 +443,20 @@ You can see that the slope estimate (here the parameter \texttt{Wd}) is 1.81 and
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Reset graphical parameters to defaults}
+\CommentTok{\# Réinitialiser les paramètres graphiques par défaut}
 \FunctionTok{par}\NormalTok{(op) }
 \end{Highlighting}
 \end{Shaded}
 
-You can see that in several cases, closely related species tend to have similar residuals (they are of the same color, which means that they are of the same side of the regression slope). This is problematic. Indeed, it shows that the assumption of independence of the ordinary least squares (OLS) regression no longer holds and the statistical tests for the null hypotheses are no longer valid. We will see next how phylogenetic generalized least squares can correct this.
+Vous pouvez voir que dans plusieurs cas, des espèces étroitement apparentées ont tendance à avoir des résidus similaires (ils sont de la même couleur, ce qui signifie qu'ils sont du même côté de la pente de régression). C'est problématique. En effet, cela montre que l'hypothèse d'indépendance de la régression des moindres carrés ordinaires (MCO) n'est plus valable et que les tests statistiques pour les hypothèses nulles ne sont plus valides. Nous verrons ensuite comment les moindres carrés généralisés phylogénétiques peuvent corriger cela.
 
-\section{Challenge 1}\label{challenge-1}
+\section{Défi no. 1}\label{duxe9fi-no.-1}
 
-In the \texttt{seedplantsdata} data frame, there were many different traits. Try to fit a regression of tree shade tolerance (\texttt{shade}) on the seed mass (\texttt{Sm}). In other words, test if shade tolerance can be explained by the seed mass of the trees. Then, try to see if the residuals are phylogenetically correlated.
+Dans le data frame \texttt{seedplantsdata}, il y avait plusieurs traits différents. Essayez d'ajuster une régression de la tolérance à l'ombre des arbres (\texttt{Shade}) en fonction de la masse des graines (\texttt{Sm}). En d'autres termes, testez si la tolérance à l'ombre peut être expliquée par la masse des graines des arbres. Ensuite, essayez de voir si les résidus sont corrélés phylogénétiquement.
 
 \chapter{Phylogenetic generalized least squares (PGLS)}\label{pgls}
 
-\section{Théorie}\label{thuxe9orie}
+\section{Théorie}\label{thuxe9orie-1}
 
 Les moindres carrés généralisés phylogénétiques (PGLS) sont juste une application spécifique de la méthode plus générale appelée moindres carrés généralisés (GLS). Les moindres carrés généralisés relâchent l'hypothèse selon laquelle l'erreur du modèle linéaire doit être non corrélée. Ils permettent à l'utilisateur de spécifier la structure de cette corrélation résiduelle. Cela est utilisé, par exemple, pour corriger la corrélation spatiale, les séries temporelles ou la corrélation phylogénétique.
 
@@ -1037,7 +1036,7 @@ Celui que nous avons utilisé ci-dessus est équivalent à la structure \texttt{
 ## Degrees of freedom: 57 total; 55 residual
 \end{verbatim}
 
-Vous pouvez voir que les résultats sont identiques. La seule différence est que la structure de corrélation n'est pas affichée dans le résumé. Le \texttt{numeric(0)} signifie qu'aucun paramètre n'a été estimé pendant l'optimisation (il et fixe).
+Vous pouvez voir que les résultats sont identiques. La seule différence est que la structure de corrélation n'est pas affichée dans le résumé. Le \texttt{numeric(0)} signifie qu'aucun paramètre n'a été estimé pendant l'optimisation (il est fixe).
 
 Maintenant, vous vous demandez peut-être pourquoi la structure de corrélation ets appelée corBrownian. C'est parce qu'elle utilise le mouvement Brownien pour modéliser l'évolution le long des branches de l'arbre. Ce processus est souvent référé comme un modèle neutre. Si vous voulez en savoir davantage du le modèle Brownien, vous pouvez lire la section \ref{BM-model} à propos de ce modèle.
 
